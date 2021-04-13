@@ -5,20 +5,6 @@ const proxyUrl = process.env.GRPC_LOCATION || window.location.hostname;
 
 let client: RecipeClient;
 
-export {
-  IngredientUnitEnum,
-  RecipeDifficultyEnum,
-  RecipeTypeEnum,
-  StepTypeEnum
-} from './recipeTypes';
-
-export type {
-  IIngredients,
-  IStatus,
-  IStep,
-  IRecipeMessage,
-} from './recipeTypes';
-
 export const connectClient = () => {
   client = new RecipeClient(
     `http://${proxyUrl}:${proxyPort}`,
