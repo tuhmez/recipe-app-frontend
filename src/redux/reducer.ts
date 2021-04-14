@@ -7,10 +7,10 @@ const initialState: RecipeState = {
   isLoading: false
 };
 
-export default function rootReducer(
+const rootReducer = (
   state: RecipeState = initialState,
   action: any
-) {
+): RecipeState => {
   let newState: RecipeState;
   switch (action.type) {
     case actionTypes.ADD_RECIPE_REQUEST:
@@ -32,13 +32,13 @@ export default function rootReducer(
         error: action.error,
         isLoading: false
       }
-      return;
+      return newState;
     case actionTypes.UPDATE_RECIPE_REQUEST:
       newState = {
         ...state,
         isLoading: true
       }
-      return;
+      return newState;
     case actionTypes.UPDATE_RECIPE_SUCCESS:
       const newRecipeUpdateState = state.recipes.map((recipe, index, recipeArray) => {
         if (index === action.recipe.id) {
@@ -77,7 +77,7 @@ export default function rootReducer(
         recipes: newRecipeDeleteState,
         isLoading: false
       }
-      return;
+      return newState;
     case actionTypes.DELETE_RECIPE_FAILURE:
       newState = {
         ...state,
@@ -137,3 +137,5 @@ export default function rootReducer(
       return state;
   }
 }
+
+export default rootReducer;
