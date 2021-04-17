@@ -30,7 +30,7 @@ import {
   updateRecipe as updateRecipeGrpc
 } from '../communications'
 import { RecipeId, RecipeMessage, Status } from '../proto/recipe_pb';
-import { fromRecipeProto, toRecipeProto } from '../utilities';
+import { toRecipeProto } from '../utilities';
 
 export function addRecipe(recipe: RecipeMessage.AsObject) {
   const action: AddRecipeAction = {
@@ -119,7 +119,7 @@ function getRecipeAction(action: GetRecipeAction) {
       }
       const success: GetRecipeActionSuccess = {
         type: actionTypes.GET_RECIPE_SUCCESS,
-        recipe: fromRecipeProto(response)
+        recipe: response.toObject()
       };
       dispatch(success);
     });

@@ -4,6 +4,9 @@ import { theme } from './app-styles';
 import logo from './logo.svg';
 import './App.css';
 
+import { Button } from '@material-ui/core';
+import { ping } from './communications/index';
+
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -21,6 +24,7 @@ function App() {
           >
             Learn React
           </a>
+          <Button variant='contained' onClick={ping}>PING</Button>
         </header>
       </div>  
     </ThemeProvider>

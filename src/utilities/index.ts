@@ -1,4 +1,3 @@
 export {
-  toRecipeProto,
-  fromRecipeProto
+  toRecipeProto
 } from './grpcConverters';

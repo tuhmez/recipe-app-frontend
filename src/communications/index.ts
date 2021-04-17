@@ -48,6 +48,7 @@ export const deleteRecipe = (recipeId: RecipeId, callback: (err: any, response: 
 
 export const ping = () => {
   client.ping(new Empty(), {}, (err: any, response: Pong) => {
+    if (err) throw err;
     console.info(response.toObject());
   });
 };
