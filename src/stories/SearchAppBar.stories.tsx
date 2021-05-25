@@ -1,5 +1,5 @@
 import React from 'react';
-import {} from '@storybook/addon-actions';
+import { action } from '@storybook/addon-actions';
 
 import { theme } from '../app-styles';
 import SearchAppBar from '../components/SearchAppBar';
@@ -15,7 +15,11 @@ export default storyExport;
 export const baseSearchBar = () =>{
   return (
     <ThemeProvider theme={theme}>
-      <SearchAppBar />
+      <SearchAppBar
+        searchFunction={action('searchFunction')}
+        searchHeader='Recipes'
+        theme={theme}
+      />
     </ThemeProvider>
   )
 };
