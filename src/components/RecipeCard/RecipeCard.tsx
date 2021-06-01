@@ -4,10 +4,11 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { useStyles } from './styles';
 import { RecipeMessage } from '../../proto/recipe_pb';
+import { toRecipeProto } from '../../utilities';
 
 interface Props {
   onCardClick: () => void;
-  onFavoriteToggle: (newBool: boolean) => void;
+  onFavoriteToggle: (recipe: RecipeMessage) => void;
   recipe: RecipeMessage.AsObject;
   theme: Theme;
 };
@@ -28,13 +29,14 @@ const RecipeCard = (props: Props) => {
     event.preventDefault();
     event.stopPropagation();
     const newToggleBool = !isRecipeFavorited;
-    onFavoriteToggle(newToggleBool);
+    recipe.favorited = newToggleBool;
+    onFavoriteToggle(toRecipeProto(recipe));
     setIsRecipeFavorited(newToggleBool);
   }
 
   const mainPicture = recipe.imagesList[0] as string; 
   return (
-    <Card className={classes.root}>
+    <Card variant='outlined'>
       <CardActionArea
         onClick={handleCardClick}
       >
