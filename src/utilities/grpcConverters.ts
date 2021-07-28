@@ -1,4 +1,4 @@
-import { Ingredient, RecipeMessage, Step, } from "../proto/recipe_pb";
+import { Ingredient, IngredientUnits, RecipeMessage, Step, } from "../proto/recipe_pb";
 
 export const toRecipeProto = (recipe: RecipeMessage.AsObject): RecipeMessage => {
   return new RecipeMessage()
