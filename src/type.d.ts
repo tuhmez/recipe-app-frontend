@@ -1,19 +1,19 @@
-import { RecipeMessage } from "./proto/recipe_pb";
+import { IRecipe } from "./common/types";
 
 type RecipeState = {
-  recipes: RecipeMessage.AsObject[];
+  recipes: IRecipe[];
   isLoading: boolean;
   error: string;
 };
 
 type AddRecipeAction = {
   type: string;
-  recipe: RecipeMessage.AsObject;
+  recipe: IRecipe;
 };
 
 type AddRecipeActionSuccess = {
   type: string;
-  recipe: RecipeMessage.AsObject;
+  recipe: IRecipe;
 }
 
 type AddRecipeActionFailure = {
@@ -30,7 +30,7 @@ type GetRecipeAction = {
 
 type GetRecipeActionSuccess = {
   type: string;
-  recipe: RecipeMessage.AsObject;
+  recipe: RecipeMessage;
 }
 
 type GetRecipeActionFailure = {
@@ -46,7 +46,7 @@ type GetAllRecipesAction = {
 
 type GetAllRecipesActionSuccess = {
   type: string;
-  recipes: RecipeMessage.AsObject[];
+  recipes: RecipeMessage[];
 }
 
 type GetAllRecipesActionFailure = {
@@ -58,12 +58,12 @@ type GetAllDispatchType = (args: GetAllRecipesAction | GetAllRecipesActionFailur
 
 type UpdateRecipeAction = {
   type: string;
-  recipe: RecipeMessage.AsObject;
+  recipe: RecipeMessage;
 }
 
 type UpdateRecipeActionSuccess = {
   type: string;
-  recipe: RecipeMessage.AsObject
+  recipe: RecipeMessage;
 }
 
 type UpdateRecipeActionFailure = {
