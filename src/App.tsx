@@ -5,23 +5,6 @@ import logo from './logo.svg';
 import './App.css';
 
 import { Button } from '@material-ui/core';
-import { ping, getAllRecipes } from './communications/index';
-import { RecipeMessage } from './proto/recipe_pb';
-
-const onGetAllRecipes = () => {
-  getAllRecipes(
-    (response: RecipeMessage) => {
-    console.info(response.toObject());
-    },
-    (err: any) => {
-      throw err;
-    },
-    () => {
-      console.info('closed');
-    }
-  )
-};
-
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -39,8 +22,8 @@ function App() {
           >
             Learn React
           </a>
-          <Button variant='contained' onClick={ping}>PING</Button>
-          <Button variant='contained' onClick={onGetAllRecipes}>GET All RECIPES</Button>
+          <Button variant='contained'>PING</Button>
+          <Button variant='contained'>GET All RECIPES</Button>
         </header>
       </div>  
     </ThemeProvider>
