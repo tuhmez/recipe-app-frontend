@@ -3,9 +3,8 @@ import { action } from '@storybook/addon-actions';
 import { theme } from '../app-styles';
 import RecipeCardGrid from '../components/RecipeCardGrid';
 import { ThemeProvider } from '@material-ui/core';
-
-import { recipeExample, recipeExampleNoImages } from '../utilities';
-import { RecipeMessage } from '../proto/recipe_pb';
+import { IRecipe } from '../common/types';
+import { exampleRecipe, exampleRecipeNoImages } from '../common/data';
 
 const storyExport = {
   title: 'RecipeCardGrid',
@@ -15,14 +14,14 @@ const storyExport = {
 export default storyExport;
 
 export const baseRecipeCard = () => {
-  let recipes: RecipeMessage.AsObject[] = [];
+  let recipes: IRecipe[] = [];
   const numberRecipeEntries = Math.random() * 10;
   for (let i = 0; i < numberRecipeEntries; i += 1) {
     const fiftyFiftyRand = Math.random();
     if (fiftyFiftyRand >= 0.50) {
-      recipes.push(recipeExample.toObject());
+      recipes.push(exampleRecipe);
     } else {
-      recipes.push(recipeExampleNoImages.toObject());
+      recipes.push(exampleRecipeNoImages);
     }
   }
 

@@ -1,11 +1,10 @@
 import { Grid, Theme } from '@material-ui/core';
+import { IRecipe } from '../../common/types';
 
 import RecipeCard from '../RecipeCard/RecipeCard';
 
-import { RecipeMessage } from '../../proto/recipe_pb';
-
 interface Props {
-  recipes: RecipeMessage.AsObject[];
+  recipes: IRecipe[];
   theme: Theme;
   handleCardClick: () => void;
   handleOnFavoriteToggle: () => void;
@@ -14,12 +13,6 @@ interface Props {
 const RecipeCardGrid = (props: Props) => {
   const { handleCardClick, handleOnFavoriteToggle, recipes, theme } = props;
 
-  // const theme = useTheme();
-  // const dispatch = useDispatch();
-  // const handleOnFavoriteToggle = useCallback((recipe: RecipeMessage) => dispatch(updateRecipe(recipe.toObject())), [dispatch]);
-  // const handleCardClick = () => {
-  //   dispatch();
-  // }
   const recipeCards = recipes.map(recipe => {
     return (
       <Grid item>
@@ -33,9 +26,8 @@ const RecipeCardGrid = (props: Props) => {
     );
   });
 
-  let subGrid: any = [];
+  let subGrid: JSX.Element[] = [];
   for (let i = 0; i < recipeCards.length; i += 3) {
-    if (!recipeCards) return;
     let subGridItems: any = [];
     const firstItem = recipeCards[i];
     const secondItem = recipeCards[i + 1];
