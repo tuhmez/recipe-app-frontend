@@ -1,11 +1,9 @@
-import React from 'react';
 import { action } from '@storybook/addon-actions';
 
 import { theme } from '../app-styles';
 import RecipeCard from '../components/RecipeCard';
 import { ThemeProvider } from '@material-ui/core';
-
-import { recipeExample, recipeExampleNoImages } from '../utilities';
+import { exampleRecipe, exampleRecipeNoImages } from '../common/data';
 
 const storyExport = {
   title: 'RecipeCard',
@@ -20,7 +18,7 @@ export const baseRecipeCard = () => {
       <RecipeCard
         onCardClick={action('onCardClickAction')}
         onFavoriteToggle={action('onFavoriteToggleAction')}
-        recipe={recipeExample.toObject()}
+        recipe={exampleRecipe}
         theme={theme}
       />
     </ThemeProvider>
@@ -33,7 +31,7 @@ export const emptyImageRecipeCard = () => {
       <RecipeCard
         onCardClick={action('onCardClickAction')}
         onFavoriteToggle={action('onFavoriteToggleAction')}
-        recipe={recipeExampleNoImages.toObject()}
+        recipe={exampleRecipeNoImages}
         theme={theme}
       />
     </ThemeProvider>
