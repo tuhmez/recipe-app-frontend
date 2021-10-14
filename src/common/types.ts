@@ -27,20 +27,20 @@ export interface IIngredient {
 }
 
 export enum IngredientUnit {
-  BOTTLE,
-  CAN,
-  CLOVE,
-  CUP,
-  GALLON,
-  NONE,
-  OUNCE,
-  PINCH,
-  PINT,
-  POUND,
-  QUART,
-  SHOT,
-  TABLESPOON,
-  TEASPOON
+  BOTTLE = 'BOTTLE',
+  CAN = 'CAN',
+  CLOVE = 'CLOVE',
+  CUP = 'CUP',
+  GALLON = 'GALLON',
+  NONE = 'NONE',
+  OUNCE = 'OUNCE',
+  PINCH = 'PINCH',
+  PINT = 'PINT',
+  POUND = 'POUND',
+  QUART = 'QUART',
+  SHOT = 'SHOT',
+  TABLESPOON = 'TABLESPOON',
+  TEASPOON = 'TEASPOON'
 }
 
 export interface IStep {
@@ -52,42 +52,42 @@ export interface IStep {
 }
 
 export enum TimeUnit {
-  SECONDS,
-  MINUTES,
-  HOURS
+  SECONDS = 'SECONDS',
+  MINUTES = 'MINUTES',
+  HOURS = 'HOURS'
 }
 
 export enum StepType {
-  BAKE,
-  BOIL,
-  BROIL,
-  COOK,
-  CUT,
-  CHOP,
-  DICE,
-  FREEZE,
-  FRY,
-  GRILL,
-  JUICE,
-  MICROWAVE,
-  MIX,
-  POUR,
-  PREPARE,
-  ROAST,
-  SEASON,
-  SEPARATE,
-  SIMMER,
-  SHRED,
-  STEW,
-  STEAM,
-  STIR,
-  TOP,
-  WASH,
-  ZEST
+  BAKE = 'BAKE',
+  BOIL = 'BOIL',
+  BROIL = 'BROIL',
+  COOK = 'COOK',
+  CUT = 'CUT',
+  CHOP = 'CHOP',
+  DICE = 'DICE',
+  FREEZE = 'FREEZE',
+  FRY = 'FRY',
+  GRILL = 'GRILL',
+  JUICE = 'JUICE',
+  MICROWAVE = 'MICROWAVE',
+  MIX = 'MIX',
+  POUR = 'POUR',
+  PREPARE = 'PREPARE',
+  ROAST = 'ROAST',
+  SEASON = 'SEASON',
+  SEPARATE = 'SEPARATE',
+  SIMMER = 'SIMMER',
+  SHRED = 'SHRED',
+  STEW = 'STEW',
+  STEAM = 'STEAM',
+  STIR = 'STIR',
+  TOP = 'TOP',
+  WASH = 'WASH',
+  ZEST = 'ZEST'
 }
 
 export enum RecipeDifficulty {
-  EASY,
-  MEDIUM,
-  HARD
+  EASY = 'EASY',
+  MEDIUM = 'MEDIUM',
+  HARD = 'HARD'
 }
