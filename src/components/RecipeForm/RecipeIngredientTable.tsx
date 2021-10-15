@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, FormControl, Grid, IconButton, InputLabel, NativeSelect, TextField, Typography } from '@material-ui/core';
+import { Button, FormControl, Grid, IconButton, InputLabel, Select, TextField, Typography } from '@material-ui/core';
 import { Add, Delete } from '@material-ui/icons';
 import { IIngredient, IngredientUnit } from '../../common/types';
 import { useStyles } from './styles';
@@ -33,11 +33,20 @@ export const RecipeIngredientTable = (props: Props) => {
     };
     const makeIngredientElement = (ingredient: IIngredient, index: number) => {
       return (
-        <Grid container item alignItems='center' direction='row' spacing={2} key={`ingredient-element-${index}`}>
+        <Grid
+          container
+          item
+          alignItems='center'
+          direction='row'
+          spacing={1}
+          key={`ingredient-element-${index}`}
+          className={classes.ingredientElement}
+        >
           <Grid item>
             <TextField
               label='Name'
               id={`name-${index}`}
+              variant='filled'
               value={ingredient.name}
               onChange={onIngredientItemChange}
               className={classes.ingredientName}
@@ -47,6 +56,7 @@ export const RecipeIngredientTable = (props: Props) => {
             <TextField
               label='Amount'
               id={`measurement-${index}`}
+              variant='filled'
               value={ingredient.measurement}
               onChange={onIngredientItemChange}
               type='number'
@@ -55,15 +65,16 @@ export const RecipeIngredientTable = (props: Props) => {
             />
           </Grid>
           <Grid item>
-            <FormControl variant='standard' className={classes.ingredientUnit}>
+            <FormControl variant='filled' className={classes.ingredientUnit}>
               <InputLabel id='ingredient-units-label'>Unit</InputLabel>
-              <NativeSelect
+              <Select
+                native
                 name={`unit-${index}`}
                 value={ingredient.units}
                 onChange={onIngredientUnitChange}
               >
                 {ingredientUnitItems()}
-              </NativeSelect>
+              </Select>
             </FormControl>
           </Grid>
           <Grid item>
@@ -85,7 +96,8 @@ export const RecipeIngredientTable = (props: Props) => {
     classes.ingredientContainer,
     classes.ingredientName,
     classes.ingredientMeasurement,
-    classes.ingredientUnit
+    classes.ingredientUnit,
+    classes.ingredientElement
   ]);
 
   return (
@@ -100,7 +112,7 @@ export const RecipeIngredientTable = (props: Props) => {
           </Button>
         </Grid>
       </Grid>
-      <Grid container>
+      <Grid container className={classes.elementContainer}>
         {ingredientElements}
       </Grid>
     </div>
