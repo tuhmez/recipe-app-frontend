@@ -26,7 +26,7 @@ export const BaseTable = () => {
       if (property === 'name') {
         newState[index].name = newItem;
       } else {
-        newState[index].measurement = Number(newItem);
+        newState[index].measurement = newItem as any;
       }
       return newState;
     });
