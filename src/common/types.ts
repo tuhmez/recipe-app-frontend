@@ -12,12 +12,12 @@ export interface IRecipe {
 }
 
 export enum RecipeType {
-  BREAKFAST,
-  LUNCH,
-  DINNER,
-  APPETIZER,
-  SNACK,
-  DRINK
+  BREAKFAST = 'BREAKFAST',
+  LUNCH = 'LUNCH',
+  DINNER = 'DINNER',
+  APPETIZER = 'APPETIZER',
+  SNACK = 'SNACK',
+  DRINK = 'DRINK'
 }
 
 export interface IIngredient {
