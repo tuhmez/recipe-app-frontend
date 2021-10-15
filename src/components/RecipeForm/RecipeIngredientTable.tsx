@@ -106,7 +106,7 @@ export const RecipeIngredientTable = (props: Props) => {
         <Grid item>
           <Typography variant='h5'>Ingredients</Typography>
         </Grid>
-        <Grid>
+        <Grid item>
           <Button variant='outlined' color='primary' startIcon={<Add/>} onClick={onAddIngredient}>
             Add Ingredient
           </Button>
