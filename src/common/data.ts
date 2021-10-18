@@ -26,7 +26,14 @@ export const exampleSteps: IStep[] = [
     time: 20,
     timeUnit: TimeUnit.MINUTES,
     stepType: StepType.BOIL
-  }
+  },
+  {
+    stepNumber: 2,
+    description: 'Shred chicken',
+    time: 5,
+    timeUnit: TimeUnit.MINUTES,
+    stepType: StepType.SHRED
+  },
 ];
 
 export const exampleRecipe: IRecipe = {
