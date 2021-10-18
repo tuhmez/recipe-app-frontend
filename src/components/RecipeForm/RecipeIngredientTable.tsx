@@ -40,7 +40,7 @@ export const RecipeIngredientTable = (props: Props) => {
           direction='row'
           spacing={1}
           key={`ingredient-element-${index}`}
-          className={classes.ingredientElement}
+          className={classes.element}
         >
           <Grid item>
             <TextField
@@ -97,7 +97,7 @@ export const RecipeIngredientTable = (props: Props) => {
     classes.ingredientName,
     classes.ingredientMeasurement,
     classes.ingredientUnit,
-    classes.ingredientElement
+    classes.element
   ]);
 
   return (
