@@ -71,6 +71,7 @@ export enum StepType {
   JUICE = 'JUICE',
   MICROWAVE = 'MICROWAVE',
   MIX = 'MIX',
+  NONE = 'NONE',
   POUR = 'POUR',
   PREPARE = 'PREPARE',
   ROAST = 'ROAST',
