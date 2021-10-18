@@ -11,7 +11,7 @@ export const useStyles = makeStyles(theme => ({
     overflowY: 'auto',
     overflowX: 'hidden'
   },
-  ingredientElement: {
+  element: {
     paddingBottom: theme.spacing(1)
   },
   formControl: {
@@ -31,5 +31,18 @@ export const useStyles = makeStyles(theme => ({
   },
   ingredientUnit: {
     minWidth: 132.8,
+  },
+  stepDetails: {
+    maxWidth: 225,
+  },
+  stepNumber: {
+    maxWidth: 65,
+  },
+  recipeStepType: {
+    width: 201,
+  },
+  elementDivider: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2)
   }
 }));
