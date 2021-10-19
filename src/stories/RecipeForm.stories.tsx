@@ -1,7 +1,7 @@
 import { theme } from '../app-styles';
 import RecipeForm from '../components/RecipeForm';
 import { ThemeProvider } from '@material-ui/core';
-import { exampleRecipe } from '../common/data';
+import { emptyRecipe, exampleRecipe } from '../common/data';
 
 const storyExport = {
   title: 'RecipeForm',
@@ -10,10 +10,18 @@ const storyExport = {
 
 export default storyExport;
 
-export const baseRecipeForm = () => {
+export const BaseRecipeForm = () => {
   return (
     <ThemeProvider theme={theme}>
-      <RecipeForm data={exampleRecipe}/>
+      <RecipeForm data={emptyRecipe}/>
     </ThemeProvider>
-  )
+  );
+};
+
+export const BaseRecipeFormEdit = () => {
+  return (
+    <ThemeProvider theme={theme}>
+      <RecipeForm data={exampleRecipe} isEdit />
+    </ThemeProvider>
+  );
 };

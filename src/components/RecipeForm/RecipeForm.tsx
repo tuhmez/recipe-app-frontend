@@ -1,115 +1,221 @@
-import React, { forwardRef, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   FormControl,
   Grid,
   IconButton,
   InputLabel,
-  MenuItem,
-  Paper,
   Select,
   TextField,
   Typography
 } from '@material-ui/core';
-import {
-  AddBox,
-  ArrowDownward,
-  Check,
-  ChevronLeft,
-  ChevronRight,
-  Clear,
-  CloudUpload,
-  DeleteOutline,
-  FilterList,
-  FirstPage,
-  Edit,
-  LastPage,
-  Remove,
-  SaveAlt,
-  Search,
-  ViewColumn
-} from '@material-ui/icons';
-import MaterialTable, { Column, Icons, MTableActions, MTableBody, MTableHeader } from 'material-table';
-import { Ingredient, IngredientUnits, RecipeMessage, RecipeType } from '../../proto/recipe_pb';
+import { CloudUpload, Favorite, FavoriteBorder } from '@material-ui/icons';
 import { useStyles } from './styles';
+import { IngredientUnit, IRecipe, RecipeDifficulty, RecipeType, StepType, TimeUnit } from '../../common/types';
+import { RecipeIngredientTable } from './RecipeIngredientTable';
+import { RecipeStepTable } from './RecipeStepTable';
+import { RecipeKeywordList } from './RecipeKeywordList';
 
 const recipeTypeItems = () => {
   const returnItems: JSX.Element[] = [];
-  Object.keys(RecipeType).forEach((type, index) => {
+  Object.keys(RecipeType).forEach(type => {
     returnItems.push((
-      <MenuItem key={`recipe-type-${type}`} value={index}>{type}</MenuItem>
+      <option key={`recipe-type-${type}`} value={type}>{type}</option>
     ));
   });
   return returnItems;
 };
 
-let ingredientUnitLookup: any = {};
-Object.keys(IngredientUnits).forEach((unit, index) => {
-  ingredientUnitLookup[index] = unit;
-});
-const columns: Column<any>[] = [
-  {
-    title: 'Name',
-    field: 'name',
-    align: 'left',
-    cellStyle: {
-      width: '20%'
-    }
-  },
-  {
-    title: 'Measurement',
-    field: 'measurement',
-    type: 'numeric',
-    align: 'left',
-    cellStyle: {
-      width:'5%',
-    }
-  },
-  {
-    title: 'Unit',
-    field: 'unit',
-    lookup: ingredientUnitLookup,
-    align: 'left',
-    cellStyle: {
-      width: '10%'
-    }
-  }
-];
-
+const recipeDifficultyItems = () => {
+  const returnItems: JSX.Element[] = [];
+  Object.keys(RecipeDifficulty).forEach(difficulty => {
+    returnItems.push((
+      <option key={`recipe-difficulty-${difficulty}`} value={difficulty}>{difficulty}</option>
+    ));
+  });
+  return returnItems;
+};
 
 export interface Props {
-  data: RecipeMessage.AsObject;
+  data: IRecipe;
+  isEdit?: boolean
 }
 
 const RecipeForm = (props: Props) => {
   // Props Destructuring
-  const { data } = props;
+  const { data, isEdit } = props;
   // Styles
   const classes = useStyles();
   // States
   const [name, setName] = useState(data.name);
   const [type, setType] = useState(data.type);
   const [website, setWebsite] = useState(data.linkToWebsite);
-  const [ingredientsList, setIngredientsList] = useState(data.ingredientsList);
-  const [stepsList, setStepsList] = useState(data.stepsList);
+  const [ingredientsList, setIngredientsList] = useState(data.ingredients);
+  const [stepsList, setStepsList] = useState(data.steps);
   const [difficulty, setDifficulty] = useState(data.difficulty);
-  const [keywordsList, setKeywordsList] = useState(data.keywordsList);
-  const [keywordsComponentList, setKeywordsComponentList] = useState<JSX.Element[]>([]);
+  const [keywordsList, setKeywordsList] = useState(data.keywords);
   const [favorited, setFavorited] = useState(data.favorited);
   // Effects
-  useEffect(() => {
 
-  }, [keywordsList]);
+  // Change Events
   const onChangeName = (event: React.ChangeEvent<HTMLInputElement>) => setName(event.target.value);
-  const onChangeType = (event: React.ChangeEvent<{ value: unknown }>) => setType(event.target.value as number);
+  const onChangeType = (event: React.ChangeEvent<{ value: unknown }>) => setType(event.target.value as RecipeType);
+  const onChangeDifficulty = (event: React.ChangeEvent<{ value: unknown }>) => setDifficulty(event.target.value as RecipeDifficulty);
   const onChangeWebsite = (event: React.ChangeEvent<HTMLInputElement>) => setWebsite(event.target.value);
+  const onToggleFavorited = () => setFavorited(prevState => !prevState);
+  // -- Ingredient Control -- //
+  const onIngredientItemChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    setIngredientsList(prevState => {
+      const newState = [...prevState];
+      const elementId = event.target.id;
+      const property = elementId.split('-')[0];
+      const index = Number(elementId.split('-')[1]);
+      const newItem = event.target.value;
+      if (property === 'name') {
+        newState[index].name = newItem;
+      } else {
+        newState[index].measurement = newItem as any;
+      }
+      return newState;
+    });
+  };
+
+  const onIngredientUnitChange = (event: React.ChangeEvent<{name?: string | undefined; value: unknown; }>) => {
+    setIngredientsList(prevState => {
+      const newState = [...prevState];
+      const elementId = event.target.name!;
+      const newItem = event.target.value as string;
+      const index = Number(elementId.split('-')[1]);
+      newState[index].units = newItem as IngredientUnit;
+      return newState;
+    });
+  };
+
+  const onAddIngredient = () => {
+    setIngredientsList(prevState => {
+      const newState = [...prevState];
+      newState.push({name: '', measurement: 0, units: IngredientUnit.NONE});
+      return newState;
+    });
+  };
+
+  const onRemoveIngredient = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setIngredientsList(prevState => {
+      const newState = [...prevState];
+      const elementId = event.currentTarget.id;
+      const index = Number(elementId.split('-')[1]);
+      newState.splice(index, 1);
+      return newState;
+    });
+  };
+  // -- Ingredient Control -- //
+  // -- Step Control -- //
+  const onStepItemChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    setStepsList(prevState => {
+      const newState = [...prevState];
+      const elementId = event.target.id;
+      const property = elementId.split('-')[0];
+      const index = Number(elementId.split('-')[1]);
+      const newItem = event.target.value;
+      if (property === 'number') {
+        newState[index].stepNumber = newItem as any;
+      } else {
+        newState[index].description = newItem;
+      }
+      return newState;
+    });
+  };
+
+  const onAddStep = () => {
+    setStepsList(prevState => {
+      const newState = [...prevState];
+      newState.push({
+        stepNumber: newState.length + 1,
+        description: '',
+        time: 0,
+        timeUnit: TimeUnit.MINUTES,
+        stepType: StepType.NONE
+    });
+      return newState;
+    });
+  };
+
+  const onRemoveStep = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setStepsList(prevState => {
+      const newState = [...prevState];
+      const elementId = event.currentTarget.id;
+      const index = Number(elementId.split('-')[1]);
+      newState.splice(index, 1);
+      newState.filter(s => s.stepNumber > index + 1).forEach(s => s.stepNumber = s.stepNumber - 1);
+      return newState;
+    });
+  };
+
+  const onStepTimeUnitChange = (event: React.ChangeEvent<{name?: string | undefined; value: unknown; }>) => {
+    setStepsList(prevState => {
+      const newState = [...prevState];
+      const elementId = event.target.name!;
+      const newItem = event.target.value as string;
+      const index = Number(elementId.split('-')[1]);
+      newState[index].timeUnit = newItem as TimeUnit;
+      return newState;
+    });
+  };
+
+  const onStepTypeChange = (event: React.ChangeEvent<{name?: string | undefined; value: unknown; }>) => {
+    setStepsList(prevState => {
+      const newState = [...prevState];
+      const elementId = event.target.name!;
+      const newItem = event.target.value as string;
+      const index = Number(elementId.split('-')[1]);
+      newState[index].stepType = newItem as StepType;
+      return newState;
+    });
+  };
+  // -- Step Control -- //
+  // -- Keyword Control -- //
+  const onAddKeyword = (newKeyword: string) => {
+    setKeywordsList(prevState => {
+      const newState = [...prevState];
+      newState.push(newKeyword);
+      return newState;
+    });
+  };
+  const onEditKeyword = (index: number, newKeyword: string) => {
+    setKeywordsList(prevState => {
+      const newState = [...prevState];
+      newState[index] = newKeyword;
+      return newState;
+    });
+  };
+  const onRemoveKeyword = (keyword: string) => {
+    setKeywordsList(prevState => prevState.filter(k => k !== keyword))
+  };
+  // -- Keyword Control -- //
 
   return (
     <Grid container spacing={2} direction='column'>
-      <Grid item>
-        <Typography variant='h4'>
-          New Recipe
-        </Typography>
+      <Grid
+        item
+        container
+        justifyContent='space-between'
+        alignItems='center'
+      >
+        <Grid item>
+          <Typography variant='h4'>
+            {isEdit ? 'Edit Recipe' : 'New Recipe'}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <IconButton
+            onClick={onToggleFavorited}
+            disableRipple
+          >
+            {favorited ? <Favorite /> : <FavoriteBorder />}
+          </IconButton>
+        </Grid>
       </Grid>
       <Grid item>
         <TextField
@@ -126,6 +232,7 @@ const RecipeForm = (props: Props) => {
         <FormControl variant='filled' className={classes.formControl}>
           <InputLabel id='recipe-type-label'>Recipe Type</InputLabel>
           <Select
+            native
             labelId='recipe-type-label'
             id='recipe-type'
             value={type}
@@ -136,79 +243,37 @@ const RecipeForm = (props: Props) => {
         </FormControl>
       </Grid>
       <Grid item>
-        <Typography variant='h5' >
-          Ingredients
-        </Typography>
+        <FormControl variant='filled' className={classes.formControl}>
+          <InputLabel id='recipe-difficulty-label'>Recipe Difficulty</InputLabel>
+          <Select
+            native
+            labelId='recipe-difficulty-label'
+            id='recipe-difficulty'
+            value={difficulty}
+            onChange={onChangeDifficulty}
+          >
+            {recipeDifficultyItems()}
+          </Select>
+        </FormControl>
       </Grid>
       <Grid item>
-        <div style={{maxWidth: '95vw', scale: '90%'}}>
-          <MaterialTable
-            data={ingredientsList}
-            columns={columns}
-            icons={icons}
-            title={''}
-            options={{
-              actionsColumnIndex: -1,
-              actionsCellStyle: {
-                justifySelf: 'center',
-                alignSelf: 'center'
-              }
-            }}
-            components={{
-              Container: props => (
-                <Paper variant='outlined' elevation={0} {...props} />
-              ),
-            }}
-            editable={{
-              onRowAdd: newData => {
-                return new Promise((resolve, reject) => {
-                  const { name, measurement, unit } = newData;
-                  setIngredientsList(prevState => {
-                    let newState = [...prevState];
-                    newState.push({
-                      name,
-                      measurement: Number(measurement),
-                      unit: Number(unit)
-                    });
-                    return newState;
-                  });
-                  resolve(() => { });
-                })
-              },
-              onRowDelete: dataToDelete => {
-                return new Promise((resolve, reject) => {
-                  setIngredientsList(prevState => {
-                    let newState = [...prevState];
-                    const index = dataToDelete.tableData.id;
-                    newState.splice(index, 1);
-                    return newState;
-                  });
-                  resolve(() => { });
-                });
-              },
-              onRowUpdate: (updatedData, oldData) => {
-                return new Promise((resolve, reject) => {
-                  const { name, measurement, unit } = updatedData;
-                  setIngredientsList(prevState => {
-                    let newState = [...prevState];
-                    newState[oldData.tableData.id] = {
-                      name,
-                      measurement: Number(measurement),
-                      unit: Number(unit)
-                    }
-                    return newState;
-                  });
-                  resolve(() => { });
-                });
-              }
-            }}
-            localization={{
-              body: {
-                emptyDataSourceMessage: 'No ingredients yet!'
-              }
-            }}
-          />
-        </div>
+        <RecipeIngredientTable
+          data={ingredientsList}
+          onAddIngredient={onAddIngredient}
+          onRemoveIngredient={onRemoveIngredient}
+          onIngredientItemChange={onIngredientItemChange}
+          onIngredientUnitChange={onIngredientUnitChange}
+        />
+      </Grid>
+      <Grid item>
+        <RecipeStepTable
+          data={stepsList}
+          onStepItemChange={onStepItemChange}
+          onAddStep={onAddStep}
+          onRemoveStep={onRemoveStep}
+          onStepTimeUnitChange={onStepTimeUnitChange}
+          onStepTypeChange={onStepTypeChange}
+        />
       </Grid>
       <Grid item>
         <TextField
@@ -216,8 +281,17 @@ const RecipeForm = (props: Props) => {
           label='Website'
           variant='filled'
           fullWidth
+          multiline
           value={website}
           onChange={onChangeWebsite}
+        />
+      </Grid>
+      <Grid item>
+        <RecipeKeywordList
+          data={keywordsList}
+          onAddKeyword={onAddKeyword}
+          onEditKeyword={onEditKeyword}
+          onRemoveKeyword={onRemoveKeyword}
         />
       </Grid>
       <Grid item>
@@ -230,7 +304,7 @@ const RecipeForm = (props: Props) => {
         />
         <label htmlFor='recipe-images'>
           <Button
-            variant='contained'
+            variant='outlined'
             startIcon={<CloudUpload />}
             component='span'
             color='primary'
@@ -239,28 +313,18 @@ const RecipeForm = (props: Props) => {
           </Button>
         </label>
       </Grid>
+      <Grid item>
+        <Button
+          variant='contained'
+          color='primary'
+          className={classes.recipeSubmitButton}
+          size='large'
+        >
+          {isEdit ? 'Save' : 'Submit'}
+        </Button>
+      </Grid>
     </Grid>
   )
 };
 
 export default RecipeForm;
-
-const icons: Icons = {
-  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-  DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
-  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
-  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
-};
