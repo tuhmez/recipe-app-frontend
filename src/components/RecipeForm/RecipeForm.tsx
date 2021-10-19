@@ -121,6 +121,8 @@ const RecipeForm = (props: Props) => {
       const newItem = event.target.value;
       if (property === 'number') {
         newState[index].stepNumber = newItem as any;
+      } else if (property === 'time') {
+        newState[index].time = newItem as any;
       } else {
         newState[index].description = newItem;
       }
