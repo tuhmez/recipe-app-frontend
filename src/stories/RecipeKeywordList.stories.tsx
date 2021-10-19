@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ThemeProvider } from '@material-ui/core';
 
 import { theme } from '../app-styles';
 import { RecipeKeywordList } from '../components/RecipeForm/RecipeKeywordList';
 import { exampleRecipe } from '../common/data';
-import { action } from '@storybook/addon-actions';
 
 const storyExport = {
   title: 'RecipeKeywordList',
