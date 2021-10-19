@@ -133,7 +133,7 @@ export const RecipeKeywordList = (props: Props) => {
           <Button variant='outlined' color='default' onClick={onClosePanel}>
             Cancel
           </Button>
-          <Button variant='outlined' color='primary' onClick={onSaveKeyword}>
+          <Button variant='contained' disableElevation color='primary' onClick={onSaveKeyword}>
             {isEdit ? 'Save' : 'Submit'}
           </Button>
         </DialogActions>
