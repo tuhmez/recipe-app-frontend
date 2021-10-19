@@ -36,6 +36,19 @@ export const exampleSteps: IStep[] = [
   },
 ];
 
+export const emptyRecipe: IRecipe = {
+  id: '1',
+  name: '',
+  type: RecipeType.APPETIZER,
+  images: [],
+  linkToWebsite: '',
+  ingredients: [],
+  steps: [],
+  difficulty: RecipeDifficulty.EASY,
+  keywords: [],
+  favorited: false
+};
+
 export const exampleRecipe: IRecipe = {
   id: '1',
   name: 'Street Tacos',
