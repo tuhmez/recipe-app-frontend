@@ -320,6 +320,7 @@ const RecipeForm = (props: Props) => {
           variant='contained'
           color='primary'
           className={classes.recipeSubmitButton}
+          disableElevation
           size='large'
         >
           {isEdit ? 'Save' : 'Submit'}
