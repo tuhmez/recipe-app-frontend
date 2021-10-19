@@ -72,6 +72,7 @@ export const RecipeStepTable = (props: Props) => {
                   variant='filled'
                   value={step.description}
                   onChange={onStepItemChange}
+                  className={classes.ingredientDescription}
                   multiline
                 />
               </Grid>
@@ -136,6 +137,7 @@ export const RecipeStepTable = (props: Props) => {
     onStepTypeChange,
     classes.element,
     classes.stepNumber,
+    classes.ingredientDescription,
     classes.recipeStepType,
     classes.stepDetails
   ]);

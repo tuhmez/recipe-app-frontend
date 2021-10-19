@@ -1,6 +1,9 @@
 import { makeStyles } from '@material-ui/core';
 
 export const useStyles = makeStyles(theme => ({
+  recipeSubmitButton: {
+    float: 'right'
+  },
   table: {
     maxWidth: 375,
     paddingBottom: theme.spacing(2),
@@ -26,6 +29,9 @@ export const useStyles = makeStyles(theme => ({
   ingredientName: {
     maxWidth: 110,
   },
+  ingredientDescription: {
+    width: 201,
+  },
   ingredientMeasurement: {
     maxWidth: 65,
   },
@@ -44,5 +50,12 @@ export const useStyles = makeStyles(theme => ({
   elementDivider: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2)
+  },
+  chipPaper: {
+    padding: theme.spacing(1),
+    borderRadius: 25
+  },
+  chipSubGrid: {
+    maxWidth: '75%'
   }
 }));
