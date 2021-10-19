@@ -50,6 +50,7 @@ export const RecipeIngredientTable = (props: Props) => {
               value={ingredient.name}
               onChange={onIngredientItemChange}
               className={classes.ingredientName}
+              multiline
             />
           </Grid>
           <Grid item>
@@ -61,7 +62,6 @@ export const RecipeIngredientTable = (props: Props) => {
               onChange={onIngredientItemChange}
               type='number'
               className={classes.ingredientMeasurement}
-              
             />
           </Grid>
           <Grid item>
