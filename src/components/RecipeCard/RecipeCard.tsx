@@ -5,25 +5,26 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { useStyles } from './styles';
 import { IRecipe } from '../../common/types';
 
-interface Props {
+export interface Props {
   onCardClick: () => void;
   onFavoriteToggle: (recipe: IRecipe) => void;
   recipe: IRecipe;
   theme: Theme;
 };
 
-const RecipeCard = (props: Props) => {
+export const RecipeCard = (props: Props) => {
+  // Props deconstruction
   const { onCardClick, onFavoriteToggle, recipe, theme } = props;
-
+  // States
+  const [ isRecipeFavorited, setIsRecipeFavorited ] = useState(recipe.favorited);
+  // Styles
   const classes = useStyles(theme);
-
+  // Handlers
   const handleCardClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
     onCardClick();
-  }
-
-  const [ isRecipeFavorited, setIsRecipeFavorited ] = useState(recipe.favorited);
+  };
   const handleFavoriteToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
@@ -31,9 +32,10 @@ const RecipeCard = (props: Props) => {
     recipe.favorited = newToggleBool;
     onFavoriteToggle(recipe);
     setIsRecipeFavorited(newToggleBool);
-  }
+  };
 
-  const mainPicture = recipe.images[0] as string; 
+  const mainPicture = recipe.images[0] as string;
+
   return (
     <Card variant='outlined'>
       <CardActionArea
@@ -70,7 +72,5 @@ const RecipeCard = (props: Props) => {
         </CardContent>
       </CardActionArea>
     </Card>
-  )
+  );
 };
-
-export default RecipeCard;
