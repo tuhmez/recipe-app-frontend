@@ -1,9 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 
 export const useStyles = makeStyles(theme => ({
-  recipeSubmitButton: {
-    float: 'right'
-  },
   table: {
     maxWidth: 375,
     paddingBottom: theme.spacing(2),

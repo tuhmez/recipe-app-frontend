@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   FormControl,
   Grid,
   IconButton,
@@ -15,6 +20,7 @@ import { IngredientUnit, IRecipe, RecipeDifficulty, RecipeType, StepType, TimeUn
 import { RecipeIngredientTable } from './RecipeIngredientTable';
 import { RecipeStepTable } from './RecipeStepTable';
 import { RecipeKeywordList } from './RecipeKeywordList';
+import { RecipeImages } from '../RecipeImages';
 
 const recipeTypeItems = () => {
   const returnItems: JSX.Element[] = [];
@@ -38,23 +44,26 @@ const recipeDifficultyItems = () => {
 
 export interface Props {
   data: IRecipe;
-  isEdit?: boolean
+  isEdit?: boolean;
+  onLeaveFormAction: () => void;
 }
 
 const RecipeForm = (props: Props) => {
   // Props Destructuring
-  const { data, isEdit } = props;
+  const { data, isEdit, onLeaveFormAction } = props;
   // Styles
   const classes = useStyles();
   // States
-  const [name, setName] = useState(data.name);
-  const [type, setType] = useState(data.type);
-  const [website, setWebsite] = useState(data.linkToWebsite);
-  const [ingredientsList, setIngredientsList] = useState(data.ingredients);
-  const [stepsList, setStepsList] = useState(data.steps);
-  const [difficulty, setDifficulty] = useState(data.difficulty);
-  const [keywordsList, setKeywordsList] = useState(data.keywords);
-  const [favorited, setFavorited] = useState(data.favorited);
+  const [ name, setName ] = useState(data.name);
+  const [ type, setType ] = useState(data.type);
+  const [ website, setWebsite ] = useState(data.linkToWebsite);
+  const [ ingredientsList, setIngredientsList ] = useState(data.ingredients);
+  const [ stepsList, setStepsList ] = useState(data.steps);
+  const [ difficulty, setDifficulty ] = useState(data.difficulty);
+  const [ keywordsList, setKeywordsList ] = useState(data.keywords);
+  const [ favorited, setFavorited ] = useState(data.favorited);
+  const [ images, setImages ] = useState(data.images);
+  const [ isCancelDialogOpen, setIsCancelDialogOpen ] = useState(false);
   // Effects
 
   // Change Events
@@ -63,6 +72,9 @@ const RecipeForm = (props: Props) => {
   const onChangeDifficulty = (event: React.ChangeEvent<{ value: unknown }>) => setDifficulty(event.target.value as RecipeDifficulty);
   const onChangeWebsite = (event: React.ChangeEvent<HTMLInputElement>) => setWebsite(event.target.value);
   const onToggleFavorited = () => setFavorited(prevState => !prevState);
+  const onToggleCancelDialog = () => {
+    setIsCancelDialogOpen(prevState => !prevState);
+  };
   // -- Ingredient Control -- //
   const onIngredientItemChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -198,135 +210,177 @@ const RecipeForm = (props: Props) => {
   // -- Keyword Control -- //
 
   return (
-    <Grid container spacing={2} direction='column'>
-      <Grid
-        item
-        container
-        justifyContent='space-between'
-        alignItems='center'
-      >
-        <Grid item>
-          <Typography variant='h4'>
-            {isEdit ? 'Edit Recipe' : 'New Recipe'}
-          </Typography>
+    <div>
+      <Grid container spacing={2} direction='column'>
+        <Grid
+          item
+          container
+          justifyContent='space-between'
+          alignItems='center'
+        >
+          <Grid item>
+            <Typography variant='h4'>
+              {isEdit ? 'Edit Recipe' : 'New Recipe'}
+            </Typography>
+          </Grid>
+          <Grid item>
+            <IconButton
+              onClick={onToggleFavorited}
+              disableRipple
+            >
+              {favorited ? <Favorite /> : <FavoriteBorder />}
+            </IconButton>
+          </Grid>
         </Grid>
         <Grid item>
-          <IconButton
-            onClick={onToggleFavorited}
-            disableRipple
-          >
-            {favorited ? <Favorite /> : <FavoriteBorder />}
-          </IconButton>
+          <TextField
+            id='recipe-name'
+            required
+            label='Name'
+            variant='filled'
+            fullWidth
+            value={name}
+            onChange={onChangeName}
+          />
+        </Grid>
+        <Grid item>
+          <FormControl variant='filled' className={classes.formControl}>
+            <InputLabel id='recipe-type-label'>Recipe Type</InputLabel>
+            <Select
+              native
+              labelId='recipe-type-label'
+              id='recipe-type'
+              value={type}
+              onChange={onChangeType}
+            >
+              {recipeTypeItems()}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item>
+          <FormControl variant='filled' className={classes.formControl}>
+            <InputLabel id='recipe-difficulty-label'>Recipe Difficulty</InputLabel>
+            <Select
+              native
+              labelId='recipe-difficulty-label'
+              id='recipe-difficulty'
+              value={difficulty}
+              onChange={onChangeDifficulty}
+            >
+              {recipeDifficultyItems()}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item>
+          <RecipeIngredientTable
+            data={ingredientsList}
+            onAddIngredient={onAddIngredient}
+            onRemoveIngredient={onRemoveIngredient}
+            onIngredientItemChange={onIngredientItemChange}
+            onIngredientUnitChange={onIngredientUnitChange}
+          />
+        </Grid>
+        <Grid item>
+          <RecipeStepTable
+            data={stepsList}
+            onStepItemChange={onStepItemChange}
+            onAddStep={onAddStep}
+            onRemoveStep={onRemoveStep}
+            onStepTimeUnitChange={onStepTimeUnitChange}
+            onStepTypeChange={onStepTypeChange}
+          />
+        </Grid>
+        <Grid item>
+          <TextField
+            id='recipe-website-link'
+            label='Website'
+            variant='filled'
+            fullWidth
+            multiline
+            value={website}
+            onChange={onChangeWebsite}
+          />
+        </Grid>
+        <Grid item>
+          <RecipeKeywordList
+            data={keywordsList}
+            onAddKeyword={onAddKeyword}
+            onEditKeyword={onEditKeyword}
+            onRemoveKeyword={onRemoveKeyword}
+          />
+        </Grid>
+        <Grid item container direction='row' spacing={1} justifyContent='flex-start'>
+          <Grid item>
+            <input
+              accept='image/*'
+              className={classes.input}
+              id='recipe-images'
+              multiple
+              type='file'
+              onChange={(e: any) => console.log(e.target.files)}
+            />
+            <label htmlFor='recipe-images'>
+              <Button
+                variant='outlined'
+                startIcon={<CloudUpload />}
+                component='span'
+                color='primary'
+              >
+                Upload Images
+              </Button>
+            </label>
+          </Grid>
+          <Grid item>
+            <RecipeImages data={images} />
+          </Grid>
+        </Grid>
+        <Grid item container spacing={2} justifyContent='flex-end'>
+          <Grid item>
+            <Button
+              variant='outlined'
+              color='default'
+              size='large'
+              onClick={onToggleCancelDialog}
+            >
+              Cancel
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              variant='contained'
+              color='primary'
+              disableElevation
+              size='large'
+            >
+              {isEdit ? 'Save' : 'Submit'}
+            </Button>
+          </Grid>
         </Grid>
       </Grid>
-      <Grid item>
-        <TextField
-          id='recipe-name'
-          required
-          label='Name'
-          variant='filled'
-          fullWidth
-          value={name}
-          onChange={onChangeName}
-        />
-      </Grid>
-      <Grid item>
-        <FormControl variant='filled' className={classes.formControl}>
-          <InputLabel id='recipe-type-label'>Recipe Type</InputLabel>
-          <Select
-            native
-            labelId='recipe-type-label'
-            id='recipe-type'
-            value={type}
-            onChange={onChangeType}
-          >
-            {recipeTypeItems()}
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid item>
-        <FormControl variant='filled' className={classes.formControl}>
-          <InputLabel id='recipe-difficulty-label'>Recipe Difficulty</InputLabel>
-          <Select
-            native
-            labelId='recipe-difficulty-label'
-            id='recipe-difficulty'
-            value={difficulty}
-            onChange={onChangeDifficulty}
-          >
-            {recipeDifficultyItems()}
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid item>
-        <RecipeIngredientTable
-          data={ingredientsList}
-          onAddIngredient={onAddIngredient}
-          onRemoveIngredient={onRemoveIngredient}
-          onIngredientItemChange={onIngredientItemChange}
-          onIngredientUnitChange={onIngredientUnitChange}
-        />
-      </Grid>
-      <Grid item>
-        <RecipeStepTable
-          data={stepsList}
-          onStepItemChange={onStepItemChange}
-          onAddStep={onAddStep}
-          onRemoveStep={onRemoveStep}
-          onStepTimeUnitChange={onStepTimeUnitChange}
-          onStepTypeChange={onStepTypeChange}
-        />
-      </Grid>
-      <Grid item>
-        <TextField
-          id='recipe-website-link'
-          label='Website'
-          variant='filled'
-          fullWidth
-          multiline
-          value={website}
-          onChange={onChangeWebsite}
-        />
-      </Grid>
-      <Grid item>
-        <RecipeKeywordList
-          data={keywordsList}
-          onAddKeyword={onAddKeyword}
-          onEditKeyword={onEditKeyword}
-          onRemoveKeyword={onRemoveKeyword}
-        />
-      </Grid>
-      <Grid item>
-        <input
-          accept='image/*'
-          className={classes.input}
-          id='recipe-images'
-          multiple
-          type='file'
-        />
-        <label htmlFor='recipe-images'>
+      <Dialog open={isCancelDialogOpen} onClose={onToggleCancelDialog}>
+        <DialogTitle id='recipe-form-cancel-dialog-title'>Are you sure you want to cancel?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Unsaved changes will be discarded!</DialogContentText>
+        </DialogContent>
+        <DialogActions>
           <Button
             variant='outlined'
-            startIcon={<CloudUpload />}
-            component='span'
-            color='primary'
+            color='default'
+            onClick={onToggleCancelDialog}
           >
-            Upload Images
+            No
           </Button>
-        </label>
-      </Grid>
-      <Grid item>
-        <Button
-          variant='contained'
-          color='primary'
-          className={classes.recipeSubmitButton}
-          disableElevation
-          size='large'
-        >
-          {isEdit ? 'Save' : 'Submit'}
-        </Button>
-      </Grid>
-    </Grid>
+          <Button
+            variant='contained'
+            color='secondary'
+            disableElevation
+            onClick={onLeaveFormAction}
+          >
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
   )
 };
 
