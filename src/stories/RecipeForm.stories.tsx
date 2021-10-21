@@ -2,6 +2,7 @@ import { theme } from '../app-styles';
 import RecipeForm from '../components/RecipeForm';
 import { ThemeProvider } from '@material-ui/core';
 import { emptyRecipe, exampleRecipe } from '../common/data';
+import { action } from '@storybook/addon-actions';
 
 const storyExport = {
   title: 'RecipeForm',
@@ -13,7 +14,7 @@ export default storyExport;
 export const BaseRecipeForm = () => {
   return (
     <ThemeProvider theme={theme}>
-      <RecipeForm data={emptyRecipe}/>
+      <RecipeForm data={emptyRecipe} onLeaveFormAction={action('onLeaveForm')}/>
     </ThemeProvider>
   );
 };
@@ -21,7 +22,7 @@ export const BaseRecipeForm = () => {
 export const BaseRecipeFormEdit = () => {
   return (
     <ThemeProvider theme={theme}>
-      <RecipeForm data={exampleRecipe} isEdit />
+      <RecipeForm data={exampleRecipe} isEdit onLeaveFormAction={action('onLeaveForm')}/>
     </ThemeProvider>
   );
 };
