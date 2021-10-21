@@ -29,24 +29,22 @@ export const RecipeCardGrid = (props: Props) => {
   });
 
   let subGrid: JSX.Element[] = [];
-  for (let i = 0; i < recipeCards.length; i += 3) {
+  for (let i = 0; i < recipeCards.length; i += 2) {
     let subGridItems: any = [];
     const firstItem = recipeCards[i];
     const secondItem = recipeCards[i + 1];
-    const thirdItem = recipeCards[i + 2];
     if (firstItem) subGridItems.push(firstItem);
     if (secondItem) subGridItems.push(secondItem);
-    if (thirdItem) subGridItems.push(thirdItem);
 
     subGrid.push(
-      <Grid container item justify='center' spacing={2}>
+      <Grid container item justify='center' spacing={1}>
         {subGridItems}
       </Grid>
     )
   }
 
   return (
-    <Grid container justify='center' spacing={2}>
+    <Grid container justify='center' spacing={1}>
       {subGrid}
     </Grid>
   );
