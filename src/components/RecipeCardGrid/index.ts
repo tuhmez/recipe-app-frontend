@@ -1,1 +1,1 @@
-export { default } from './RecipeCardGrid';
+export { RecipeCardGrid } from './RecipeCardGrid';

@@ -1,16 +1,17 @@
 import { Grid, Theme } from '@material-ui/core';
 import { IRecipe } from '../../common/types';
 
-import RecipeCard from '../RecipeCard/RecipeCard';
+import { RecipeCard } from '../RecipeCard';
 
-interface Props {
+export interface Props {
   recipes: IRecipe[];
   theme: Theme;
   handleCardClick: () => void;
   handleOnFavoriteToggle: () => void;
 }
 
-const RecipeCardGrid = (props: Props) => {
+export const RecipeCardGrid = (props: Props) => {
+  // Props deconstruction
   const { handleCardClick, handleOnFavoriteToggle, recipes, theme } = props;
 
   const recipeCards = recipes.map(recipe => {
@@ -49,5 +50,3 @@ const RecipeCardGrid = (props: Props) => {
     </Grid>
   );
 };
-
-export default RecipeCardGrid;

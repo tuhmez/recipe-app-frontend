@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 
 import { theme } from '../app-styles';
-import RecipeCardGrid from '../components/RecipeCardGrid';
+import { RecipeCardGrid } from '../components/RecipeCardGrid';
 import { ThemeProvider } from '@material-ui/core';
 import { IRecipe } from '../common/types';
 import { exampleRecipe, exampleRecipeNoImages } from '../common/data';
