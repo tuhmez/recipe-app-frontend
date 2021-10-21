@@ -37,7 +37,7 @@ export const RecipeCard = (props: Props) => {
   const mainPicture = recipe.images[0] as string;
 
   return (
-    <Card variant='outlined'>
+    <Card variant='outlined' className={classes.card}>
       <CardActionArea
         onClick={handleCardClick}
       >
@@ -45,6 +45,7 @@ export const RecipeCard = (props: Props) => {
           className={classes.media}
           image={mainPicture}
           title={recipe.name}
+          component='img'
         />
         <CardContent>
           <Grid
@@ -54,7 +55,7 @@ export const RecipeCard = (props: Props) => {
             alignItems='center'
           >
             <Grid item>
-              <Typography variant='h5' component='h2'>
+              <Typography variant='h6' component='h2'>
                 {recipe.name}
               </Typography>
             </Grid>
