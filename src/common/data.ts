@@ -37,7 +37,7 @@ export const exampleSteps: IStep[] = [
 ];
 
 export const emptyRecipe: IRecipe = {
-  id: '1',
+  recipeId: '1',
   name: '',
   type: RecipeType.APPETIZER,
   images: [],
@@ -50,7 +50,7 @@ export const emptyRecipe: IRecipe = {
 };
 
 export const exampleRecipe: IRecipe = {
-  id: '1',
+  recipeId: '1',
   name: 'Street Tacos',
   type: RecipeType.DINNER,
   images: [tacoOverview],
@@ -67,7 +67,7 @@ export const exampleRecipe: IRecipe = {
 };
 
 export const exampleRecipeNoImages: IRecipe = {
-  id: '1',
+  recipeId: '1',
   name: 'Street Tacos',
   type: RecipeType.DINNER,
   images: [emptyImage],
