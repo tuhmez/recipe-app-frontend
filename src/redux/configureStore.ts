@@ -1,16 +1,16 @@
-import { applyMiddleware, createStore } from 'redux'
+import { applyMiddleware, compose, createStore } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 
-import rootReducer from './reducer'
+import { createReducer } from '../reducers';
 
 export function configureStore(preloadedState: any) {
   const middlewares = [thunkMiddleware]
   const middlewareEnhancer = applyMiddleware(...middlewares)
 
-  const store = createStore(rootReducer, middlewareEnhancer);
+  const store = createStore(createReducer(), preloadedState, compose(middlewareEnhancer));
 
   if (process.env.NODE_ENV !== 'production' && module.hot) {
-    module.hot.accept('./reducer', () => store.replaceReducer(rootReducer))
+    module.hot.accept('./reducer', () => store.replaceReducer(createReducer()))
   }
 
   return store
