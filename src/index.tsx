@@ -1,9 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
-import { SnackbarProvider } from 'notistack';
-import { ThemeProvider } from '@material-ui/core'
+import { AppWrapper } from './AppWrapper';
 import { theme } from './app-styles';
 import { App } from './components/App';
 import reportWebVitals from './reportWebVitals';
@@ -14,15 +11,9 @@ const store = configureStore({});
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <SnackbarProvider maxSnack={3}>
-            <App />
-          </SnackbarProvider>
-        </ThemeProvider>
-      </BrowserRouter>
-    </Provider>
+    <AppWrapper theme={theme} store={store}>
+      <App />
+    </AppWrapper>
   </React.StrictMode>,
   document.getElementById('root')
 );
