@@ -10,11 +10,12 @@ export interface Props {
   onAddIngredient: () => void;
   onRemoveIngredient: (event: React.MouseEvent<HTMLButtonElement>) => void;
   data: IIngredient[];
+  error?: string
 }
 
 export const RecipeIngredientTable = (props: Props) => {
   // Deconstruct props
-  const { onAddIngredient, onRemoveIngredient, onIngredientItemChange, onIngredientUnitChange, data } = props;
+  const { onAddIngredient, onRemoveIngredient, onIngredientItemChange, onIngredientUnitChange, data, error } = props;
   // States
   const [ ingredientElements, setIngredientElements ] = useState<JSX.Element[]>([])
   // Styles
@@ -100,11 +101,17 @@ export const RecipeIngredientTable = (props: Props) => {
     classes.element
   ]);
 
+  const errorComponent = (
+    !!error
+    ? <Typography className={classes.errorHelperText}>{error}</Typography>
+    : undefined
+  );
+
   return (
     <div>
       <Grid container direction='row' justifyContent='space-between' className={classes.table}>
         <Grid item>
-          <Typography variant='h5'>Ingredients</Typography>
+          <Typography variant='h5' className={!!error ? classes.errorText : undefined}>Ingredients*</Typography>
         </Grid>
         <Grid item>
           <Button variant='outlined' color='primary' startIcon={<Add/>} onClick={onAddIngredient}>
@@ -115,6 +122,7 @@ export const RecipeIngredientTable = (props: Props) => {
       <Grid container className={classes.elementContainer}>
         {ingredientElements}
       </Grid>
+      {errorComponent}
     </div>
   );
 };

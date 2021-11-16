@@ -54,5 +54,14 @@ export const useStyles = makeStyles(theme => ({
   },
   chipSubGrid: {
     maxWidth: '75%'
+  },
+  errorText: {
+    color: theme.palette.error.main
+  },
+  errorHelperText: {
+    fontSize: '0.75em',
+    color: theme.palette.error.main,
+    marginLeft: '14px',
+    marginRight: '14px'
   }
 }));

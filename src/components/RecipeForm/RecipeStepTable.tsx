@@ -12,11 +12,12 @@ export interface Props {
   onStepTimeUnitChange: (event: React.ChangeEvent<{name?: string | undefined; value: unknown; }>) => void;
   onStepTypeChange: (event: React.ChangeEvent<{name?: string | undefined; value: unknown; }>) => void;
   data: IStep[];
+  error?: string
 }
 
 export const RecipeStepTable = (props: Props) => {
   // Destructure props
-  const { onAddStep, onRemoveStep, onStepItemChange, onStepTimeUnitChange, onStepTypeChange, data } = props;
+  const { onAddStep, onRemoveStep, onStepItemChange, onStepTimeUnitChange, onStepTypeChange, data, error } = props;
   // States
   const [ stepElements, setStepElements ] = useState<JSX.Element[]>([]);
   // Styles
@@ -142,11 +143,17 @@ export const RecipeStepTable = (props: Props) => {
     classes.stepDetails
   ]);
 
+  const errorComponent = (
+    !!error
+    ? <Typography className={classes.errorHelperText}>{error}</Typography>
+    : undefined
+  );
+
   return (
     <div>
       <Grid container direction='row' justifyContent='space-between' className={classes.table}>
         <Grid item>
-          <Typography variant='h5'>Steps</Typography>
+          <Typography variant='h5' className={!!error ? classes.errorText : undefined}>Steps*</Typography>
         </Grid>
         <Grid item>
           <Button variant='outlined' color='primary' startIcon={<Add/>} onClick={onAddStep}>
@@ -157,6 +164,7 @@ export const RecipeStepTable = (props: Props) => {
       <Grid container spacing={2} className={classes.elementContainer}>
         {stepElements}
       </Grid>
+      {errorComponent}
     </div>
   )
 };
