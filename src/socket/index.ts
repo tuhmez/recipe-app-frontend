@@ -1,8 +1,5 @@
 import { io, Socket } from 'socket.io-client';
 import {
-  IRecipe
-} from '../common/types';
-import {
   ADD_RECIPE_REQUEST,
   ADD_RECIPE_RESPONSE,
   EDIT_RECIPE_REQUEST,
@@ -12,20 +9,26 @@ import {
   GET_RECIPES_REQUEST,
   GET_RECIPES_RESPONSE,
   GET_RECIPE_BY_ID_REQUEST,
-  GET_RECIPE_BY_ID_RESPONSE,
-  ERROR,
   PING,
   PONG
 } from './constants';
-import { IErrorResponse, IPingResponse, IRecipeByIdRequest, IUpdateRecipeRequest } from './interfaces';
+import {
+  IAddRecipeResponse,
+  IEditRecipeResponse,
+  IDeleteRecipeResponse,
+  IGetRecipesResponse,
+  IPingResponse,
+  IAddRecipeRequest,
+  IEditRecipeRequest,
+  IDeleteRecipeRequest,
+  IGetRecipeByIdRequest
+} from './interfaces';
 
 export interface ISocketCallbacks {
-  addRecipeResponseFn: (res: IRecipe) => void;
-  editRecipeResponseFn: (res: IRecipe) => void;
-  deleteRecipeResponseFn: (res: IRecipe) => void;
-  getRecipesResponseFn: (res: IRecipe[]) => void;
-  getRecipeByIdResponseFn: (res: IRecipe) => void;
-  errorResponseFn: (err: IErrorResponse) => void;
+  addRecipeResponseFn: (res: IAddRecipeResponse) => void;
+  editRecipeResponseFn: (res: IEditRecipeResponse) => void;
+  deleteRecipeResponseFn: (res: IDeleteRecipeResponse) => void;
+  getRecipesResponseFn: (res: IGetRecipesResponse) => void;
 }
 
 export class SocketClient {
@@ -37,29 +40,21 @@ export class SocketClient {
       editRecipeResponseFn,
       deleteRecipeResponseFn,
       getRecipesResponseFn,
-      getRecipeByIdResponseFn,
-      errorResponseFn
     } = callbacks;
     const sock = io(url);
 
     sock
-      .on(ADD_RECIPE_RESPONSE, (res: IRecipe) => {
+      .on(ADD_RECIPE_RESPONSE, (res: IAddRecipeResponse) => {
         addRecipeResponseFn(res);
       })
-      .on(EDIT_RECIPE_RESPONSE, (res: IRecipe) => {
+      .on(EDIT_RECIPE_RESPONSE, (res: IEditRecipeResponse) => {
         editRecipeResponseFn(res);
       })
-      .on(DELETE_RECIPE_RESPONSE, (res: IRecipe) => {
+      .on(DELETE_RECIPE_RESPONSE, (res: IDeleteRecipeResponse) => {
         deleteRecipeResponseFn(res);
       })
-      .on(GET_RECIPES_RESPONSE, (res: IRecipe[]) => {
+      .on(GET_RECIPES_RESPONSE, (res: IGetRecipesResponse) => {
         getRecipesResponseFn(res);
-      })
-      .on(GET_RECIPE_BY_ID_RESPONSE, (res: IRecipe) => {
-        getRecipeByIdResponseFn(res);
-      })
-      .on(ERROR, (err: IErrorResponse) => {
-        errorResponseFn(err);
       })
       .on(PONG, (res: IPingResponse) => {
         console.log(res);
@@ -71,15 +66,15 @@ export class SocketClient {
     return this.socket;
   }
 
-  addRecipe(req: IRecipe) {
+  addRecipe(req: IAddRecipeRequest) {
     this.socket.emit(ADD_RECIPE_REQUEST, req);
   }
 
-  editRecipe(req: IUpdateRecipeRequest) {
+  editRecipe(req: IEditRecipeRequest) {
     this.socket.emit(EDIT_RECIPE_REQUEST, req);
   }
 
-  deleteRecipe(req: IRecipeByIdRequest) {
+  deleteRecipe(req: IDeleteRecipeRequest) {
     this.socket.emit(DELETE_RECIPE_REQUEST, req);
   }
 
@@ -87,7 +82,7 @@ export class SocketClient {
     this.socket.emit(GET_RECIPES_REQUEST);
   }
 
-  getRecipeById(req: IRecipeByIdRequest) {
+  getRecipeById(req: IGetRecipeByIdRequest) {
     this.socket.emit(GET_RECIPE_BY_ID_REQUEST, req);
   }
 
