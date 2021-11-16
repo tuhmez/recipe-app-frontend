@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Dialog,
@@ -45,12 +45,17 @@ const recipeDifficultyItems = () => {
 export interface Props {
   data: IRecipe;
   isEdit?: boolean;
-  onLeaveFormAction: () => void;
+  onCancelFormAction: () => void;
+  onSubmitFormAction: (recipe: IRecipe) => void;
 }
 
-const RecipeForm = (props: Props) => {
+interface IErrorObject {
+  [key: string]: string
+}
+
+export const RecipeForm = (props: Props) => {
   // Props Destructuring
-  const { data, isEdit, onLeaveFormAction } = props;
+  const { data, isEdit, onCancelFormAction, onSubmitFormAction } = props;
   // Styles
   const classes = useStyles();
   // States
@@ -63,9 +68,8 @@ const RecipeForm = (props: Props) => {
   const [ keywordsList, setKeywordsList ] = useState(data.keywords);
   const [ favorited, setFavorited ] = useState(data.favorited);
   const [ images, setImages ] = useState(data.images);
+  const [ formErrors, setFormErrors ] = useState<IErrorObject>({});
   const [ isCancelDialogOpen, setIsCancelDialogOpen ] = useState(false);
-  // Effects
-
   // Change Events
   const onChangeName = (event: React.ChangeEvent<HTMLInputElement>) => setName(event.target.value);
   const onChangeType = (event: React.ChangeEvent<{ value: unknown }>) => setType(event.target.value as RecipeType);
@@ -75,6 +79,11 @@ const RecipeForm = (props: Props) => {
   const onToggleCancelDialog = () => {
     setIsCancelDialogOpen(prevState => !prevState);
   };
+  const onClickSubmitForm = () => {
+    const recipe = compileRecipe();
+    const isValidSubmission = validate(recipe);
+    if (isValidSubmission) onSubmitFormAction(recipe);
+  }
   // -- Ingredient Control -- //
   const onIngredientItemChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -110,16 +119,30 @@ const RecipeForm = (props: Props) => {
       newState.push({name: '', measurement: 0, units: IngredientUnit.NONE});
       return newState;
     });
+    setFormErrors(prevState => {
+      if (prevState['ingredients']) delete prevState['ingredients'];
+      return prevState;
+    });
   };
 
   const onRemoveIngredient = (event: React.MouseEvent<HTMLButtonElement>) => {
+    let areIngredientsEmtpy = false;
     setIngredientsList(prevState => {
       const newState = [...prevState];
       const elementId = event.currentTarget.id;
       const index = Number(elementId.split('-')[1]);
       newState.splice(index, 1);
+      if (newState.length === 0) areIngredientsEmtpy = true;
       return newState;
     });
+    if (areIngredientsEmtpy) {
+      setFormErrors(prevState => {
+        return {
+          ...prevState,
+          'ingredients': 'Recipe must have at least one ingredient!'
+        };
+      });
+    }
   };
   // -- Ingredient Control -- //
   // -- Step Control -- //
@@ -154,17 +177,31 @@ const RecipeForm = (props: Props) => {
     });
       return newState;
     });
+    setFormErrors(prevState => {
+      if (prevState['steps']) delete prevState['steps'];
+      return prevState;
+    });
   };
 
   const onRemoveStep = (event: React.MouseEvent<HTMLButtonElement>) => {
+    let areStepsEmpty = false;
     setStepsList(prevState => {
       const newState = [...prevState];
       const elementId = event.currentTarget.id;
       const index = Number(elementId.split('-')[1]);
       newState.splice(index, 1);
       newState.filter(s => s.stepNumber > index + 1).forEach(s => s.stepNumber = s.stepNumber - 1);
+      if (newState.length === 0) areStepsEmpty = true;
       return newState;
     });
+    if (areStepsEmpty) {
+      setFormErrors(prevState => {
+        return {
+          ...prevState,
+          'steps': 'Recipe must have at least one step!'
+        };
+      });
+    }
   };
 
   const onStepTimeUnitChange = (event: React.ChangeEvent<{name?: string | undefined; value: unknown; }>) => {
@@ -208,6 +245,50 @@ const RecipeForm = (props: Props) => {
     setKeywordsList(prevState => prevState.filter(k => k !== keyword))
   };
   // -- Keyword Control -- //
+  // Data validator
+  const compileRecipe = (): IRecipe => {
+    return {
+      recipeId: isEdit ? data.recipeId : '',
+      name,
+      type,
+      linkToWebsite: website,
+      ingredients: ingredientsList,
+      steps: stepsList,
+      difficulty,
+      keywords: keywordsList,
+      favorited,
+      images
+    };
+  };
+  const handleBlur = () => {
+    validate(compileRecipe());
+  };
+  const validate = (recipe: IRecipe): boolean => {
+    let isValidForm = true;
+    const errorObject: any = {};
+    for (const key of Object.keys(recipe)) {
+      // @ts-ignore
+      const value = recipe[key];
+      let errorReason = '';
+      if (key === 'name') {
+        isValidForm = (value as string) !== '';
+        if (!isValidForm) {
+          errorReason = 'Recipe must have a name!';
+        }
+      } else if (key === 'steps' || key === 'ingredients') {
+        isValidForm = (value as any[]).length !== 0;
+        if (!isValidForm) {
+          const keySingularForm = key.substring(0, key.length - 1);
+          errorReason = `Recipe must have at least one ${keySingularForm}!`;
+        }
+      }
+      if (!isValidForm) {
+        errorObject[key] = errorReason;
+      }
+    }
+    setFormErrors(errorObject);
+    return isValidForm;
+  };
 
   return (
     <div>
@@ -241,6 +322,9 @@ const RecipeForm = (props: Props) => {
             fullWidth
             value={name}
             onChange={onChangeName}
+            onBlur={handleBlur}
+            error={!!formErrors['name'] || false}
+            helperText={formErrors['name'] || undefined}
           />
         </Grid>
         <Grid item>
@@ -278,6 +362,7 @@ const RecipeForm = (props: Props) => {
             onRemoveIngredient={onRemoveIngredient}
             onIngredientItemChange={onIngredientItemChange}
             onIngredientUnitChange={onIngredientUnitChange}
+            error={formErrors['ingredients']}
           />
         </Grid>
         <Grid item>
@@ -288,6 +373,7 @@ const RecipeForm = (props: Props) => {
             onRemoveStep={onRemoveStep}
             onStepTimeUnitChange={onStepTimeUnitChange}
             onStepTypeChange={onStepTypeChange}
+            error={formErrors['steps']}
           />
         </Grid>
         <Grid item>
@@ -351,6 +437,7 @@ const RecipeForm = (props: Props) => {
               color='primary'
               disableElevation
               size='large'
+              onClick={onClickSubmitForm}
             >
               {isEdit ? 'Save' : 'Submit'}
             </Button>
@@ -374,7 +461,7 @@ const RecipeForm = (props: Props) => {
             variant='contained'
             color='secondary'
             disableElevation
-            onClick={onLeaveFormAction}
+            onClick={onCancelFormAction}
           >
             Yes
           </Button>
@@ -383,5 +470,3 @@ const RecipeForm = (props: Props) => {
     </div>
   )
 };
-
-export default RecipeForm;
