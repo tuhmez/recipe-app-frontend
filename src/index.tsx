@@ -2,6 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
+import { SnackbarProvider } from 'notistack';
+import { ThemeProvider } from '@material-ui/core'
+import { theme } from './app-styles';
 import { App } from './components/App';
 import reportWebVitals from './reportWebVitals';
 import { configureStore } from './redux/configureStore';
@@ -13,7 +16,11 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <App />
+        <ThemeProvider theme={theme}>
+          <SnackbarProvider maxSnack={3}>
+            <App />
+          </SnackbarProvider>
+        </ThemeProvider>
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,
