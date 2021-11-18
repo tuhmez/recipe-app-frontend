@@ -81,7 +81,7 @@ export const RecipeForm = (props: Props) => {
   };
   const onClickSubmitForm = () => {
     const recipe = compileRecipe();
-    const isValidSubmission = validate(recipe);
+    const isValidSubmission = validate(recipe, false);
     if (isValidSubmission) onSubmitFormAction(recipe);
   }
   // -- Ingredient Control -- //
@@ -260,10 +260,10 @@ export const RecipeForm = (props: Props) => {
       images
     };
   };
-  const handleBlur = () => {
-    validate(compileRecipe());
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    validate(compileRecipe(), true);
   };
-  const validate = (recipe: IRecipe): boolean => {
+  const validate = (recipe: IRecipe, isOnBlur: boolean): boolean => {
     let isValidForm = true;
     const errorObject: any = {};
     for (const key of Object.keys(recipe)) {
@@ -275,7 +275,7 @@ export const RecipeForm = (props: Props) => {
         if (!isValidForm) {
           errorReason = 'Recipe must have a name!';
         }
-      } else if (key === 'steps' || key === 'ingredients') {
+      } else if (!isOnBlur && (key === 'steps' || key === 'ingredients')) {
         isValidForm = (value as any[]).length !== 0;
         if (!isValidForm) {
           const keySingularForm = key.substring(0, key.length - 1);
@@ -307,7 +307,7 @@ export const RecipeForm = (props: Props) => {
           <Grid item>
             <IconButton
               onClick={onToggleFavorited}
-              disableRipple
+              // disableRipple
             >
               {favorited ? <Favorite /> : <FavoriteBorder />}
             </IconButton>
@@ -453,6 +453,7 @@ export const RecipeForm = (props: Props) => {
           <Button
             variant='outlined'
             color='default'
+            size='large'
             onClick={onToggleCancelDialog}
           >
             No
@@ -460,6 +461,7 @@ export const RecipeForm = (props: Props) => {
           <Button
             variant='contained'
             color='secondary'
+            size='large'
             disableElevation
             onClick={onCancelFormAction}
           >
