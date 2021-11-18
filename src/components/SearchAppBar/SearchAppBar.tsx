@@ -33,7 +33,7 @@ const SearchAppBar = (props: SearchAppBarProps) => {
 
   return (
     <div className={classes.root}>
-      <AppBar color='primary' position='static'>
+      <AppBar color='primary' position='fixed'>
         <Toolbar>
           <Typography className={classes.title} variant='h6' noWrap>
             {searchHeader}
