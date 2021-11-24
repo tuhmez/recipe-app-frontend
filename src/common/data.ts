@@ -66,6 +66,23 @@ export const exampleRecipe: IRecipe = {
   favorited: true
 };
 
+export const exampleRecipeMultipleImages: IRecipe = {
+  recipeId: '1',
+  name: 'Street Tacos',
+  type: RecipeType.DINNER,
+  images: [tacoOverview, tacoOverview, tacoOverview, tacoOverview],
+  linkToWebsite: 'https://cookingwithcocktailrings.com/2016-mexican-chicken-street-tacos/',
+  ingredients: exampleIngredients,
+  steps: exampleSteps,
+  difficulty: RecipeDifficulty.MEDIUM,
+  keywords: [
+    'tacos',
+    'mexican',
+    'chicken'
+  ],
+  favorited: true
+}
+
 export const exampleRecipeNoImages: IRecipe = {
   recipeId: '1',
   name: 'Street Tacos',
