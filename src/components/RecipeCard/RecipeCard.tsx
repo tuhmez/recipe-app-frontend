@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardMedia, CardActionArea, Grid, IconButton, Theme, Typography } from '@material-ui/core';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import { useStyles } from './styles';
 import { IRecipe } from '../../common/types';
+import NoImagePlaceholder from '../../resources/no_image_placeholder.png';
+import { useStyles } from './styles';
 
 export interface Props {
   onCardClick: () => void;
@@ -34,7 +35,7 @@ export const RecipeCard = (props: Props) => {
     setIsRecipeFavorited(newToggleBool);
   };
 
-  const mainPicture = recipe.images[0] as string;
+  const mainPicture = (recipe.images.length > 0 ? recipe.images[0] : NoImagePlaceholder) as string;
 
   return (
     <Card variant='outlined' className={classes.card}>
