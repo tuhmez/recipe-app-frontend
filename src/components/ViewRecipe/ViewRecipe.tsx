@@ -88,7 +88,7 @@ export const ViewRecipe = (props: Props) => {
   const classes = useStyles();
   const theme = useTheme();
   // Constants
-  const maxSteps = recipe.images.length;
+  const maxSteps = recipe.images.length !== 0 ? recipe.images.length : 1;
   const textColor = recipe.difficulty === RecipeDifficulty.EASY ? 'green' : recipe.difficulty === RecipeDifficulty.MEDIUM ? 'orange' : 'red';
   const calculateTimeString = () => {
     const times: ITimes = {
@@ -117,7 +117,7 @@ export const ViewRecipe = (props: Props) => {
     if (totalHours !== 0) timeString = `${totalHours} HR`;
     if (totalMinutes !== 0) timeString = `${totalMinutes} MIN`;
     if (totalSeconds !== 0) timeString = `${totalSeconds} SEC`;
-    return timeString;
+    return timeString === '' ? 'No time!' : timeString;
   };
   const ingredientsList = () => {
     const ingredientLabels = recipe.ingredients.map((ingredient, index) => {
@@ -201,7 +201,7 @@ export const ViewRecipe = (props: Props) => {
           <div className={classes.root}>
             <img
               className={classes.img}
-              src={maxSteps !== 0 ? recipe.images[activeStep] : emptyImage}
+              src={recipe.images.length !== 0 ? recipe.images[activeStep] : emptyImage}
               alt={`recipe-${activeStep}`}
             />
             <MobileStepper
