@@ -8,7 +8,7 @@ export const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(-1),
   },
   title: {
     flexGrow: 1,
@@ -55,4 +55,7 @@ export const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  homeButton: {
+    backgroundColor: 'white'
+  }
 }));
