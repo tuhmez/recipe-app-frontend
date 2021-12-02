@@ -31,7 +31,6 @@ export const baseRecipeCard = () => {
         recipes={recipes}
         theme={theme}
         handleCardClick={action('handleCardClickAction')}
-        handleOnFavoriteToggle={action('handleOnFavoriteToggleAction')}
       />
     </ThemeProvider>
   )

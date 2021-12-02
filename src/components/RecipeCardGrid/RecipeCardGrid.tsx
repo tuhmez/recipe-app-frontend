@@ -8,12 +8,11 @@ export interface Props {
   recipes: IRecipe[];
   theme: Theme;
   handleCardClick: (recipe: IRecipe) => void;
-  handleOnFavoriteToggle: () => void;
 }
 
 export const RecipeCardGrid = (props: Props) => {
   // Props deconstruction
-  const { handleCardClick, handleOnFavoriteToggle, recipes, theme } = props;
+  const { handleCardClick, recipes, theme } = props;
   const recipeCards = recipes.map(recipe => {
     const onHandleCardClick = () => {
       handleCardClick(recipe);
@@ -24,7 +23,6 @@ export const RecipeCardGrid = (props: Props) => {
           recipe={recipe}
           theme={theme}
           onCardClick={onHandleCardClick}
-          onFavoriteToggle={handleOnFavoriteToggle}
         />
       </Grid>
     );

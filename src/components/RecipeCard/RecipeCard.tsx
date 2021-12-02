@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardMedia, CardActionArea, Grid, IconButton, Theme, Typography } from '@material-ui/core';
+import React from 'react';
+import { Card, CardContent, CardMedia, CardActionArea, Grid, Theme, Typography } from '@material-ui/core';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { IRecipe } from '../../common/types';
@@ -8,16 +8,13 @@ import { useStyles } from './styles';
 
 export interface Props {
   onCardClick: () => void;
-  onFavoriteToggle: (recipe: IRecipe) => void;
   recipe: IRecipe;
   theme: Theme;
 };
 
 export const RecipeCard = (props: Props) => {
   // Props deconstruction
-  const { onCardClick, onFavoriteToggle, recipe, theme } = props;
-  // States
-  const [ isRecipeFavorited, setIsRecipeFavorited ] = useState(recipe.favorited);
+  const { onCardClick, recipe, theme } = props;
   // Styles
   const classes = useStyles(theme);
   // Handlers
@@ -25,14 +22,6 @@ export const RecipeCard = (props: Props) => {
     event.preventDefault();
     event.stopPropagation();
     onCardClick();
-  };
-  const handleFavoriteToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-    const newToggleBool = !isRecipeFavorited;
-    recipe.favorited = newToggleBool;
-    onFavoriteToggle(recipe);
-    setIsRecipeFavorited(newToggleBool);
   };
 
   const mainPicture = (recipe.images.length > 0 ? recipe.images[0] : NoImagePlaceholder) as string;
@@ -61,14 +50,7 @@ export const RecipeCard = (props: Props) => {
               </Typography>
             </Grid>
             <Grid item>
-              <IconButton
-                className={classes.favoriteButton}
-                onClick={handleFavoriteToggle}
-                disableRipple
-                disableTouchRipple
-              >
-                {isRecipeFavorited ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-              </IconButton>
+              {recipe.favorited ? <FavoriteIcon /> : <FavoriteBorderIcon />}
             </Grid>
           </Grid>
         </CardContent>

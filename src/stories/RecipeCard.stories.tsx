@@ -17,7 +17,6 @@ export const baseRecipeCard = () => {
     <ThemeProvider theme={theme}>
       <RecipeCard
         onCardClick={action('onCardClickAction')}
-        onFavoriteToggle={action('onFavoriteToggleAction')}
         recipe={exampleRecipe}
         theme={theme}
       />
@@ -30,7 +29,6 @@ export const emptyImageRecipeCard = () => {
     <ThemeProvider theme={theme}>
       <RecipeCard
         onCardClick={action('onCardClickAction')}
-        onFavoriteToggle={action('onFavoriteToggleAction')}
         recipe={exampleRecipeNoImages}
         theme={theme}
       />
