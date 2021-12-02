@@ -85,55 +85,33 @@ const handleDeleteRecipeFailure = (state: RecipeState, action: any): RecipeState
   };
 };
 // Getting recipes
-export const GET_RECIPE_REQUEST = createAction('GET_RECIPE_REQUEST');
+export const GET_RECIPES_REQUEST = createAction('GET_RECIPES_REQUEST');
 const handleGetRecipeRequest = (state: RecipeState, action: any): RecipeState => {
   return {
     ...state,
     isLoading: true
   };
 };
-export const GET_RECIPE_SUCCESS = createAction('GET_RECIPE_SUCCESS');
+export const GET_RECIPES_SUCCESS = createAction('GET_RECIPES_SUCCESS');
 const handleGetRecipeSuccess = (state: RecipeState, action: any): RecipeState => {
-  const newRecipes = [...state.recipes];
-  if (newRecipes.find(r => r.recipeId === action.payload.recipeId)) {
+  const prevRecipeState = [...state.recipes];
+  if (action.payload.recipeId) {
+    const recipeIndex = prevRecipeState.findIndex(r => r.recipeId === action.payload.recipeId);
+    prevRecipeState[recipeIndex] = action.payload.recipes[0];
     return {
       ...state,
-      isLoading: false
+      recipes: prevRecipeState
     };
   } else {
-    newRecipes.push(action.payload);
+    const newRecipesToAdd = (action.payload.recipes as IRecipe[]).filter(r => !prevRecipeState.includes(r));
     return {
       ...state,
-      isLoading: false,
-      recipes: newRecipes
+      recipes: prevRecipeState.concat(newRecipesToAdd)
     };
   }
 };
-export const GET_RECIPE_FAILURE = createAction('GET_RECIPE_FAILURE');
+export const GET_RECIPES_FAILURE = createAction('GET_RECIPES_FAILURE');
 const handleGetRecipeFailure = (state: RecipeState, action: any): RecipeState => {
-  return {
-    ...state,
-    isLoading: false,
-    error: action.payload
-  };
-};
-export const GET_ALL_RECIPES_REQUEST = createAction('GET_ALL_RECIPES_REQUEST');
-const handleGetAllRecipesRequest = (state: RecipeState, action: any): RecipeState => {
-  return {
-    ...state,
-    isLoading: true
-  };
-};
-export const GET_ALL_RECIPES_SUCCESS = createAction('GET_ALL_RECIPES_SUCCESS');
-const handleGetAllRecipesSuccess = (state: RecipeState, action: any): RecipeState => {
-  return {
-    ...state,
-    isLoading: false,
-    recipes: action.payload
-  };
-};
-export const GET_ALL_RECIPES_FAILURE = createAction('GET_ALL_RECIPES_FAILURE');
-const handleGetAllRecipesFailure = (state: RecipeState, action: any): RecipeState => {
   return {
     ...state,
     isLoading: false,
@@ -164,18 +142,12 @@ const appReducer = (
       return handleDeleteRecipeSuccess(state, action);
     case DELETE_RECIPE_FAILURE:
       return handleDeleteRecipeFailure(state, action);
-    case GET_RECIPE_REQUEST:
+    case GET_RECIPES_REQUEST:
       return handleGetRecipeRequest(state, action);
-    case GET_RECIPE_SUCCESS:
+    case GET_RECIPES_SUCCESS:
       return handleGetRecipeSuccess(state, action);
-    case GET_RECIPE_FAILURE:
+    case GET_RECIPES_FAILURE:
       return handleGetRecipeFailure(state, action);
-    case GET_ALL_RECIPES_REQUEST:
-      return handleGetAllRecipesRequest(state, action);
-    case GET_ALL_RECIPES_SUCCESS:
-      return handleGetAllRecipesSuccess(state, action);
-    case GET_ALL_RECIPES_FAILURE:
-      return handleGetAllRecipesFailure(state, action);
     default:      
       return state;
   }
