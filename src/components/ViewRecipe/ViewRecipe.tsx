@@ -168,11 +168,11 @@ export const ViewRecipe = (props: Props) => {
   return (
     <div>
       <Grid container direction='column' spacing={2}>
-        <Grid item container direction='row' alignItems='center' justifyContent='space-between'>
-          <Grid item>
+        <Grid item container direction='row' alignItems='flex-start' justifyContent='space-between'>
+          <Grid item xs>
             <Typography variant='h3'>{recipe.name}</Typography>
           </Grid>
-          <Grid item>
+          <Grid item xs={1}>
             <IconButton onClick={handleOpenMenu}>
               <MoreVert />
             </IconButton>
