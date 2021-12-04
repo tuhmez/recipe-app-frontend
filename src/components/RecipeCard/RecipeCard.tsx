@@ -50,7 +50,7 @@ export const RecipeCard = (props: Props) => {
               </Typography>
             </Grid>
             <Grid item>
-              {recipe.favorited ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+              {recipe.favorited ? <FavoriteIcon className={classes.favoriteIcon} /> : <FavoriteBorderIcon />}
             </Grid>
           </Grid>
         </CardContent>

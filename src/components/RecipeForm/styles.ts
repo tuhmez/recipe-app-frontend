@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core';
+import { red } from '@material-ui/core/colors';
 
 export const useStyles = makeStyles(theme => ({
   table: {
@@ -63,5 +64,8 @@ export const useStyles = makeStyles(theme => ({
     color: theme.palette.error.main,
     marginLeft: '14px',
     marginRight: '14px'
+  },
+  favoriteIcon: {
+    color: red[500]
   }
 }));

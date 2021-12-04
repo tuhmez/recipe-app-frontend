@@ -309,7 +309,7 @@ export const RecipeForm = (props: Props) => {
               onClick={onToggleFavorited}
               // disableRipple
             >
-              {favorited ? <Favorite /> : <FavoriteBorder />}
+              {favorited ? <Favorite className={classes.favoriteIcon}/> : <FavoriteBorder />}
             </IconButton>
           </Grid>
         </Grid>

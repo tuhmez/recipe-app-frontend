@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core';
+import { red } from '@material-ui/core/colors';
 
 export const useStyles = makeStyles((theme) => ({
   card: {
@@ -7,8 +8,7 @@ export const useStyles = makeStyles((theme) => ({
   media: {
     height: 100,
   },
-  favoriteButton: {
-    float: 'right',
-    padding: '2px'
+  favoriteIcon: {
+    color: red[500]
   }
 }));
