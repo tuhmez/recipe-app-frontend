@@ -1,8 +1,9 @@
-import { Grid, Theme } from '@material-ui/core';
+import { Grid, Theme, Typography } from '@material-ui/core';
 
 import { IRecipe } from '../../common/types';
 
 import { RecipeCard } from '../RecipeCard';
+import { useStyles } from './styles';
 
 export interface Props {
   recipes: IRecipe[];
@@ -13,6 +14,9 @@ export interface Props {
 export const RecipeCardGrid = (props: Props) => {
   // Props deconstruction
   const { handleCardClick, recipes, theme } = props;
+  // Styles
+  const classes = useStyles();
+
   const recipeCards = recipes.map(recipe => {
     const onHandleCardClick = () => {
       handleCardClick(recipe);
@@ -43,9 +47,18 @@ export const RecipeCardGrid = (props: Props) => {
     )
   }
 
+  const noRecipeComponent = (
+    <Grid item>
+      <Typography variant='subtitle1' className={classes.noRecipesText}>No recipes yet!</Typography>
+    </Grid>
+  );
+
   return (
-    <Grid container justify='center' spacing={1}>
-      {subGrid}
+    <Grid container justify='center' alignItems={subGrid.length !== 0 ? undefined : 'center'} spacing={1}>
+      {subGrid.length !== 0
+      ? subGrid
+      : noRecipeComponent
+      }
     </Grid>
   );
 };
