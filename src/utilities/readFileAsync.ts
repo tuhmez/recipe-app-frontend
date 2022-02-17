@@ -1,8 +1,8 @@
-export const readFileDataUrlAsync = (file: File) => {
+export const readFileDataUrlAsync = (file: File) : Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => {
-      resolve(reader.result);
+      resolve(reader.result as string);
     }
 
     reader.onerror = reject;
