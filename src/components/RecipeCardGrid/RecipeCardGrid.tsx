@@ -41,7 +41,7 @@ export const RecipeCardGrid = (props: Props) => {
     if (secondItem) subGridItems.push(secondItem);
 
     subGrid.push(
-      <Grid container item justify='center' spacing={1}>
+      <Grid container item justifyContent='center' spacing={1}>
         {subGridItems}
       </Grid>
     )
@@ -54,7 +54,7 @@ export const RecipeCardGrid = (props: Props) => {
   );
 
   return (
-    <Grid container justify='center' alignItems={subGrid.length !== 0 ? undefined : 'center'} spacing={1}>
+    <Grid container justifyContent='center' alignItems={subGrid.length !== 0 ? undefined : 'center'} spacing={1}>
       {subGrid.length !== 0
       ? subGrid
       : noRecipeComponent
