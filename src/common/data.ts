@@ -1,5 +1,5 @@
 import { IRecipe, RecipeType, RecipeDifficulty, IIngredient, IngredientUnit, IStep, TimeUnit, StepType } from './types';
-import { tacoOverview, emptyImage } from '../utilities/imageBase64';
+import { tacoOverview, emptyImage } from './imagesBase64';
 
 export const exampleIngredients: IIngredient[] = [
   {

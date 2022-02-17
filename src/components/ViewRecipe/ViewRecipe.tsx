@@ -20,7 +20,7 @@ import {
 } from '@material-ui/core';
 import { KeyboardArrowLeft, KeyboardArrowRight, MoreVert } from '@material-ui/icons';
 import { IngredientUnit, IRecipe, RecipeDifficulty } from '../../common/types';
-import { emptyImage } from '../../utilities/imageBase64';
+import { emptyImage } from '../../common/imagesBase64';
 import { useStyles } from './styles';
 
 export interface Props {
