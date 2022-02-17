@@ -17,6 +17,7 @@ import {
 import { CloudUpload, Favorite, FavoriteBorder } from '@material-ui/icons';
 import { useStyles } from './styles';
 import { IngredientUnit, IRecipe, RecipeDifficulty, RecipeType, StepType, TimeUnit } from '../../common/types';
+import { readFileDataUrlAsync } from '../../utilities/readFileAsync';
 import { RecipeIngredientTable } from './RecipeIngredientTable';
 import { RecipeStepTable } from './RecipeStepTable';
 import { RecipeKeywordList } from './RecipeKeywordList';
@@ -290,6 +291,24 @@ export const RecipeForm = (props: Props) => {
     return isValidForm;
   };
 
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        readFileDataUrlAsync(files[i])
+          .then((base64Image: string) => {
+            setImages(prevState => [...prevState, base64Image]);
+          })
+          .catch((error: any) => {
+            // catch the error
+          });
+      }
+    } else {
+      // handle null file upload
+    }
+
+  }
+
   return (
     <div>
       <Grid container spacing={2} direction='column'>
@@ -403,7 +422,7 @@ export const RecipeForm = (props: Props) => {
               id='recipe-images'
               multiple
               type='file'
-              onChange={(e: any) => console.log(e.target.files)}
+              onChange={handleImageUpload}
             />
             <label htmlFor='recipe-images'>
               <Button
