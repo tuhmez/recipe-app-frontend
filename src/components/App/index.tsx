@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Container, CssBaseline, Fab } from '@material-ui/core';
-import { Add } from '@material-ui/icons';
+import { Container, CssBaseline } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router';
 
 import { SocketClient } from '../../socket';
 import { theme } from '../../app-styles';
-import { IRecipe } from '../../common/types';
 import {
   IAddRecipeResponse,
   IEditRecipeResponse,
