@@ -5,11 +5,12 @@ services:
     build: .
     image: recipe-app-frontend:latest
     container_name: recipe-app-frontend
+    ports:
+      - 3000:3000
     environment:
-      - GRPC_PROXY=8082
-      - GRPC_LOCATION=0.0.0.0
+      - SERVER_ADDRESS=localhost
+      - SERVER_PORT=3001
     restart: always
 networks:
   default:
-    external:
-      name: recipe
+    name: recipe
