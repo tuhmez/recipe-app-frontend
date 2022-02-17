@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Grid } from '@material-ui/core';
-import {} from '../../utilities/imageBase64';
+import { useStyles } from './styles';
 
 export interface Props {
   data: string[];
@@ -11,12 +11,15 @@ export const RecipeImages = (props: Props) => {
   const { data } = props;
   // States
   const [ imageItems, setImageItems ] = useState<JSX.Element[]>([]);
+  // Styles
+  const classes = useStyles();
   // Effects
   useEffect(() => {
     const makeImageItems = (image: string, index: number) => {
+      
       return (
-        <Grid item>
-          <img src={image} alt={`recipe-pic-${index}`}/>
+        <Grid item key={`recipe-pic-${index}`}>
+          <img className={classes.imagePreview} src={image} alt={`recipe-pic-${index}`}/>
         </Grid>
       )
     };
@@ -24,6 +27,7 @@ export const RecipeImages = (props: Props) => {
     return () => {
       setImageItems([]);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   return (
@@ -32,6 +36,7 @@ export const RecipeImages = (props: Props) => {
       justifyContent='flex-start'
       alignItems='center'
       spacing={1}
+      className={classes.imageContainer}
     >
       {imageItems}
     </Grid>
