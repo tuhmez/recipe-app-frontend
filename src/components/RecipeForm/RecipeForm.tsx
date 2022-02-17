@@ -22,6 +22,7 @@ import { RecipeIngredientTable } from './RecipeIngredientTable';
 import { RecipeStepTable } from './RecipeStepTable';
 import { RecipeKeywordList } from './RecipeKeywordList';
 import { RecipeImages } from '../RecipeImages';
+import { useSnackbar } from 'notistack';
 
 const recipeTypeItems = () => {
   const returnItems: JSX.Element[] = [];
@@ -71,6 +72,8 @@ export const RecipeForm = (props: Props) => {
   const [ images, setImages ] = useState(data.images);
   const [ formErrors, setFormErrors ] = useState<IErrorObject>({});
   const [ isCancelDialogOpen, setIsCancelDialogOpen ] = useState(false);
+  // Other Hooks
+  const { enqueueSnackbar } = useSnackbar();
   // Change Events
   const onChangeName = (event: React.ChangeEvent<HTMLInputElement>) => setName(event.target.value);
   const onChangeType = (event: React.ChangeEvent<{ value: unknown }>) => setType(event.target.value as RecipeType);
@@ -301,10 +304,12 @@ export const RecipeForm = (props: Props) => {
           })
           .catch((error: any) => {
             // catch the error
+            enqueueSnackbar(error, { variant: 'error' });
           });
       }
     } else {
       // handle null file upload
+      enqueueSnackbar('Failed to upload image!', { variant: 'error' });
     }
 
   }
