@@ -22,11 +22,12 @@ export const RecipeCardGrid = (props: Props) => {
       handleCardClick(recipe);
     };
     return (
-      <Grid item>
+      <Grid item key={`${recipe.name}-${recipe.recipeId}`}>
         <RecipeCard
           recipe={recipe}
           theme={theme}
           onCardClick={onHandleCardClick}
+          key={`${recipe.name}-${recipe.recipeId}`}
         />
       </Grid>
     );
@@ -41,15 +42,21 @@ export const RecipeCardGrid = (props: Props) => {
     if (secondItem) subGridItems.push(secondItem);
 
     subGrid.push(
-      <Grid container item justifyContent='center' spacing={1}>
+      <Grid container item justifyContent='center' spacing={1} key={`subgrid-${subGrid.length}`}>
         {subGridItems}
       </Grid>
     )
   }
 
   const noRecipeComponent = (
-    <Grid item>
-      <Typography variant='subtitle1' className={classes.noRecipesText}>No recipes yet!</Typography>
+    <Grid item key='no-recipe-component'>
+      <Typography
+        variant='subtitle1'
+        className={classes.noRecipesText}
+        key='no-recipe-text'
+      >
+        No recipes yet!
+      </Typography>
     </Grid>
   );
 

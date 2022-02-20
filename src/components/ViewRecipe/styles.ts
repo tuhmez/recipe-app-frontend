@@ -17,7 +17,7 @@ export const useStyles = makeStyles(theme => ({
   },
   img: {
     height: 200,
-    objectFit: 'cover',
+    objectFit: 'contain',
     maxWidth: 400,
     overflow: 'hidden',
     display: 'block',

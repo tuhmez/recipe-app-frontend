@@ -155,10 +155,10 @@ export const ViewRecipe = (props: Props) => {
     
     return (
       <Grid item container direction='column'>
-        <Grid item>
+        <Grid item key='step-text'>
           <Typography variant='body1'>{stepText}</Typography>
         </Grid>
-        <Grid item style={{ paddingLeft: '30px' }}>
+        <Grid item style={{ paddingLeft: '30px' }} key='step-support-text'>
           <Typography variant='body1'>{stepSupportText}</Typography>
         </Grid>
       </Grid>
@@ -169,10 +169,10 @@ export const ViewRecipe = (props: Props) => {
     <div>
       <Grid container direction='column' spacing={2}>
         <Grid item container direction='row' alignItems='flex-start' justifyContent='space-between'>
-          <Grid item xs>
+          <Grid item xs key='recipe-name-text'>
             <Typography variant='h3'>{recipe.name}</Typography>
           </Grid>
-          <Grid item xs={1}>
+          <Grid item xs={1} key='recipe-dotdotdot-menu'>
             <IconButton onClick={handleOpenMenu}>
               <MoreVert />
             </IconButton>
