@@ -1,31 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AppBar,
+  Box,
+  Drawer,
   IconButton,
   InputBase,
+  MenuItem,
   Theme,
   Toolbar,
   Typography
 } from '@material-ui/core';
-import { Home, Search } from '@material-ui/icons';
+import { ArrowBackIos, Info, Menu, MenuBook, Search } from '@material-ui/icons';
 
 import { useStyles } from './styles';
 import { useLocation, useNavigate } from 'react-router';
 import { possibleRoutes } from '../../routes/routeConstants';
 
+const drawerItems = ['Recipes', 'About'];
+
 interface SearchAppBarProps {
   searchFunction: (searchTerm: string) => void;
-  searchHeader: string;
   theme: Theme;
 }
 
 const SearchAppBar = (props: SearchAppBarProps) => {
   // Props deconstruction
-  const { searchFunction, searchHeader, theme } = props;
+  const { searchFunction, theme } = props;
   // States
   const [ search, setSearch ] = useState('');
+  const [ isMenuOpen, setIsMenuOpen ] = useState(false);
+  const [ searchHeader, setSearchHeader ] = useState('');
   // Navigation
   const navigate = useNavigate();
+  // Location
+  const location = useLocation();
   // Styles
   const classes = useStyles(theme);
   // Handlers
@@ -37,21 +45,77 @@ const SearchAppBar = (props: SearchAppBarProps) => {
       searchFunction(search);
     }
   };
-  const onHomeButtonClick = () => {
-    navigate(possibleRoutes.main);
+  const onMenuToggle = () => {
+    setIsMenuOpen(prevState => !prevState);
   };
+  const onGoBackClick = () => {
+    navigate(-1);
+  };
+
+  // Effects
+  useEffect(() => {
+    if (location.pathname === '/') {
+      setSearchHeader('Recipes');
+      return;
+    }
+    const strippedLocationPathname = location.pathname.substring(1);
+    drawerItems.forEach(i => {
+      if (strippedLocationPathname.includes(i)) {
+        setSearchHeader(i);
+      }
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const navButton = () => {
+    const strippedPathname = location.pathname.substring(1);
+    if (location.pathname === '/' || drawerItems.map(i => i.toLowerCase()).includes(strippedPathname)) {
+      return (
+        <IconButton
+        onClick={onMenuToggle}
+        color='inherit'
+        className={classes.menuButton}
+      >
+        <Menu />
+      </IconButton>
+      )
+    } else {
+      return (
+        <IconButton
+        onClick={onGoBackClick}
+        color='inherit'
+        className={classes.menuButton}
+      >
+        <ArrowBackIos />
+      </IconButton>
+      );
+    }
+  };
+
+  const drawerMenuItemIcons: { [key: string]: JSX.Element } = {
+    recipes: <MenuBook />,
+    about: <Info />
+  };
+
+  const drawerMenuItems = drawerItems.map(i => {
+    const itemLowerCase = i.toLowerCase();
+    const onItemClick = () => {
+      navigate(`/${itemLowerCase}`);
+      setSearchHeader(i);
+      setIsMenuOpen(false);
+    };
+    return (
+      <MenuItem key={`${i}-listitem`} onClick={onItemClick}>
+        {drawerMenuItemIcons[itemLowerCase]} {i}
+      </MenuItem>
+    );
+  });
 
   return (
     <div className={classes.root}>
       <AppBar color='primary' position='fixed'>
         <Toolbar>
-          <IconButton
-            onClick={onHomeButtonClick}
-            color='inherit'
-            className={classes.menuButton}
-          >
-            <Home />
-          </IconButton>
+          {navButton()}
           <Typography className={classes.title} variant='h6' noWrap>
             {searchHeader}
           </Typography>
@@ -72,6 +136,13 @@ const SearchAppBar = (props: SearchAppBarProps) => {
           </div>
         </Toolbar>
       </AppBar>
+      <Drawer
+        open={isMenuOpen}
+        anchor='left'
+        onClose={onMenuToggle}
+      >
+        {drawerMenuItems}
+      </Drawer>
     </div>
   );
 };
