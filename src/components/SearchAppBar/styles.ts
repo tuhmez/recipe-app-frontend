@@ -11,6 +11,7 @@ export const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(-1),
   },
   title: {
+    paddingLeft: theme.spacing(1),
     flexGrow: 1,
     [theme.breakpoints.up('sm')]: {
       display: 'block',
