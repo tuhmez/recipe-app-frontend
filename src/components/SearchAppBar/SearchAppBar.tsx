@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   AppBar,
-  Box,
   Drawer,
   IconButton,
   InputBase,
@@ -14,7 +13,6 @@ import { ArrowBackIos, Info, Menu, MenuBook, Search } from '@material-ui/icons';
 
 import { useStyles } from './styles';
 import { useLocation, useNavigate } from 'react-router';
-import { possibleRoutes } from '../../routes/routeConstants';
 
 const drawerItems = ['Recipes', 'About'];
 
