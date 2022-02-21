@@ -17,7 +17,6 @@ export const baseSearchBar = () =>{
     <ThemeProvider theme={theme}>
       <SearchAppBar
         searchFunction={action('searchFunction')}
-        searchHeader='Recipes'
         theme={theme}
       />
     </ThemeProvider>
