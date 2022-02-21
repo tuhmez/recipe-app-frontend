@@ -10,7 +10,7 @@ import { RecipeCardGrid } from '../../components/RecipeCardGrid';
 import { useStyles } from './styles';
 import { IRecipe } from '../../common/types';
 
-export const Main = () => {
+export const RecipesMain = () => {
   // Dispatch
   const dispatch = useDispatch();
   // Selectors
