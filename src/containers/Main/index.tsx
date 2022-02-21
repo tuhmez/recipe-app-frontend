@@ -1,7 +1,6 @@
 import { Fab, useTheme } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { selectRecipes } from '../../redux/selectors';
@@ -11,8 +10,6 @@ import { useStyles } from './styles';
 import { IRecipe } from '../../common/types';
 
 export const RecipesMain = () => {
-  // Dispatch
-  const dispatch = useDispatch();
   // Selectors
   const recipes = useSelector(selectRecipes);
   // Navigation
