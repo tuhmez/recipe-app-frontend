@@ -103,7 +103,6 @@ export const App = () => {
       <CssBaseline />
       <SearchAppBar
         searchFunction={(searchTerm: string) => console.log(searchTerm)}
-        searchHeader='Recipes'
         theme={theme}
       />
       <Container className={classes.container}>
