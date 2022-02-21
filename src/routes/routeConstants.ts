@@ -1,9 +1,11 @@
 export const possibleRoutes = {
   main: '/',
-  createRecipePage: '/create-recipe',
-  editRecipePage: '/edit-recipe/:recipeName',
-  viewRecipePage: '/view-recipe/:recipeName'
+  recipes: '/recipes',
+  createRecipePage: '/recipes/create-recipe',
+  editRecipePage: '/recipes/edit-recipe/:recipeName',
+  viewRecipePage: '/recipes/view-recipe/:recipeName',
+  about: '/about',
 };
 
-export const viewRecipePageNavigator = (recipeName: string) => `/view-recipe/${recipeName}`;
-export const editRecipePageNavigator = (recipeName: string) => `/edit-recipe/${recipeName}`;
+export const viewRecipePageNavigator = (recipeName: string) => `/recipes/view-recipe/${recipeName}`;
+export const editRecipePageNavigator = (recipeName: string) => `/recipes/edit-recipe/${recipeName}`;
