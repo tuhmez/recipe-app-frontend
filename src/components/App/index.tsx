@@ -23,7 +23,7 @@ export const App = () => {
   // App constants
   const serverAddress = process.env.SERVER_ADDRESS || window.location.hostname;
   const serverPort = process.env.SERVER_PORT || '3001';
-  const { main } = possibleRoutes;
+  const { recipes } = possibleRoutes;
   // States
   const [ socket, setSocket ] = useState<SocketClient | undefined>(undefined);
   // Dispatch
@@ -38,7 +38,7 @@ export const App = () => {
         } else {
           enqueueSnackbar(`${res.recipe!.name} added!`, { variant: 'success' });
           dispatch({ type: ADD_RECIPE_SUCCESS, payload: res.recipe });
-          navigation(main);
+          navigation(recipes);
         }
       },
       editRecipeResponseFn: (res: IEditRecipeResponse) => {
@@ -48,7 +48,7 @@ export const App = () => {
         } else {
           enqueueSnackbar(`${res.recipe!.name} updated!`, { variant: 'success' });
           dispatch({ type: UPDATE_RECIPE_SUCCESS, payload: res.recipe });
-          navigation(main);
+          navigation(recipes);
         }
       },
       deleteRecipeResponseFn: (res: IDeleteRecipeResponse) => {
@@ -58,7 +58,7 @@ export const App = () => {
         } else {
           enqueueSnackbar(`${res.recipe!.name} deleted!`, { variant: 'success' });
           dispatch({ type: DELETE_RECIPE_SUCCESS, payload: res.recipe });
-          navigation(main);
+          navigation(recipes);
         }
       },
       getRecipesResponseFn: (res: IGetRecipesResponse) => {
