@@ -18,11 +18,10 @@ export const useStyles = makeStyles(theme => ({
     width: '250px',
   },
   img: {
-    height: 200,
+    height: '50vh',
+    width: '80vw',
     objectFit: 'contain',
-    // maxWidth: 400,
     overflow: 'hidden',
     display: 'block',
-    // width: '100%',
   },
 }));
