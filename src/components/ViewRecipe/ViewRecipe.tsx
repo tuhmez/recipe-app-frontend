@@ -243,7 +243,6 @@ export const ViewRecipe = (props: Props) => {
               }
             />
           </Grid>
-          {/* </div> */}
         </Grid>
         <Grid
           item
