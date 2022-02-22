@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes as AppRoutes, Route} from 'react-router-dom';
 import { possibleRoutes } from './routeConstants';
-import { RecipesMain } from '../containers/Main';
+import { RecipesMain } from '../containers/RecipesMain';
 import { CreateRecipePage } from '../containers/CreateRecipePage';
 import { ViewRecipePage } from '../containers/ViewRecipePage';
 import { SocketClient } from '../socket';
