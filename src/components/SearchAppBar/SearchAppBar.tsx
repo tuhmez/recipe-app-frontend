@@ -4,22 +4,43 @@ import {
   Drawer,
   IconButton,
   InputBase,
-  MenuItem,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
   Theme,
   Toolbar,
   Typography
 } from '@material-ui/core';
-import { ArrowBackIos, Info, Menu, MenuBook, Search } from '@material-ui/icons';
+import { ArrowBackIos, InfoOutlined, Menu, MenuBookOutlined, Search } from '@material-ui/icons';
 
 import { useStyles } from './styles';
 import { useLocation, useNavigate } from 'react-router';
-
-const drawerItems = ['Recipes', 'About'];
 
 interface SearchAppBarProps {
   searchFunction: (searchTerm: string) => void;
   theme: Theme;
 }
+interface IDrawerMenuItemIcons {
+  [key: string]: {
+    [key: string]: JSX.Element,
+  }
+}
+
+const drawerItems = ['Recipes', 'About'];
+const drawerMenuItemIcons: IDrawerMenuItemIcons = {
+  // recipes: <MenuBookOutlined fontSize='small' />,
+  // about: <InfoOutlined fontSize='small' />
+  recipes: {
+    normal: <MenuBookOutlined fontSize='small' />,
+    active: <MenuBookOutlined fontSize='small' color='primary' />
+  },
+  about: {
+    normal: <InfoOutlined fontSize='small' />,
+    active: <InfoOutlined fontSize='small' color='primary' />,
+  }
+};
+
 
 const SearchAppBar = (props: SearchAppBarProps) => {
   // Props deconstruction
@@ -58,7 +79,7 @@ const SearchAppBar = (props: SearchAppBarProps) => {
     }
     const strippedLocationPathname = location.pathname.substring(1);
     drawerItems.forEach(i => {
-      if (strippedLocationPathname.includes(i)) {
+      if (strippedLocationPathname.includes(i.toLowerCase())) {
         setSearchHeader(i);
       }
     });
@@ -90,22 +111,31 @@ const SearchAppBar = (props: SearchAppBarProps) => {
     }
   };
 
-  const drawerMenuItemIcons: { [key: string]: JSX.Element } = {
-    recipes: <MenuBook />,
-    about: <Info />
-  };
 
-  const drawerMenuItems = drawerItems.map(i => {
+  const drawerListItems = drawerItems.map(i => {
     const itemLowerCase = i.toLowerCase();
     const onItemClick = () => {
       navigate(`/${itemLowerCase}`);
       setSearchHeader(i);
       setIsMenuOpen(false);
     };
+
+    const isActive = searchHeader === i;
+    const { active, normal } = drawerMenuItemIcons[itemLowerCase];
+    const iconToUse = isActive ? active : normal
+    const classForText = isActive ? classes.selectedItem : classes.normalItem;
+    
     return (
-      <MenuItem key={`${i}-listitem`} onClick={onItemClick}>
-        {drawerMenuItemIcons[itemLowerCase]} {i}
-      </MenuItem>
+        <ListItem
+          button
+          key={`${i}-listitem`}
+          onClick={onItemClick}
+        >
+          <ListItemIcon>
+            {iconToUse}
+          </ListItemIcon>
+          <ListItemText className={classForText} primary={i} />
+        </ListItem>
     );
   });
 
@@ -139,7 +169,10 @@ const SearchAppBar = (props: SearchAppBarProps) => {
         anchor='left'
         onClose={onMenuToggle}
       >
-        {drawerMenuItems}
+        {/* need some sort of logo or padding text*/}
+        <List>
+          {drawerListItems}
+        </List>
       </Drawer>
     </div>
   );

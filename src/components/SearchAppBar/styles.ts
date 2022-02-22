@@ -58,5 +58,11 @@ export const useStyles = makeStyles((theme) => ({
   },
   homeButton: {
     backgroundColor: 'white'
+  },
+  normalItem: {
+    color: theme.palette.common.black
+  },
+  selectedItem: {
+    color: theme.palette.primary.main
   }
 }));
