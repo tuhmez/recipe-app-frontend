@@ -3,11 +3,9 @@ import { red } from '@material-ui/core/colors';
 
 export const useStyles = makeStyles(theme => ({
   table: {
-    maxWidth: 375,
     paddingBottom: theme.spacing(2),
   },
   elementContainer: {
-    maxWidth: 400,
     maxHeight: 200,
     overflowY: 'auto',
     overflowX: 'hidden'
