@@ -167,7 +167,7 @@ export const ViewRecipe = (props: Props) => {
 
   return (
     <div>
-      <Grid container direction='column' spacing={2}>
+      <Grid container direction='column' spacing={2} alignItems='center'>
         <Grid
           item
           container
@@ -212,19 +212,22 @@ export const ViewRecipe = (props: Props) => {
           : undefined
           }
         </Grid>
-        <Grid item key='image-section'>
-          <div className={classes.root} key='image-subcontainer'>
+        <Grid item container direction='column' justifyContent='center' alignItems='center' key='image-section'>
+          <Grid item>
             <img
               className={classes.img}
               src={recipe.images.length !== 0 ? recipe.images[activeStep] : emptyImage}
               alt={`recipe-${activeStep}`}
               key='recipe-image'
             />
+          </Grid>
+          <Grid item>
             <MobileStepper
               key='image-stepper'
               steps={maxSteps}
               position='static'
               variant='dots'
+              className={classes.stepper}
               activeStep={activeStep}
               nextButton={
                 <Button size='small' onClick={handleNextImage} disabled={activeStep === maxSteps - 1}>
@@ -239,7 +242,8 @@ export const ViewRecipe = (props: Props) => {
                 </Button>
               }
             />
-          </div>
+          </Grid>
+          {/* </div> */}
         </Grid>
         <Grid
           item
@@ -255,13 +259,13 @@ export const ViewRecipe = (props: Props) => {
           <div style={{ paddingLeft: '20px'}} key='ingredient-list-container'>
             {ingredientsList()}
           </div>
+          <Grid item key='step-list'>
+            <Typography variant='h5' key='step-header'>Steps</Typography>
+          </Grid>
+          <div style={{ paddingLeft: '20px' }} key='steps-list-container'>
+            {stepsList}
+          </div>
         </Grid>
-        <Grid item key='step-list'>
-          <Typography variant='h5' key='step-header'>Steps</Typography>
-        </Grid>
-        <div style={{ paddingLeft: '20px' }} key='steps-list-container'>
-          {stepsList}
-        </div>
       </Grid>
       <Menu
         id='view-recipe-menu'
