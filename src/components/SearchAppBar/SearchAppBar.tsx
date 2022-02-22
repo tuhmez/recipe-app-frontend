@@ -29,8 +29,6 @@ interface IDrawerMenuItemIcons {
 
 const drawerItems = ['Recipes', 'About'];
 const drawerMenuItemIcons: IDrawerMenuItemIcons = {
-  // recipes: <MenuBookOutlined fontSize='small' />,
-  // about: <InfoOutlined fontSize='small' />
   recipes: {
     normal: <MenuBookOutlined fontSize='small' />,
     active: <MenuBookOutlined fontSize='small' color='primary' />
