@@ -142,11 +142,11 @@ export const ViewRecipe = (props: Props) => {
       );
     });
     return (
-      <FormControl component="fieldset">
-      <FormGroup>
-        {ingredientLabels}
-      </FormGroup>
-    </FormControl>
+      <FormControl component="fieldset" key='ingredient-form-control'>
+        <FormGroup key='ingredient-form-group'>
+          {ingredientLabels}
+        </FormGroup>
+      </FormControl>
     )
   }
   const stepsList = recipe.steps.map(step => {
@@ -154,11 +154,11 @@ export const ViewRecipe = (props: Props) => {
     const stepSupportText = `${step.stepType} - ${step.time} ${step.timeUnit}`;
     
     return (
-      <Grid item container direction='column'>
-        <Grid item key='step-text'>
+      <Grid item container direction='column' key={step.stepNumber}>
+        <Grid item key={`step-text-${step.stepNumber}`}>
           <Typography variant='body1'>{stepText}</Typography>
         </Grid>
-        <Grid item style={{ paddingLeft: '30px' }} key='step-support-text'>
+        <Grid item style={{ paddingLeft: '30px' }} key={`step-support-text-${step.stepNumber}`}>
           <Typography variant='body1'>{stepSupportText}</Typography>
         </Grid>
       </Grid>
@@ -168,43 +168,60 @@ export const ViewRecipe = (props: Props) => {
   return (
     <div>
       <Grid container direction='column' spacing={2}>
-        <Grid item container direction='row' alignItems='flex-start' justifyContent='space-between'>
+        <Grid
+          item
+          container
+          direction='row'
+          alignItems='flex-start'
+          justifyContent='space-between'
+          key='recipe-header-container'
+        >
           <Grid item xs key='recipe-name-text'>
-            <Typography variant='h3'>{recipe.name}</Typography>
+            <Typography variant='h3' key='recipe-name-header'>{recipe.name}</Typography>
           </Grid>
           <Grid item xs={1} key='recipe-dotdotdot-menu'>
-            <IconButton onClick={handleOpenMenu}>
+            <IconButton onClick={handleOpenMenu} key='recipe-menu-button'>
               <MoreVert />
             </IconButton>
           </Grid>
         </Grid>
-        <Grid item container direction='row' alignItems='center' justifyContent='flex-start' spacing={1}>
-          <Grid item>
-            <Typography variant='body1'>{recipe.type} |</Typography>
+        <Grid
+          item
+          container
+          direction='row'
+          alignItems='center'
+          justifyContent='flex-start'
+          spacing={1}
+          key='recipe-subinformation-section'
+        >
+          <Grid item key='recipe-type-header'>
+            <Typography variant='body1' key='recipe-type-text'>{recipe.type} |</Typography>
           </Grid>
-          <Grid item>
-            <Typography variant='body1' style={{ color: textColor }}>{recipe.difficulty}</Typography>
+          <Grid item key='recipe-difficulty-header'>
+            <Typography variant='body1' style={{ color: textColor }} key='recipe-difficulty-text'>{recipe.difficulty}</Typography>
           </Grid>
-          <Grid item>
-            <Typography variant='body1'>| {calculateTimeString()}</Typography>
+          <Grid item key='time-header'>
+            <Typography variant='body1' key='recipe-time-text'>| {calculateTimeString()}</Typography>
           </Grid>
           {recipe.favorited
           ? (
-            <Grid item>
-              <Typography variant='body1'>| Favorited</Typography>
+            <Grid item key='favorited-header'>
+              <Typography variant='body1' key='recipe-favorited-text'>| Favorited</Typography>
             </Grid>
           )
           : undefined
           }
         </Grid>
-        <Grid item>
-          <div className={classes.root}>
+        <Grid item key='image-section'>
+          <div className={classes.root} key='image-subcontainer'>
             <img
               className={classes.img}
               src={recipe.images.length !== 0 ? recipe.images[activeStep] : emptyImage}
               alt={`recipe-${activeStep}`}
+              key='recipe-image'
             />
             <MobileStepper
+              key='image-stepper'
               steps={maxSteps}
               position='static'
               variant='dots'
@@ -224,23 +241,31 @@ export const ViewRecipe = (props: Props) => {
             />
           </div>
         </Grid>
-        <Grid item container direction='column' alignItems='flex-start' justifyContent='center'>
-          <Grid item>
-            <Typography variant='h5'>Ingredients</Typography>
+        <Grid
+          item
+          container
+          direction='column'
+          alignItems='flex-start'
+          justifyContent='center'
+          key='variable-section'
+        >
+          <Grid item key='ingredient-list'>
+            <Typography variant='h5' key='ingredient-header'>Ingredients</Typography>
           </Grid>
-          <div style={{ paddingLeft: '20px'}}>
+          <div style={{ paddingLeft: '20px'}} key='ingredient-list-container'>
             {ingredientsList()}
           </div>
         </Grid>
-        <Grid item>
-          <Typography variant='h5'>Steps</Typography>
+        <Grid item key='step-list'>
+          <Typography variant='h5' key='step-header'>Steps</Typography>
         </Grid>
-        <div style={{ paddingLeft: '20px' }}>
+        <div style={{ paddingLeft: '20px' }} key='steps-list-container'>
           {stepsList}
         </div>
       </Grid>
       <Menu
         id='view-recipe-menu'
+        key='view-recipe-menu'
         anchorEl={menuAnchorEl}
         getContentAnchorEl={null}
         keepMounted
@@ -251,25 +276,26 @@ export const ViewRecipe = (props: Props) => {
           horizontal: 'right'
         }}
       >
-        {recipe.linkToWebsite ? <MenuItem onClick={handleNavigateToWebsite}>Go to Website</MenuItem> : undefined}
-        <MenuItem onClick={handleEditRecipe}>Edit Recipe</MenuItem>
-        <MenuItem onClick={handleToggleDeleteDialog}>Delete Recipe</MenuItem>
+        {recipe.linkToWebsite ? <MenuItem onClick={handleNavigateToWebsite} key='website-item'>Go to Website</MenuItem> : undefined}
+        <MenuItem onClick={handleEditRecipe} key='edit-recipe-item'>Edit Recipe</MenuItem>
+        <MenuItem onClick={handleToggleDeleteDialog} key='delete-recipe-item'>Delete Recipe</MenuItem>
       </Menu>
       <Dialog
         open={isDeleteDialogOpen}
         onClose={onHandleCloseDeleteDialog}
       >
-        <DialogTitle>Are you sure you want to delete this recipe?</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Proceeding will permanently delete this recipe and all of its data!</DialogContentText>
+        <DialogTitle key='dialog-title'>Are you sure you want to delete this recipe?</DialogTitle>
+        <DialogContent key='dialog-content'>
+          <DialogContentText key='dialog-content-text'>Proceeding will permanently delete this recipe and all of its data!</DialogContentText>
         </DialogContent>
-        <DialogActions>
+        <DialogActions key='dialog-actions'>
           <Button
             color='default'
             variant='outlined'
             size='large'
             disableElevation
             onClick={onHandleCloseDeleteDialog}
+            key='dialog-cancel-button'
           >
             Cancel
           </Button>
@@ -279,6 +305,7 @@ export const ViewRecipe = (props: Props) => {
             size='large'
             disableElevation
             onClick={handleDeleteRecipe}
+            key='dialog-confirm-button'
           >
             Confirm
           </Button>
