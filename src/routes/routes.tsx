@@ -4,8 +4,9 @@ import { possibleRoutes } from './routeConstants';
 import { RecipesMain } from '../containers/RecipesMainPage';
 import { CreateRecipePage } from '../containers/CreateRecipePage';
 import { ViewRecipePage } from '../containers/ViewRecipePage';
-import { SocketClient } from '../socket';
 import { EditRecipePage } from '../containers/EditRecipePage';
+import { AboutPage } from '../containers/AboutPage';
+import { SocketClient } from '../socket';
 
 export interface Props {
   socket: SocketClient;
@@ -15,7 +16,7 @@ export const Routes = (props: Props) => {
   // Props desconstruction
   const { socket } = props;
   // Constants
-  const { recipes, createRecipePage, main, viewRecipePage, editRecipePage } = possibleRoutes;
+  const { about, recipes, createRecipePage, main, viewRecipePage, editRecipePage } = possibleRoutes;
 
   return (
     <AppRoutes>
@@ -24,6 +25,7 @@ export const Routes = (props: Props) => {
       <Route path={createRecipePage} element={<CreateRecipePage socket={socket} />}/>
       <Route path={viewRecipePage} element={<ViewRecipePage socket={socket}/>}/>
       <Route path={editRecipePage} element={<EditRecipePage socket={socket}/>}/>
+      <Route path={about} element={<AboutPage />} />
     </AppRoutes>
   )
 }
