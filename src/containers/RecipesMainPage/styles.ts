@@ -7,6 +7,7 @@ export const useStyles = makeStyles(theme => ({
     bottom: 20,
     right: 20,
     left: 'auto',
-    margin: 0
+    margin: 0,
+    boxShadow: 'none'
   }
 }));

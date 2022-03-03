@@ -139,7 +139,7 @@ const SearchAppBar = (props: SearchAppBarProps) => {
 
   return (
     <div className={classes.root}>
-      <AppBar color='primary' position='fixed'>
+      <AppBar color='primary' position='fixed' elevation={0}>
         <Toolbar>
           {navButton()}
           <Typography className={classes.title} variant='h6' noWrap>
