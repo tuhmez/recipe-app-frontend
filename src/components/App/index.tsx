@@ -95,6 +95,7 @@ export const App = () => {
   const { enqueueSnackbar } = useSnackbar();
   // Styles
   const classes = useStyles();
+  // Subcomponents
   const LoadingComponent = () => <div className={classes.loading}><CircularProgress /></div>
 
   return (
