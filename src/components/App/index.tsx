@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, CssBaseline } from '@material-ui/core';
+import { CircularProgress, Container, CssBaseline } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router';
@@ -95,8 +95,7 @@ export const App = () => {
   const { enqueueSnackbar } = useSnackbar();
   // Styles
   const classes = useStyles();
-
-  if (!socket) return <div>we loading...</div>;
+  const LoadingComponent = () => <div className={classes.loading}><CircularProgress /></div>
 
   return (
     <div>
@@ -106,7 +105,7 @@ export const App = () => {
         theme={theme}
       />
       <Container className={classes.container}>
-        <Routes socket={socket}/>
+        {!socket ? <LoadingComponent /> : <Routes socket={socket}/>}
       </Container>
     </div>
   );

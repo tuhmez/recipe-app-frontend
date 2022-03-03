@@ -13,5 +13,10 @@ export const useStyles = makeStyles(theme => ({
     right: 20,
     left: 'auto',
     margin: 0
+  },
+  loading: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%'
   }
 }));
