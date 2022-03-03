@@ -8,10 +8,14 @@ export const useStyles = makeStyles(theme => ({
   elementContainer: {
     maxHeight: 200,
     overflowY: 'auto',
-    overflowX: 'hidden'
+    overflowX: 'hidden',
   },
   element: {
-    paddingBottom: theme.spacing(1)
+    background: theme.palette.grey[200],
+    borderRadius: '20px',
+    maxWidth: '95%',
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1)
   },
   formControl: {
     minWidth: '150px'
@@ -19,33 +23,14 @@ export const useStyles = makeStyles(theme => ({
   input: {
     display: 'none'
   },
-  ingredientContainer: {
-    marginLeft: `${theme.spacing(2)} !important`
-  },
-  ingredientName: {
-    maxWidth: 110,
-  },
-  ingredientDescription: {
-    width: 201,
-  },
   ingredientMeasurement: {
     maxWidth: 65,
   },
   ingredientUnit: {
     minWidth: 132.8,
   },
-  stepDetails: {
-    maxWidth: 225,
-  },
-  stepNumber: {
+  stepTime: {
     maxWidth: 65,
-  },
-  recipeStepType: {
-    width: 201,
-  },
-  elementDivider: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2)
   },
   chipPaper: {
     padding: theme.spacing(1),
@@ -65,5 +50,17 @@ export const useStyles = makeStyles(theme => ({
   },
   favoriteIcon: {
     color: red[500]
+  },
+  stepDialog: {
+    minWidth: '280px',
+    width: '300px',
+    height: '175px',
+    maxHeight: '175px'
+  },
+  ingredientDialog: {
+    minWidth: '280px',
+    width: '300px',
+    height: '175px',
+    maxHeight: '175px'
   }
 }));

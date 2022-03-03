@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core';
 import { CloudUpload, Favorite, FavoriteBorder } from '@material-ui/icons';
 import { useStyles } from './styles';
-import { IngredientUnit, IRecipe, RecipeDifficulty, RecipeType, StepType, TimeUnit } from '../../common/types';
+import { IIngredient, IRecipe, IStep, RecipeDifficulty, RecipeType } from '../../common/types';
 import { readFileDataUrlAsync } from '../../utilities/readFileAsync';
 import { RecipeIngredientTable } from './RecipeIngredientTable';
 import { RecipeStepTable } from './RecipeStepTable';
@@ -89,47 +89,17 @@ export const RecipeForm = (props: Props) => {
     if (isValidSubmission) onSubmitFormAction(recipe);
   }
   // -- Ingredient Control -- //
-  const onIngredientItemChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    setIngredientsList(prevState => {
-      const newState = [...prevState];
-      const elementId = event.target.id;
-      const property = elementId.split('-')[0];
-      const index = Number(elementId.split('-')[1]);
-      const newItem = event.target.value;
-      if (property === 'name') {
-        newState[index].name = newItem;
-      } else {
-        newState[index].measurement = newItem as any;
-      }
-      return newState;
+  const onAddIngredient = (ingredient: IIngredient): Promise<boolean> => {
+    return new Promise((resolve, reject) => {
+      setIngredientsList(prevState => [...prevState, ingredient]);
+      setFormErrors(prevState => {
+        if (prevState['ingredients']) delete prevState['ingredients'];
+        return prevState;
+      });
+      resolve(true);
     });
   };
-
-  const onIngredientUnitChange = (event: React.ChangeEvent<{name?: string | undefined; value: unknown; }>) => {
-    setIngredientsList(prevState => {
-      const newState = [...prevState];
-      const elementId = event.target.name!;
-      const newItem = event.target.value as string;
-      const index = Number(elementId.split('-')[1]);
-      newState[index].units = newItem as IngredientUnit;
-      return newState;
-    });
-  };
-
-  const onAddIngredient = () => {
-    setIngredientsList(prevState => {
-      const newState = [...prevState];
-      newState.push({name: '', measurement: 0, units: IngredientUnit.NONE});
-      return newState;
-    });
-    setFormErrors(prevState => {
-      if (prevState['ingredients']) delete prevState['ingredients'];
-      return prevState;
-    });
-  };
-
-  const onRemoveIngredient = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const onRemoveIngredient = (event: React.MouseEvent<HTMLLIElement>) => {
     let areIngredientsEmtpy = false;
     setIngredientsList(prevState => {
       const newState = [...prevState];
@@ -148,53 +118,55 @@ export const RecipeForm = (props: Props) => {
       });
     }
   };
+  const onEditIngredient = (ingredient: IIngredient, index: number): Promise<boolean> => {
+    return new Promise((resolve, reject) => {
+      setIngredientsList(prevState => {
+        const newState = [...prevState];
+        newState[index] = ingredient;
+        return newState;
+      });
+      setFormErrors(prevState => {
+        if (prevState['steps']) delete prevState['steps'];
+        return prevState;
+      });
+      resolve(true);
+    });
+  };
   // -- Ingredient Control -- //
   // -- Step Control -- //
-  const onStepItemChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    setStepsList(prevState => {
-      const newState = [...prevState];
-      const elementId = event.target.id;
-      const property = elementId.split('-')[0];
-      const index = Number(elementId.split('-')[1]);
-      const newItem = event.target.value;
-      if (property === 'number') {
-        newState[index].stepNumber = newItem as any;
-      } else if (property === 'time') {
-        newState[index].time = newItem as any;
-      } else {
-        newState[index].description = newItem;
-      }
-      return newState;
+  const onAddStep = (step: IStep): Promise<boolean> => {
+    return new Promise((resolve, reject) => {
+      setStepsList(prevState => [...prevState, step]);
+      setFormErrors(prevState => {
+        if (prevState['steps']) delete prevState['steps'];
+        return prevState;
+      });
+      resolve(true);
     });
   };
 
-  const onAddStep = () => {
-    setStepsList(prevState => {
-      const newState = [...prevState];
-      newState.push({
-        stepNumber: newState.length + 1,
-        description: '',
-        time: 0,
-        timeUnit: TimeUnit.MINUTES,
-        stepType: StepType.NONE
+  const onEditStep = (step: IStep, index: number): Promise<boolean> => {
+    return new Promise((resolve, reject) => {
+      setStepsList(prevState => {
+        const newState = [...prevState];
+        newState[index] = step;
+        return newState;
+      });
+      setFormErrors(prevState => {
+        if (prevState['steps']) delete prevState['steps'];
+        return prevState;
+      });
+      resolve(true);
     });
-      return newState;
-    });
-    setFormErrors(prevState => {
-      if (prevState['steps']) delete prevState['steps'];
-      return prevState;
-    });
-  };
+  }
 
-  const onRemoveStep = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const onRemoveStep = (event: React.MouseEvent<HTMLLIElement>) => {
     let areStepsEmpty = false;
     setStepsList(prevState => {
       const newState = [...prevState];
       const elementId = event.currentTarget.id;
       const index = Number(elementId.split('-')[1]);
       newState.splice(index, 1);
-      newState.filter(s => s.stepNumber > index + 1).forEach(s => s.stepNumber = s.stepNumber - 1);
       if (newState.length === 0) areStepsEmpty = true;
       return newState;
     });
@@ -208,27 +180,6 @@ export const RecipeForm = (props: Props) => {
     }
   };
 
-  const onStepTimeUnitChange = (event: React.ChangeEvent<{name?: string | undefined; value: unknown; }>) => {
-    setStepsList(prevState => {
-      const newState = [...prevState];
-      const elementId = event.target.name!;
-      const newItem = event.target.value as string;
-      const index = Number(elementId.split('-')[1]);
-      newState[index].timeUnit = newItem as TimeUnit;
-      return newState;
-    });
-  };
-
-  const onStepTypeChange = (event: React.ChangeEvent<{name?: string | undefined; value: unknown; }>) => {
-    setStepsList(prevState => {
-      const newState = [...prevState];
-      const elementId = event.target.name!;
-      const newItem = event.target.value as string;
-      const index = Number(elementId.split('-')[1]);
-      newState[index].stepType = newItem as StepType;
-      return newState;
-    });
-  };
   // -- Step Control -- //
   // -- Keyword Control -- //
   const onAddKeyword = (newKeyword: string) => {
@@ -384,19 +335,16 @@ export const RecipeForm = (props: Props) => {
             data={ingredientsList}
             onAddIngredient={onAddIngredient}
             onRemoveIngredient={onRemoveIngredient}
-            onIngredientItemChange={onIngredientItemChange}
-            onIngredientUnitChange={onIngredientUnitChange}
+            onEditIngredient={onEditIngredient}
             error={formErrors['ingredients']}
           />
         </Grid>
         <Grid item>
           <RecipeStepTable
             data={stepsList}
-            onStepItemChange={onStepItemChange}
             onAddStep={onAddStep}
+            onEditStep={onEditStep}
             onRemoveStep={onRemoveStep}
-            onStepTimeUnitChange={onStepTimeUnitChange}
-            onStepTypeChange={onStepTypeChange}
             error={formErrors['steps']}
           />
         </Grid>

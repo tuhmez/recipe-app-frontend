@@ -149,16 +149,16 @@ export const ViewRecipe = (props: Props) => {
       </FormControl>
     )
   }
-  const stepsList = recipe.steps.map(step => {
-    const stepText = `${step.stepNumber}. ${step.description}`;
-    const stepSupportText = `${step.stepType} - ${step.time} ${step.timeUnit}`;
+  const stepsList = recipe.steps.map((step, index) => {
+    const stepText = `${index + 1}. ${step.description}`;
+    const stepSupportText = `${step.time} ${step.timeUnit}`;
     
     return (
-      <Grid item container direction='column' key={step.stepNumber}>
-        <Grid item key={`step-text-${step.stepNumber}`}>
+      <Grid item container direction='column' key={index}>
+        <Grid item key={`step-text-${index}`}>
           <Typography variant='body1'>{stepText}</Typography>
         </Grid>
-        <Grid item style={{ paddingLeft: '30px' }} key={`step-support-text-${step.stepNumber}`}>
+        <Grid item style={{ paddingLeft: '30px' }} key={`step-support-text-${index}`}>
           <Typography variant='body1'>{stepSupportText}</Typography>
         </Grid>
       </Grid>

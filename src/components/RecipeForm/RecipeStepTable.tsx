@@ -1,170 +1,184 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Divider, FormControl, Grid, IconButton, InputLabel, Select, TextField, Typography } from '@material-ui/core';
-import { Add, Delete } from '@material-ui/icons';
+import React, { useCallback, useEffect, useState } from 'react';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControl,
+  Grid,
+  InputLabel,
+  Select,
+  TextField,
+  Typography
+} from '@material-ui/core';
+import { Add } from '@material-ui/icons';
 
-import { IStep, StepType, TimeUnit } from '../../common/types';
+import { IStep, TimeUnit } from '../../common/types';
 import { useStyles } from './styles';
+import { RecipeStep } from './RecipeStep';
 
 export interface Props {
-  onAddStep: () => void;
-  onRemoveStep: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  onStepItemChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onStepTimeUnitChange: (event: React.ChangeEvent<{name?: string | undefined; value: unknown; }>) => void;
-  onStepTypeChange: (event: React.ChangeEvent<{name?: string | undefined; value: unknown; }>) => void;
+  onAddStep: (step: IStep) => Promise<boolean>;
+  onRemoveStep: (event: React.MouseEvent<HTMLLIElement>) => void;
+  onEditStep: (step: IStep, index: number) => Promise<boolean>;
   data: IStep[];
   error?: string
 }
 
+const defaultStepState: IStep = {
+  description: '',
+  time: 0,
+  timeUnit: TimeUnit.MINUTES
+}
+
+const timeUnitOptions = Object.keys(TimeUnit).map(type => <option key={`timeUnitOption-${type}`} value={type}>{type}</option>);
+
 export const RecipeStepTable = (props: Props) => {
   // Destructure props
-  const { onAddStep, onRemoveStep, onStepItemChange, onStepTimeUnitChange, onStepTypeChange, data, error } = props;
+  const { onAddStep, onRemoveStep, onEditStep, data, error } = props;
   // States
-  const [ stepElements, setStepElements ] = useState<JSX.Element[]>([]);
+  const [stepElements, setStepElements] = useState<JSX.Element[]>([]);
+  const [isStepDialogOpen, setIsStepDialogOpen] = useState(false);
+  const [dialogStepData, setDialogStepData] = useState<IStep>(defaultStepState);
+  const [isNewStep, setIsNewStep] = useState(true);
+  const [editStepIndex, setEditStepIndex] = useState(0);
   // Styles
   const classes = useStyles();
+  // Handlers
+  const onStepDialogToggle = () => setIsStepDialogOpen(prevState => !prevState);
+  const onDialogStepDataDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => setDialogStepData(prevState => ({ ...prevState, description: event.target.value as string }));
+  const onDialogStepDataTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => setDialogStepData(prevState => ({ ...prevState, time: parseInt(event.target.value) }));
+  const onDialogStepDataTimeUnitChange = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown; }>) => setDialogStepData(prevState => ({ ...prevState, timeUnit: event.target.value as TimeUnit }));
+  const onCancelDialogStep = () => {
+    setDialogStepData(defaultStepState);
+    onStepDialogToggle();
+  };
+  const onAddDialogStep = async () => {
+    const isOnAddStepSuccessful = await onAddStep(dialogStepData);
+    if (isOnAddStepSuccessful) {
+      onStepDialogToggle();
+      setDialogStepData(defaultStepState);
+    }
+  };
+  const onEditDialogStep = async () => {
+    const isEditStepSuccessful = await onEditStep(dialogStepData, editStepIndex);
+    if (isEditStepSuccessful) {
+      onStepDialogToggle();
+      setIsNewStep(true);
+      setDialogStepData(defaultStepState);
+    }
+  };
+  // Handlers - Callbacks Hooks
+  const handleRemoveStep = useCallback((event: React.MouseEvent<HTMLLIElement>) => {
+    onRemoveStep(event);
+  }, [onRemoveStep])
   // Effects
   useEffect(() => {
-    const recipeTimeUnitItems = () => {
-      const returnItems: JSX.Element[] = [];
-      Object.keys(TimeUnit).forEach(type => {
-        returnItems.push((
-          <option key={`recipe-time-unit-${type}`} value={type}>{type}</option>
-        ));
-      });
-      return returnItems;
-    };
-    const recipeStepTypeItems = () => {
-      const returnItems: JSX.Element[] = [];
-      Object.keys(StepType).forEach(type => {
-        returnItems.push((
-          <option key={`recipe-time-unit-${type}`} value={type}>{type}</option>
-        ));
-      });
-      return returnItems;
-    };
-    const makeStepElement = (step: IStep, index: number) => {
-      return (
-        <Grid container item direction='column' spacing={2}>
-          <Grid
-            container
-            item
-            alignItems='flex-start'
-            direction='row'
-            spacing={1}
-            key={`step-element-${index}`}
-            className={classes.element}
-          >
-            <Grid item xs={3}>
-              <TextField
-                label='Number'
-                id={`number-${index}`}
-                variant='filled'
-                type='number'
-                value={step.stepNumber}
-                onChange={onStepItemChange}
-                className={classes.stepNumber}
-              />
-            </Grid>
-            <Grid item container direction='column' xs={8} spacing={1} className={classes.stepDetails}>
-              <Grid item>
-                <TextField
-                  label='Description'
-                  id={`description-${index}`}
-                  variant='filled'
-                  value={step.description}
-                  onChange={onStepItemChange}
-                  className={classes.ingredientDescription}
-                  multiline
-                />
-              </Grid>
-              <Grid item>
-                <FormControl variant='filled' className={classes.recipeStepType}>
-                  <InputLabel id='recipe-step-type-label'>Step Type</InputLabel>
-                  <Select
-                    native
-                    name={`stepType-${index}`}
-                    value={step.stepType}
-                    onChange={onStepTypeChange}
-                  >
-                    {recipeStepTypeItems()}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid container item direction='row' spacing={1}>
-                <Grid item>
-                  <TextField
-                    label='Time'
-                    id={`time-${index}`}
-                    variant='filled'
-                    value={step.time}
-                    type='number'
-                    onChange={onStepItemChange}
-                    className={classes.stepNumber}
-                  />
-                </Grid>
-                <Grid item>
-                  <FormControl variant='filled'>
-                    <InputLabel id='recipe-step-time-unit-label'>Time Unit</InputLabel>
-                    <Select
-                      native
-                      name={`timeUnit-${index}`}
-                      value={step.timeUnit}
-                      onChange={onStepTimeUnitChange}
-                    >
-                      {recipeTimeUnitItems()}
-                    </Select>
-                  </FormControl>
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid item xs>
-              <IconButton id={`step-${index}`} onClick={onRemoveStep} size='small'><Delete /></IconButton>
-            </Grid>
-          </Grid>
-          {index !== data.length - 1 ? (<Grid item><Divider variant='middle'/></Grid>) : undefined}
-        </Grid>
-      )
-    };
-    setStepElements(data.map((d, i) => makeStepElement(d, i)));
-    return () => {
-      setStepElements([]);
-    }
-  },
-  [
-    data,
-    onRemoveStep,
-    onStepItemChange,
-    onStepTimeUnitChange,
-    onStepTypeChange,
-    classes.element,
-    classes.stepNumber,
-    classes.ingredientDescription,
-    classes.recipeStepType,
-    classes.stepDetails
-  ]);
-
+    setStepElements(data.map((step, index) =>
+      <RecipeStep
+        step={step}
+        index={index}
+        handleRemoveStep={handleRemoveStep}
+        onStepDialogToggle={onStepDialogToggle}
+        setDialogStepData={setDialogStepData}
+        setEditStepIndex={setEditStepIndex}
+        setIsNewStep={setIsNewStep}
+      />
+    ))
+  }, [handleRemoveStep, data]);
+  // Subcomponents
   const errorComponent = (
     !!error
-    ? <Typography className={classes.errorHelperText}>{error}</Typography>
-    : undefined
+      ? <Typography className={classes.errorHelperText}>{error}</Typography>
+      : undefined
   );
 
   return (
     <div>
       <Grid container direction='row' justifyContent='space-between' className={classes.table}>
-        <Grid item>
+        <Grid item key='step-header-text'>
           <Typography variant='h5' className={!!error ? classes.errorText : undefined}>Steps*</Typography>
         </Grid>
-        <Grid item>
-          <Button variant='outlined' color='primary' startIcon={<Add/>} onClick={onAddStep}>
+        <Grid item key='add-step-button'>
+          <Button variant='outlined' color='primary' startIcon={<Add />} onClick={onStepDialogToggle}>
             Add Step
           </Button>
         </Grid>
       </Grid>
-      <Grid container spacing={2} className={classes.elementContainer}>
+      <Grid container spacing={1} className={classes.elementContainer}>
         {stepElements}
       </Grid>
       {errorComponent}
+      <Dialog
+        open={isStepDialogOpen}
+        onClose={onStepDialogToggle}
+      >
+        <DialogTitle>{isNewStep ? 'Add' : 'Edit'} Step</DialogTitle>
+        <DialogContent className={classes.stepDialog}>
+          <Grid container direction='column' spacing={1}>
+            <Grid item>
+              <TextField
+                label='Description'
+                id='new-step-description'
+                key='new-step-description'
+                variant='filled'
+                value={dialogStepData.description}
+                onChange={onDialogStepDataDescriptionChange}
+                multiline
+                fullWidth
+                minRows={3}
+                maxRows={3}
+              />
+            </Grid>
+            <Grid item container spacing={1}>
+              <Grid item>
+                <TextField
+                  label='Time'
+                  id='new-step-time'
+                  key='new-step-time'
+                  variant='filled'
+                  value={dialogStepData.time}
+                  type='number'
+                  onChange={onDialogStepDataTimeChange}
+                  className={classes.stepTime}
+                />
+              </Grid>
+              <Grid item>
+                <FormControl variant='filled'>
+                  <InputLabel id='recipe-step-time-unit-label'>Time Unit</InputLabel>
+                  <Select
+                    native
+                    name='new-step-timeUnit'
+                    key='new-step-timeUnit'
+                    value={dialogStepData.timeUnit}
+                    onChange={onDialogStepDataTimeUnitChange}
+                  >
+                    {timeUnitOptions}
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant='outlined'
+            onClick={onCancelDialogStep}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant='contained'
+            color='primary'
+            disableElevation
+            onClick={isNewStep ? onAddDialogStep : onEditDialogStep}
+            disabled={dialogStepData.description === ''}
+          >
+            {isNewStep ? 'Add' : 'Save'}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   )
 };
