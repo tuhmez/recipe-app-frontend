@@ -1,4 +1,4 @@
-import { IRecipe, RecipeType, RecipeDifficulty, IIngredient, IngredientUnit, IStep, TimeUnit, StepType } from './types';
+import { IRecipe, RecipeType, RecipeDifficulty, IIngredient, IngredientUnit, IStep, TimeUnit } from './types';
 import { tacoOverview, emptyImage } from './imagesBase64';
 
 export const exampleIngredients: IIngredient[] = [
@@ -21,18 +21,14 @@ export const exampleIngredients: IIngredient[] = [
 
 export const exampleSteps: IStep[] = [
   {
-    stepNumber: 1,
     description: 'Cook chicken',
     time: 20,
     timeUnit: TimeUnit.MINUTES,
-    stepType: StepType.BOIL
   },
   {
-    stepNumber: 2,
     description: 'Shred chicken',
     time: 5,
     timeUnit: TimeUnit.MINUTES,
-    stepType: StepType.SHRED
   },
 ];
 
