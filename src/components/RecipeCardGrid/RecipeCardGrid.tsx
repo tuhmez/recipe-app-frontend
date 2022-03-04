@@ -1,6 +1,9 @@
-import { Grid, Theme, Typography } from '@material-ui/core';
+import { Button, Grid, Theme, Typography } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { IRecipe } from '../../common/types';
+import { CLEAR_SEARCH } from '../../redux/reducer';
+import { selectSearchTerm } from '../../redux/selectors';
 
 import { RecipeCard } from '../RecipeCard';
 import { useStyles } from './styles';
@@ -14,6 +17,10 @@ export interface Props {
 export const RecipeCardGrid = (props: Props) => {
   // Props deconstruction
   const { handleCardClick, recipes, theme } = props;
+  // Selectors
+  const searchTerm = useSelector(selectSearchTerm);
+  // Dispatch
+  const dispatch = useDispatch();
   // Styles
   const classes = useStyles();
 
@@ -46,16 +53,33 @@ export const RecipeCardGrid = (props: Props) => {
         {subGridItems}
       </Grid>
     )
-  }
+  };
+  
+  const onClearSearch = () => {
+    dispatch({ type: CLEAR_SEARCH });
+  };
+
+  const clearSearchComponent = (
+    <Grid item key='clear-search-component'>
+      <Button
+        variant='contained'
+        color='primary'
+        onClick={onClearSearch}
+        disableElevation
+      >
+        Clear Search
+      </Button>
+    </Grid>
+  );
 
   const noRecipeComponent = (
-    <Grid item key='no-recipe-component'>
+    <Grid item key='no-recipe-text'>
       <Typography
         variant='subtitle1'
         className={classes.noRecipesText}
         key='no-recipe-text'
       >
-        No recipes yet!
+        {searchTerm !== '' ? 'No recipes found!' : 'No recipes yet!'}
       </Typography>
     </Grid>
   );
@@ -66,6 +90,7 @@ export const RecipeCardGrid = (props: Props) => {
       ? subGrid
       : noRecipeComponent
       }
+      {subGrid.length !== 0 && searchTerm !== '' ? clearSearchComponent : undefined}
     </Grid>
   );
 };

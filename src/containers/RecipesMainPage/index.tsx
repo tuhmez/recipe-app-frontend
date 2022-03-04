@@ -3,15 +3,19 @@ import { Add } from '@material-ui/icons';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { selectRecipes } from '../../redux/selectors';
+import { selectRecipes, selectSearchTerm } from '../../redux/selectors';
 import { possibleRoutes, viewRecipePageNavigator } from '../../routes/routeConstants';
 import { RecipeCardGrid } from '../../components/RecipeCardGrid';
 import { useStyles } from './styles';
 import { IRecipe } from '../../common/types';
+import { useEffect, useState } from 'react';
+import { findRecipe } from '../../utilities/findRecipe';
 
 export const RecipesMain = () => {
+  const [recipeData, setRecipeData] = useState<IRecipe[]>([]);
   // Selectors
   const recipes = useSelector(selectRecipes);
+  const searchTerm = useSelector(selectSearchTerm);
   // Navigation
   const navigate = useNavigate();
   // Handlers
@@ -26,10 +30,21 @@ export const RecipesMain = () => {
   const theme = useTheme();
   // Constants
   const { createRecipePage } = possibleRoutes;
+  useEffect(() => {
+    setRecipeData(recipes);
+  }, [recipes]);
+  // Effects
+  useEffect(() => {
+    if (searchTerm !== '') {
+      setRecipeData(findRecipe(searchTerm, recipes));
+    } else {
+      setRecipeData(recipes);
+    }
+  }, [searchTerm, recipes]);
 
   return (
     <div>
-      <RecipeCardGrid recipes={recipes} theme={theme} handleCardClick={onCardClick} />
+      <RecipeCardGrid recipes={recipeData} theme={theme} handleCardClick={onCardClick} />
       <Fab
         color='primary'
         aria-label='add'

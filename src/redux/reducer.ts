@@ -4,6 +4,7 @@ import { RecipeState } from '../type';
 
 const initialState: RecipeState = {
   recipes: [],
+  searchTerm: '',
   error: '',
   isLoading: false
 };
@@ -118,6 +119,20 @@ const handleGetRecipeFailure = (state: RecipeState, action: any): RecipeState =>
     error: action.payload
   };
 };
+export const GET_RECIPE_BY_SEARCH = createAction('GET_RECIPE_BY_SEARCH');
+const handleGetRecipeBySearch = (state: RecipeState, action: any): RecipeState => {
+  return {
+    ...state,
+    searchTerm: action.payload
+  };
+};
+export const CLEAR_SEARCH = createAction('CLEAR_SEARCH');
+const handleClearSearch = (state: RecipeState): RecipeState => {
+  return {
+    ...state,
+    searchTerm: ''
+  };
+};
 
 const appReducer = (
   state: RecipeState = initialState,
@@ -148,6 +163,10 @@ const appReducer = (
       return handleGetRecipeSuccess(state, action);
     case GET_RECIPES_FAILURE:
       return handleGetRecipeFailure(state, action);
+    case GET_RECIPE_BY_SEARCH:
+      return handleGetRecipeBySearch(state, action);
+    case CLEAR_SEARCH:
+      return handleClearSearch(state);
     default:      
       return state;
   }

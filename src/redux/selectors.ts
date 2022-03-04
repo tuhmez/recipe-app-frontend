@@ -17,3 +17,8 @@ export const selectError = createSelector(
   globalState,
   (state: RecipeState) => state.error
 );
+
+export const selectSearchTerm = createSelector(
+  globalState,
+  (state: RecipeState) => state.searchTerm
+);

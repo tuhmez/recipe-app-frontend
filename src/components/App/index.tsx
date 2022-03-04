@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { CircularProgress, Container, CssBaseline } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router';
 
@@ -17,7 +17,8 @@ import { possibleRoutes } from '../../routes/routeConstants';
 import SearchAppBar from '../SearchAppBar';
 import { useStyles } from './styles';
 import './App.css';
-import { ADD_RECIPE_FAILURE, ADD_RECIPE_SUCCESS, DELETE_RECIPE_FAILURE, DELETE_RECIPE_SUCCESS, GET_RECIPES_FAILURE, GET_RECIPES_SUCCESS, UPDATE_RECIPE_FAILURE, UPDATE_RECIPE_SUCCESS } from '../../redux/reducer';
+import { ADD_RECIPE_FAILURE, ADD_RECIPE_SUCCESS, DELETE_RECIPE_FAILURE, DELETE_RECIPE_SUCCESS, GET_RECIPES_FAILURE, GET_RECIPES_SUCCESS, GET_RECIPE_BY_SEARCH, UPDATE_RECIPE_FAILURE, UPDATE_RECIPE_SUCCESS } from '../../redux/reducer';
+import { selectIsLoading } from '../../redux/selectors';
 
 export const App = () => {
   // App constants
@@ -28,6 +29,8 @@ export const App = () => {
   const [ socket, setSocket ] = useState<SocketClient | undefined>(undefined);
   // Dispatch
   const dispatch = useDispatch();
+  // Selectors
+  const isLoading = useSelector(selectIsLoading);
   // Effects
   useEffect(() => {
     const createdSocket = new SocketClient(serverAddress, serverPort, {
@@ -97,16 +100,20 @@ export const App = () => {
   const classes = useStyles();
   // Subcomponents
   const LoadingComponent = () => <div className={classes.loading}><CircularProgress /></div>
+  // Handlers
+  const onRecipeSearch = (searchTerm: string) => {
+    dispatch({ type: GET_RECIPE_BY_SEARCH, payload: searchTerm });
+  };
 
   return (
     <div>
       <CssBaseline />
       <SearchAppBar
-        searchFunction={(searchTerm: string) => console.log(searchTerm)}
+        searchFunction={onRecipeSearch}
         theme={theme}
       />
       <Container className={classes.container}>
-        {!socket ? <LoadingComponent /> : <Routes socket={socket}/>}
+        {!socket || isLoading ? <LoadingComponent /> : <Routes socket={socket}/>}
       </Container>
     </div>
   );

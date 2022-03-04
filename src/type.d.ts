@@ -2,6 +2,7 @@ import { IRecipe } from "./common/types";
 
 type RecipeState = {
   recipes: IRecipe[];
+  searchTerm: string;
   isLoading: boolean;
   error: string;
 };

@@ -16,6 +16,8 @@ import { ArrowBackIos, InfoOutlined, Menu, MenuBookOutlined, Search } from '@mat
 
 import { useStyles } from './styles';
 import { useLocation, useNavigate } from 'react-router';
+import { useSelector } from 'react-redux';
+import { selectSearchTerm } from '../../redux/selectors';
 
 interface SearchAppBarProps {
   searchFunction: (searchTerm: string) => void;
@@ -51,6 +53,8 @@ const SearchAppBar = (props: SearchAppBarProps) => {
   const navigate = useNavigate();
   // Location
   const location = useLocation();
+  // Selectors
+  const searchTerm = useSelector(selectSearchTerm);
   // Styles
   const classes = useStyles(theme);
   // Handlers
@@ -83,6 +87,11 @@ const SearchAppBar = (props: SearchAppBarProps) => {
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  useEffect(() => {
+    if (searchTerm === '') {
+      setSearch('');
+    }
+  }, [searchTerm]);
 
   const navButton = () => {
     const strippedPathname = location.pathname.substring(1);
@@ -157,6 +166,7 @@ const SearchAppBar = (props: SearchAppBarProps) => {
               }}
               inputProps={{ 'aria-label': 'search' }}
               onChange={changeSearchInput}
+              value={search}
               onKeyDown={searchKeyPress}
             />
           </div>
