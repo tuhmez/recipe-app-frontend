@@ -3,7 +3,11 @@ import { red } from '@material-ui/core/colors';
 
 export const useStyles = makeStyles((theme) => ({
   card: {
-    width: '180px'
+    width: '180px',
+  },
+  favoritedCard: {
+    width: '180px',
+    borderColor: red[500]
   },
   media: {
     height: 100,
