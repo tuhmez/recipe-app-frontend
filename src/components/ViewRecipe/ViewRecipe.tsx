@@ -304,7 +304,7 @@ export const ViewRecipe = (props: Props) => {
           </Button>
           <Button
             color='secondary'
-            variant='outlined'
+            variant='contained'
             size='large'
             disableElevation
             onClick={handleDeleteRecipe}
