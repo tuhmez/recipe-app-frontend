@@ -47,7 +47,7 @@ export const RecipeIngredientTable = (props: Props) => {
   // Handlers
   const onIngredientDialogToggle = () => setIsIngredientDialogOpen(prevState => !prevState);
   const onDialogIngredientNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setDialogIngredientData(prevState => ({ ...prevState, name: event.target.value }));
-  const onDialogIngredientMeasurementChange = (event: React.ChangeEvent<HTMLInputElement>) => setDialogIngredientData(prevState => ({ ...prevState, measurement: parseInt(event.target.value) }));
+  const onDialogIngredientMeasurementChange = (event: React.ChangeEvent<HTMLInputElement>) => setDialogIngredientData(prevState => ({ ...prevState, measurement: parseFloat(event.target.value) }));
   const onDialogIngredientUnitTypeChange = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown; }>) => setDialogIngredientData(prevState => ({ ...prevState, units: event.target.value as IngredientUnit }));
   const onCancelDialogIngredient = () => {
     setDialogIngredientData(defaultIngredientState);

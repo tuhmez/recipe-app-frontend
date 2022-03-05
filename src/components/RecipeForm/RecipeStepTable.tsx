@@ -48,7 +48,7 @@ export const RecipeStepTable = (props: Props) => {
   // Handlers
   const onStepDialogToggle = () => setIsStepDialogOpen(prevState => !prevState);
   const onDialogStepDataDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => setDialogStepData(prevState => ({ ...prevState, description: event.target.value as string }));
-  const onDialogStepDataTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => setDialogStepData(prevState => ({ ...prevState, time: parseInt(event.target.value) }));
+  const onDialogStepDataTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => setDialogStepData(prevState => ({ ...prevState, time: parseFloat(event.target.value) }));
   const onDialogStepDataTimeUnitChange = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown; }>) => setDialogStepData(prevState => ({ ...prevState, timeUnit: event.target.value as TimeUnit }));
   const onCancelDialogStep = () => {
     setDialogStepData(defaultStepState);
