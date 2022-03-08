@@ -1,7 +1,8 @@
-import { IRecipe } from "./common/types";
+import { IIssue, IRecipe } from "./common/types";
 
 type RecipeState = {
   recipes: IRecipe[];
+  issues: IIssue[];
   searchTerm: string;
   isLoading: boolean;
   error: string;
