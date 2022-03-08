@@ -1,5 +1,6 @@
 import { Divider, Grid, IconButton, Tooltip, Typography } from '@material-ui/core';
 import { GitHub, LinkedIn, Twitter } from '@material-ui/icons';
+import { getAppVersion } from '../../utilities/getAppVersion';
 import { useStyles } from './styles';
 
 interface ITechnologyUsed {
@@ -88,6 +89,8 @@ export const AboutPage = () => {
     )
   });
 
+  const appVersion = getAppVersion();
+
   return (
     <Grid container direction='column' justifyContent='center' alignItems='center' spacing={1}>
       <Grid item>
@@ -130,6 +133,9 @@ export const AboutPage = () => {
         alignItems='center'
       >
         {socialMedia}
+      </Grid>
+      <Grid item>
+        <Typography variant='caption'>Version: {appVersion}</Typography>
       </Grid>
     </Grid>
   );
