@@ -5,6 +5,7 @@ export const possibleRoutes = {
   editRecipePage: '/recipes/edit-recipe/:recipeName',
   viewRecipePage: '/recipes/view-recipe/:recipeName',
   about: '/about',
+  issues: '/issues'
 };
 
 export const viewRecipePageNavigator = (recipeName: string) => `/recipes/view-recipe/${recipeName}`;

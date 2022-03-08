@@ -64,5 +64,8 @@ export const useStyles = makeStyles((theme) => ({
   },
   selectedItem: {
     color: theme.palette.primary.main
+  },
+  drawer: {
+    width: '175px'
   }
 }));

@@ -12,7 +12,7 @@ import {
   Toolbar,
   Typography
 } from '@material-ui/core';
-import { ArrowBackIos, InfoOutlined, Menu, MenuBookOutlined, Search } from '@material-ui/icons';
+import { ArrowBackIos, BugReport, InfoOutlined, Menu, MenuBookOutlined, Search } from '@material-ui/icons';
 
 import { useStyles } from './styles';
 import { useLocation, useNavigate } from 'react-router';
@@ -29,7 +29,7 @@ interface IDrawerMenuItemIcons {
   }
 }
 
-const drawerItems = ['Recipes', 'About'];
+const drawerItems = ['Recipes', 'About', 'Issues'];
 const drawerMenuItemIcons: IDrawerMenuItemIcons = {
   recipes: {
     normal: <MenuBookOutlined fontSize='small' />,
@@ -38,6 +38,10 @@ const drawerMenuItemIcons: IDrawerMenuItemIcons = {
   about: {
     normal: <InfoOutlined fontSize='small' />,
     active: <InfoOutlined fontSize='small' color='primary' />,
+  },
+  issues: {
+    normal: <BugReport fontSize='small' />,
+    active: <BugReport fontSize='small' color='primary' />
   }
 };
 
@@ -178,7 +182,7 @@ const SearchAppBar = (props: SearchAppBarProps) => {
         onClose={onMenuToggle}
       >
         {/* need some sort of logo or padding text*/}
-        <List>
+        <List className={classes.drawer}>
           {drawerListItems}
         </List>
       </Drawer>

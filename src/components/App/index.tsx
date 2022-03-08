@@ -11,20 +11,23 @@ import {
   IEditRecipeResponse,
   IDeleteRecipeResponse,
   IGetRecipesResponse,
+  IAddIssueResponse,
+  IDeleteIssueResponse,
+  IGetIssueResponse,
 } from '../../socket/interfaces';
 import { Routes } from '../../routes/routes';
 import { possibleRoutes } from '../../routes/routeConstants';
 import SearchAppBar from '../SearchAppBar';
 import { useStyles } from './styles';
 import './App.css';
-import { ADD_RECIPE_FAILURE, ADD_RECIPE_SUCCESS, DELETE_RECIPE_FAILURE, DELETE_RECIPE_SUCCESS, GET_RECIPES_FAILURE, GET_RECIPES_SUCCESS, GET_RECIPE_BY_SEARCH, UPDATE_RECIPE_FAILURE, UPDATE_RECIPE_SUCCESS } from '../../redux/reducer';
+import { ADD_ISSUE_FAILURE, ADD_ISSUE_SUCCESS, ADD_RECIPE_FAILURE, ADD_RECIPE_SUCCESS, DELETE_ISSUE_FAILURE, DELETE_ISSUE_SUCCESS, DELETE_RECIPE_FAILURE, DELETE_RECIPE_SUCCESS, GET_ISSUE_FAILURE, GET_ISSUE_SUCCESS, GET_RECIPES_FAILURE, GET_RECIPES_SUCCESS, GET_RECIPE_BY_SEARCH, UPDATE_RECIPE_FAILURE, UPDATE_RECIPE_SUCCESS } from '../../redux/reducer';
 import { selectIsLoading } from '../../redux/selectors';
 
 export const App = () => {
   // App constants
   const serverAddress = process.env.SERVER_ADDRESS || window.location.hostname;
   const serverPort = process.env.SERVER_PORT || '3001';
-  const { recipes } = possibleRoutes;
+  const { issues, recipes } = possibleRoutes;
   // States
   const [ socket, setSocket ] = useState<SocketClient | undefined>(undefined);
   // Dispatch
@@ -76,6 +79,39 @@ export const App = () => {
           }
           dispatch({ type: GET_RECIPES_SUCCESS, payload: res });
         }
+      },
+      addIssueResponseFn: (res: IAddIssueResponse) => {
+        if (res.error) {
+          enqueueSnackbar(res.error, { variant: 'error' });
+          dispatch({ type: ADD_ISSUE_FAILURE, payload: res.error });
+        } else {
+          enqueueSnackbar('Issue successfully submitted!', { variant: 'success' });
+          dispatch({ type: ADD_ISSUE_SUCCESS, payload: res.issue });
+          navigation(issues);
+        }
+      },
+      deleteIssueResponseFn: (res: IDeleteIssueResponse) => {
+        if (res.error) {
+          enqueueSnackbar(res.error, { variant: 'error' });
+          dispatch({ type: DELETE_ISSUE_FAILURE, payload: res.error });
+        } else {
+          enqueueSnackbar(`${res.issue!.name} resolved!`, { variant: 'success' });
+          dispatch({ type: DELETE_ISSUE_SUCCESS, payload: res.issue });
+          navigation(issues);
+        }
+      },
+      getIssuesResponseFn: (res: IGetIssueResponse) => {
+        if (res.error) {
+          enqueueSnackbar(res.error, { variant: 'error' });
+          dispatch({ type: GET_ISSUE_FAILURE, payload: res.error });
+        } else {
+          if (res.issueId) {
+            enqueueSnackbar(`${res.issues![0].name} retrieved!`, { variant: 'success' });
+          } else {
+            enqueueSnackbar('Retrieved issues!', { variant: 'success' });
+          }
+          dispatch({ type: GET_ISSUE_SUCCESS, payload: res });
+        }
       }
     });
     setSocket(createdSocket);
@@ -90,6 +126,7 @@ export const App = () => {
   useEffect(() => {
     if (socket) {
       socket.getRecipes();
+      socket.getIssues();
     }
   }, [socket]);
   // Navigation
