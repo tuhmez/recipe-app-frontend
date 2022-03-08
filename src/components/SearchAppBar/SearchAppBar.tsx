@@ -122,6 +122,29 @@ const SearchAppBar = (props: SearchAppBarProps) => {
     }
   };
 
+  const searchInput = () => {
+    const strippedPathname = location.pathname.substring(1);
+    if (strippedPathname === 'issues') return undefined;
+    return (
+      <div className={classes.search}>
+        <div className={classes.searchIcon}>
+          <Search />
+        </div>
+        <InputBase
+          placeholder='Search…'
+          classes={{
+            root: classes.inputRoot,
+            input: classes.inputInput,
+          }}
+          inputProps={{ 'aria-label': 'search' }}
+          onChange={changeSearchInput}
+          value={search}
+          onKeyDown={searchKeyPress}
+        />
+      </div>
+    );
+  };
+
 
   const drawerListItems = drawerItems.map(i => {
     const itemLowerCase = i.toLowerCase();
@@ -158,22 +181,7 @@ const SearchAppBar = (props: SearchAppBarProps) => {
           <Typography className={classes.title} variant='h6' noWrap>
             {searchHeader}
           </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <Search />
-            </div>
-            <InputBase
-              placeholder='Search…'
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-              onChange={changeSearchInput}
-              value={search}
-              onKeyDown={searchKeyPress}
-            />
-          </div>
+          {searchInput()}
         </Toolbar>
       </AppBar>
       <Drawer
