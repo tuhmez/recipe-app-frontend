@@ -22,3 +22,8 @@ export const selectSearchTerm = createSelector(
   globalState,
   (state: RecipeState) => state.searchTerm
 );
+
+export const selectIssues = createSelector(
+  globalState,
+  (state: RecipeState) => state.issues
+);

@@ -1,4 +1,4 @@
-import { IRecipe } from '../common/types';
+import { IIssue, IRecipe } from '../common/types';
 
 // Add Recipe Interfaces
 export interface IAddRecipeRequest extends IRecipe {}
@@ -36,4 +36,30 @@ export interface IGetRecipesResponse {
 // Ping Interface
 export interface IPingResponse {
   status: string;
+}
+
+// Add Issue Interfaces
+export interface IAddIssueRequest extends IIssue {}
+export interface IAddIssueResponse {
+  issue?: IIssue;
+  error?: string;
+}
+
+// Delete Recipe Interfaces
+export interface IDeleteIssueRequest {
+  issueId: string;
+}
+export interface IDeleteIssueResponse {
+  issue?: IIssue;
+  error?: string;
+}
+
+// Get Issue Interfaces
+export interface IGetIssueByIdRequest {
+  issueId: string;
+}
+export interface IGetIssueResponse {
+  issueId?: string;
+  issues?: IIssue[];
+  error?: string;
 }

@@ -1,9 +1,10 @@
 import { createAction } from '@reduxjs/toolkit';
-import { IRecipe } from '../common/types';
+import { IIssue, IRecipe } from '../common/types';
 import { RecipeState } from '../type';
 
 const initialState: RecipeState = {
   recipes: [],
+  issues: [],
   searchTerm: '',
   error: '',
   isLoading: false
@@ -107,6 +108,7 @@ const handleGetRecipeSuccess = (state: RecipeState, action: any): RecipeState =>
     const newRecipesToAdd = (action.payload.recipes as IRecipe[]).filter(r => !prevRecipeState.includes(r));
     return {
       ...state,
+      isLoading: false,
       recipes: prevRecipeState.concat(newRecipesToAdd)
     };
   }
@@ -132,6 +134,88 @@ const handleClearSearch = (state: RecipeState): RecipeState => {
     ...state,
     searchTerm: ''
   };
+};
+export const ADD_ISSUE_REQUEST = createAction('ADD_ISSUE_REQUEST');
+const handleAddIssueRequest = (state: RecipeState): RecipeState => {
+  return {
+    ...state,
+    isLoading: true,
+  };
+};
+export const ADD_ISSUE_SUCCESS = createAction('ADD_ISSUE_SUCCESS');
+const handleAddIssueSuccess = (state: RecipeState, action: any): RecipeState => {
+  const newIssueState: IIssue[] = [...state.issues, action.payload];
+  return {
+    ...state,
+    isLoading: false,
+    issues: newIssueState
+  };
+};
+export const ADD_ISSUE_FAILURE = createAction('ADD_ISSUE_FAILURE');
+const handleAddIssueFailure = (state: RecipeState, action: any): RecipeState => {
+  return {
+    ...state,
+    isLoading: false,
+    error: action.payload
+  };
+};
+export const GET_ISSUE_REQUEST = createAction('GET_ISSUE_REQUEST');
+const handleGetIssueRequest = (state: RecipeState): RecipeState => {
+  return {
+    ...state,
+    isLoading: true
+  }
+};
+export const GET_ISSUE_SUCCESS = createAction('GET_ISSUE_SUCCESS');
+const handleGetIssueSuccess = (state: RecipeState, action: any): RecipeState => {
+  const prevIssueState = [...state.issues];
+  if (action.payload.issueId) {
+    const recipeIndex = prevIssueState.findIndex(r => r.issueId === action.payload.issueId);
+    prevIssueState[recipeIndex] = action.payload.issues[0];
+    return {
+      ...state,
+      isLoading: false,
+      issues: prevIssueState
+    };
+  } else {
+    const newIssuesToAdd = (action.payload.issues as IIssue[]).filter(r => !prevIssueState.includes(r));
+    return {
+      ...state,
+      isLoading: false,
+      issues: prevIssueState.concat(newIssuesToAdd)
+    };
+  }
+};
+export const GET_ISSUE_FAILURE = createAction('GET_ISSUE_FAILURE');
+const handleGetIssueFailure = (state: RecipeState, action: any): RecipeState => {
+  return {
+    ...state,
+    isLoading: false,
+    error: action.payload
+  }
+};
+export const DELETE_ISSUE_REQUEST = createAction('DELETE_ISSUE_REQUEST');
+const handleDeleteIssueRequest = (state: RecipeState): RecipeState => {
+  return {
+    ...state,
+    isLoading: true
+  }
+};
+export const DELETE_ISSUE_SUCCESS = createAction('DELETE_ISSUE_SUCCESS');
+const handleDeleteIssueSuccess = (state: RecipeState, action: any): RecipeState => {
+  return {
+    ...state,
+    isLoading: false,
+    issues: state.issues.filter(r => r.issueId !== action.payload.issueId)
+  }
+};
+export const DELETE_ISSUE_FAILURE = createAction('DELETE_ISSUE_FAILURE');
+const handleDeleteIssueFailure = (state: RecipeState, action: any): RecipeState => {
+  return {
+    ...state,
+    isLoading: false,
+    error: action.payload
+  }
 };
 
 const appReducer = (
@@ -167,7 +251,25 @@ const appReducer = (
       return handleGetRecipeBySearch(state, action);
     case CLEAR_SEARCH:
       return handleClearSearch(state);
-    default:      
+    case ADD_ISSUE_REQUEST:
+      return handleAddIssueRequest(state);
+    case ADD_ISSUE_SUCCESS:
+      return handleAddIssueSuccess(state, action);
+    case ADD_ISSUE_FAILURE:
+      return handleAddIssueFailure(state, action);
+    case GET_ISSUE_REQUEST:
+      return handleGetIssueRequest(state);
+    case GET_ISSUE_SUCCESS:
+      return handleGetIssueSuccess(state, action);
+    case GET_ISSUE_FAILURE:
+      return handleGetIssueFailure(state, action);
+    case DELETE_ISSUE_REQUEST:
+      return handleDeleteIssueRequest(state);
+    case DELETE_ISSUE_SUCCESS:
+      return handleDeleteIssueSuccess(state, action);
+    case DELETE_ISSUE_FAILURE:
+      return handleDeleteIssueFailure(state, action);
+    default:
       return state;
   }
 }

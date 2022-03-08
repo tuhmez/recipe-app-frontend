@@ -10,7 +10,14 @@ import {
   GET_RECIPES_RESPONSE,
   GET_RECIPE_BY_ID_REQUEST,
   PING,
-  PONG
+  PONG,
+  ADD_ISSUE_RESPONSE,
+  DELETE_ISSUE_RESPONSE,
+  GET_ISSUE_RESPONSE,
+  ADD_ISSUE_REQUEST,
+  GET_ISSUE_REQUEST,
+  GET_ISSUE_BY_ID_REQUEST,
+  DELETE_ISSUE_REQUEST
 } from './constants';
 import {
   IAddRecipeResponse,
@@ -21,7 +28,13 @@ import {
   IAddRecipeRequest,
   IEditRecipeRequest,
   IDeleteRecipeRequest,
-  IGetRecipeByIdRequest
+  IGetRecipeByIdRequest,
+  IAddIssueResponse,
+  IDeleteIssueResponse,
+  IGetIssueResponse,
+  IAddIssueRequest,
+  IGetIssueByIdRequest,
+  IDeleteIssueRequest
 } from './interfaces';
 
 export interface ISocketCallbacks {
@@ -29,6 +42,9 @@ export interface ISocketCallbacks {
   editRecipeResponseFn: (res: IEditRecipeResponse) => void;
   deleteRecipeResponseFn: (res: IDeleteRecipeResponse) => void;
   getRecipesResponseFn: (res: IGetRecipesResponse) => void;
+  addIssueResponseFn: (res: IAddIssueResponse) => void;
+  deleteIssueResponseFn: (res: IDeleteIssueResponse) => void;
+  getIssuesResponseFn: (res: IGetIssueResponse) => void;
 }
 
 export class SocketClient {
@@ -40,6 +56,9 @@ export class SocketClient {
       editRecipeResponseFn,
       deleteRecipeResponseFn,
       getRecipesResponseFn,
+      addIssueResponseFn,
+      deleteIssueResponseFn,
+      getIssuesResponseFn,
     } = callbacks;
     const sock = io(url);
 
@@ -55,6 +74,15 @@ export class SocketClient {
       })
       .on(GET_RECIPES_RESPONSE, (res: IGetRecipesResponse) => {
         getRecipesResponseFn(res);
+      })
+      .on(ADD_ISSUE_RESPONSE, (res: IAddIssueResponse) => {
+        addIssueResponseFn(res);
+      })
+      .on(DELETE_ISSUE_RESPONSE, (res: IDeleteIssueResponse) => {
+        deleteIssueResponseFn(res);
+      })
+      .on(GET_ISSUE_RESPONSE, (res: IGetIssueResponse) => {
+        getIssuesResponseFn(res);
       })
       .on(PONG, (res: IPingResponse) => {
         console.log(res);
@@ -84,6 +112,22 @@ export class SocketClient {
 
   getRecipeById(req: IGetRecipeByIdRequest) {
     this.socket.emit(GET_RECIPE_BY_ID_REQUEST, req);
+  }
+
+  addIssue(req: IAddIssueRequest) {
+    this.socket.emit(ADD_ISSUE_REQUEST, req);
+  }
+
+  getIssues() {
+    this.socket.emit(GET_ISSUE_REQUEST);
+  }
+
+  getIssueById(req: IGetIssueByIdRequest) {
+    this.socket.emit(GET_ISSUE_BY_ID_REQUEST, req);
+  }
+
+  deleteIssue(req: IDeleteIssueRequest) {
+    this.socket.emit(DELETE_ISSUE_REQUEST, req);
   }
 
   ping() {
