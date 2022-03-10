@@ -14,7 +14,7 @@ export default storyExport;
 export const BaseRecipeImages = () => {
   return (
     <ThemeProvider theme={theme}>
-      <RecipeImages data={exampleRecipe.images}/>
+      <RecipeImages data={exampleRecipe.images} handleRemoveImage={() => console.log('')}/>
     </ThemeProvider>
   )
 };

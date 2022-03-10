@@ -262,7 +262,13 @@ export const RecipeForm = (props: Props) => {
       // handle null file upload
       enqueueSnackbar('Failed to upload image!', { variant: 'error' });
     }
-
+  }
+  const handleRemoveImage = (index: number) => {
+    setImages(prevState => {
+      const newState = [...prevState];
+      newState.splice(index, 1);
+      return newState;
+    });
   }
 
   return (
@@ -389,7 +395,7 @@ export const RecipeForm = (props: Props) => {
             </label>
           </Grid>
           <Grid item>
-            <RecipeImages data={images} />
+            <RecipeImages data={images} handleRemoveImage={handleRemoveImage}/>
           </Grid>
         </Grid>
         <Grid item container spacing={2} justifyContent='flex-end'>

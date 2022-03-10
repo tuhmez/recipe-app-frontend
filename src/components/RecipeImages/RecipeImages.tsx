@@ -1,25 +1,49 @@
 import { useEffect, useState } from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid, IconButton, Menu, MenuItem } from '@material-ui/core';
+import { MoreVert } from '@material-ui/icons';
 import { useStyles } from './styles';
 
 export interface Props {
   data: string[];
+  handleRemoveImage: (index: number) => void;
 }
 
 export const RecipeImages = (props: Props) => {
   // Props destructuring
-  const { data } = props;
+  const { data, handleRemoveImage } = props;
   // States
   const [ imageItems, setImageItems ] = useState<JSX.Element[]>([]);
+  const [ isDeleteImageMenuOpen, setIsDeleteImageMenuOpen ] = useState(false);
+  const [ menuAnchorEl, setMenuAnchorEl ] = useState<HTMLElement | null>(null);
+  const [ deleteIndex, setDeleteIndex ] = useState(-1);
+  // Handlers
+  const handleDeleteMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setMenuAnchorEl(event.currentTarget);
+    setIsDeleteImageMenuOpen(true);
+  };
+  const handleDeleteMenuClose = () => {
+    setMenuAnchorEl(null);
+    setIsDeleteImageMenuOpen(false);
+  };
+  const removeImage = () => {
+    handleRemoveImage(deleteIndex);
+    handleDeleteMenuClose();
+  }
   // Styles
   const classes = useStyles();
   // Effects
   useEffect(() => {
     const makeImageItems = (image: string, index: number) => {
-      
+      const openDeleteMenu = (event: React.MouseEvent<HTMLElement>) => {
+        handleDeleteMenuOpen(event);
+        setDeleteIndex(index);
+      };
       return (
-        <Grid item key={`recipe-pic-${index}`}>
+        <Grid item key={`recipe-pic-${index}`} className={classes.image}>
           <img className={classes.imagePreview} src={image} alt={`recipe-pic-${index}`}/>
+          <div className={classes.imageOverlay}>
+            <IconButton className={classes.imageButton} size='small' onClick={openDeleteMenu}><MoreVert/></IconButton>
+          </div>
         </Grid>
       )
     };
@@ -31,14 +55,34 @@ export const RecipeImages = (props: Props) => {
   }, [data]);
 
   return (
-    <Grid
-      container
-      justifyContent='flex-start'
-      alignItems='center'
-      spacing={1}
-      className={classes.imageContainer}
-    >
-      {imageItems}
-    </Grid>
+    <div>
+      <Grid
+        container
+        justifyContent='flex-start'
+        alignItems='center'
+        spacing={1}
+        className={classes.imageContainer}
+      >
+        {imageItems}
+      </Grid>
+      <Menu
+        id='delete-image-menu'
+        key='delete-image-menu'
+        anchorEl={menuAnchorEl}
+        getContentAnchorEl={null}
+        open={isDeleteImageMenuOpen}
+        onClose={handleDeleteMenuClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right'
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right'
+        }}
+      >
+        <MenuItem onClick={removeImage} key='remove-image-menu-item' id='remove-image-menu-item'>Remove Image</MenuItem>
+      </Menu>
+    </div>
   )
 };
