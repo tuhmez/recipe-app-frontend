@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { CircularProgress } from '@material-ui/core';
 import { SocketClient } from '../../socket';
 import { ViewRecipe } from '../../components/ViewRecipe';
 import { useNavigate, useParams } from 'react-router';
@@ -8,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectRecipes } from '../../redux/selectors';
 import { editRecipePageNavigator } from '../../routes/routeConstants';
 import { DELETE_RECIPE_REQUEST } from '../../redux/reducer';
+import { useStyles } from '../../components/App/styles';
 
 export interface Props {
   socket?: SocketClient;
@@ -41,7 +43,10 @@ export const ViewRecipePage = (props: Props) => {
     dispatch({ type: DELETE_RECIPE_REQUEST });
     socket?.deleteRecipe(recipe);
   }
-  if (!currentRecipe) return <div>we loading...</div>;
+  // Styles
+  const classes = useStyles();
+
+  if (!currentRecipe) return <div className={classes.loading}><CircularProgress /></div>;
   return (
     <ViewRecipe
       recipe={currentRecipe}

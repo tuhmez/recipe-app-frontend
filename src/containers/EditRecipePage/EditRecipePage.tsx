@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { CircularProgress } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 import { IRecipe } from '../../common/types';
@@ -6,6 +7,7 @@ import { RecipeForm } from '../../components/RecipeForm';
 import { selectRecipes } from '../../redux/selectors';
 import { SocketClient } from '../../socket';
 import { EDIT_RECIPE_REQUEST } from '../../socket/constants';
+import { useStyles } from '../../components/App/styles';
 
 export interface Props {
   socket: SocketClient;
@@ -39,8 +41,10 @@ export const EditRecipePage = (props: Props) => {
     dispatch({ type: EDIT_RECIPE_REQUEST });
     socket.editRecipe(recipe);
   }
+  // Styles
+  const classes = useStyles();
 
-  if (!currentRecipe) return <div>we loading...</div>;
+  if (!currentRecipe) return <div className={classes.loading}><CircularProgress /></div>;
 
   return (
     <RecipeForm
