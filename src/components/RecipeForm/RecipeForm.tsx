@@ -269,6 +269,14 @@ export const RecipeForm = (props: Props) => {
       newState.splice(index, 1);
       return newState;
     });
+  };
+  const handleUpdateImagePosition = (index: number) => {
+    setImages(prevState => {
+      let newState = [...prevState];
+      newState = newState.filter((v, i) => i !== index);
+      newState.unshift(prevState[index]);
+      return newState;
+    });
   }
 
   return (
@@ -395,7 +403,7 @@ export const RecipeForm = (props: Props) => {
             </label>
           </Grid>
           <Grid item>
-            <RecipeImages data={images} handleRemoveImage={handleRemoveImage}/>
+            <RecipeImages data={images} handleRemoveImage={handleRemoveImage} handleUpdateImagePosition={handleUpdateImagePosition}/>
           </Grid>
         </Grid>
         <Grid item container spacing={2} justifyContent='flex-end'>

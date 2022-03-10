@@ -6,16 +6,17 @@ import { useStyles } from './styles';
 export interface Props {
   data: string[];
   handleRemoveImage: (index: number) => void;
+  handleUpdateImagePosition: (index: number) => void;
 }
 
 export const RecipeImages = (props: Props) => {
   // Props destructuring
-  const { data, handleRemoveImage } = props;
+  const { data, handleRemoveImage, handleUpdateImagePosition } = props;
   // States
   const [ imageItems, setImageItems ] = useState<JSX.Element[]>([]);
   const [ isDeleteImageMenuOpen, setIsDeleteImageMenuOpen ] = useState(false);
   const [ menuAnchorEl, setMenuAnchorEl ] = useState<HTMLElement | null>(null);
-  const [ deleteIndex, setDeleteIndex ] = useState(-1);
+  const [ imageIndex, setImageIndex ] = useState(-1);
   // Handlers
   const handleDeleteMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMenuAnchorEl(event.currentTarget);
@@ -26,8 +27,14 @@ export const RecipeImages = (props: Props) => {
     setIsDeleteImageMenuOpen(false);
   };
   const removeImage = () => {
-    handleRemoveImage(deleteIndex);
+    handleRemoveImage(imageIndex);
     handleDeleteMenuClose();
+    setImageIndex(-1);
+  };
+  const updateImagePosition = () => {
+    handleUpdateImagePosition(imageIndex);
+    handleDeleteMenuClose();
+    setImageIndex(-1);
   }
   // Styles
   const classes = useStyles();
@@ -36,7 +43,7 @@ export const RecipeImages = (props: Props) => {
     const makeImageItems = (image: string, index: number) => {
       const openDeleteMenu = (event: React.MouseEvent<HTMLElement>) => {
         handleDeleteMenuOpen(event);
-        setDeleteIndex(index);
+        setImageIndex(index);
       };
       return (
         <Grid item key={`recipe-pic-${index}`} className={classes.image}>
@@ -81,6 +88,7 @@ export const RecipeImages = (props: Props) => {
           horizontal: 'right'
         }}
       >
+        <MenuItem onClick={updateImagePosition} key='update-image-position-item' id='update-image-position-item'>Make Main Recipe Image</MenuItem>
         <MenuItem onClick={removeImage} key='remove-image-menu-item' id='remove-image-menu-item'>Remove Image</MenuItem>
       </Menu>
     </div>
