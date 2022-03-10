@@ -10,4 +10,4 @@ FROM node:erbium-alpine
 COPY --from=builder build/ build/
 RUN npm install -g serve
 
-ENTRYPOINT ["serve", "-s", "build", "-l", "3000"]
+ENTRYPOINT ["serve", "-s", "build", "-l", "80"]
