@@ -18,7 +18,7 @@ import {
   Typography,
   useTheme
 } from '@material-ui/core';
-import { KeyboardArrowLeft, KeyboardArrowRight, MoreVert } from '@material-ui/icons';
+import { Favorite, FavoriteBorder, KeyboardArrowLeft, KeyboardArrowRight, MoreVert } from '@material-ui/icons';
 import { IngredientUnit, IRecipe, RecipeDifficulty } from '../../common/types';
 import { emptyImage } from '../../common/imagesBase64';
 import { useStyles } from './styles';
@@ -115,8 +115,14 @@ export const ViewRecipe = (props: Props) => {
       totalMinutes = leftoverMinutes;
     }
     if (totalHours !== 0) timeString = `${totalHours} HR`;
-    if (totalMinutes !== 0) timeString = `${totalMinutes} MIN`;
-    if (totalSeconds !== 0) timeString = `${totalSeconds} SEC`;
+    if (totalMinutes !== 0){
+      if (timeString !== '') timeString += ', ';
+      timeString += `${totalMinutes} MIN`;
+    }
+    if (totalSeconds !== 0) {
+      if (timeString !== '') timeString += ', ';
+      timeString += `${totalSeconds} SEC`;
+    }
     return timeString === '' ? 'No time!' : timeString;
   };
   const ingredientsList = () => {
@@ -201,16 +207,11 @@ export const ViewRecipe = (props: Props) => {
             <Typography variant='body1' style={{ color: textColor }} key='recipe-difficulty-text'>{recipe.difficulty}</Typography>
           </Grid>
           <Grid item key='time-header'>
-            <Typography variant='body1' key='recipe-time-text'>| {calculateTimeString()}</Typography>
+            <Typography variant='body1' key='recipe-time-text'>| {calculateTimeString()} |</Typography>
           </Grid>
-          {recipe.favorited
-          ? (
-            <Grid item key='favorited-header'>
-              <Typography variant='body1' key='recipe-favorited-text'>| Favorited</Typography>
-            </Grid>
-          )
-          : undefined
-          }
+          <Grid item key='favorited-header'>
+            {recipe.favorited ? <Favorite className={classes.favoriteIcon} /> : <FavoriteBorder /> }
+          </Grid>
         </Grid>
         <Grid item container direction='column' justifyContent='center' alignItems='center' key='image-section'>
           <Grid item>
