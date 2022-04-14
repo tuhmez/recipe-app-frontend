@@ -19,8 +19,9 @@ export const useStyles = makeStyles(theme => ({
     width: '250px',
   },
   img: {
-    height: '50vh',
+    height: 'auto',
     width: '80vw',
+    maxHeight: '50vh',
     maxWidth: '1248px',
     objectFit: 'contain',
     overflow: 'hidden',
@@ -28,5 +29,8 @@ export const useStyles = makeStyles(theme => ({
   },
   favoriteIcon: {
     color: red[500],
+  },
+  stepText: {
+    fontWeight: 'bold'
   }
 }));

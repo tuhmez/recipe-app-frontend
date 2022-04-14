@@ -129,9 +129,10 @@ export const ViewRecipe = (props: Props) => {
     const ingredientLabels = recipe.ingredients.map((ingredient, index) => {
       let ingredientText = '';
       if (ingredient.units === IngredientUnit.NONE) {
-        ingredientText = `${ingredientText} ${ingredient.measurement} ${ingredient.name}`;
+        ingredientText = `${ingredient.name}`;
+        if (ingredient.measurement !== 0) ingredientText = `${ingredientText} (${ingredient.measurement})`;
       } else {
-        ingredientText = `${ingredientText} ${ingredient.name} (${ingredient.measurement} ${ingredient.units})`;
+        ingredientText = `${ingredient.name} (${ingredient.measurement} ${ingredient.units})`;
       }
       return (
         <FormControlLabel
@@ -164,9 +165,9 @@ export const ViewRecipe = (props: Props) => {
         <Grid item key={`step-text-${index}`}>
           <Typography variant='body1'>{stepText}</Typography>
         </Grid>
-        <Grid item style={{ paddingLeft: '30px' }} key={`step-support-text-${index}`}>
-          <Typography variant='body1'>{stepSupportText}</Typography>
-        </Grid>
+        {step.time !== 0 && (<Grid item style={{ paddingLeft: '30px' }} key={`step-support-text-${index}`}>
+          <Typography variant='body1' className={classes.stepText}>• {stepSupportText}</Typography>
+        </Grid>)}
       </Grid>
     )
   });
@@ -256,13 +257,13 @@ export const ViewRecipe = (props: Props) => {
           <Grid item key='ingredient-list'>
             <Typography variant='h5' key='ingredient-header'>Ingredients</Typography>
           </Grid>
-          <div style={{ paddingLeft: '20px'}} key='ingredient-list-container'>
+          <div style={{ paddingLeft: '10px'}} key='ingredient-list-container'>
             {ingredientsList()}
           </div>
           <Grid item key='step-list'>
             <Typography variant='h5' key='step-header'>Steps</Typography>
           </Grid>
-          <div style={{ paddingLeft: '20px' }} key='steps-list-container'>
+          <div style={{ paddingLeft: '10px' }} key='steps-list-container'>
             {stepsList}
           </div>
         </Grid>
