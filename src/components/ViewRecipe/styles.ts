@@ -21,6 +21,7 @@ export const useStyles = makeStyles(theme => ({
   img: {
     height: '50vh',
     width: '80vw',
+    maxWidth: '1248px',
     objectFit: 'contain',
     overflow: 'hidden',
     display: 'block',
