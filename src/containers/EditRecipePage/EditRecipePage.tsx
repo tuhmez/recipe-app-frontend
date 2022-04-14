@@ -6,8 +6,8 @@ import { IRecipe } from '../../common/types';
 import { RecipeForm } from '../../components/RecipeForm';
 import { selectRecipes } from '../../redux/selectors';
 import { SocketClient } from '../../socket';
-import { EDIT_RECIPE_REQUEST } from '../../socket/constants';
 import { useStyles } from '../../components/App/styles';
+import { UPDATE_RECIPE_REQUEST } from '../../redux/reducer';
 
 export interface Props {
   socket: SocketClient;
@@ -38,7 +38,7 @@ export const EditRecipePage = (props: Props) => {
     navigate(-1);
   };
   const onSubmitFormHandler = (recipe: IRecipe) => {
-    dispatch({ type: EDIT_RECIPE_REQUEST });
+    dispatch({ type: UPDATE_RECIPE_REQUEST });
     socket.editRecipe(recipe);
   }
   // Styles
