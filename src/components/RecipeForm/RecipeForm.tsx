@@ -249,14 +249,19 @@ export const RecipeForm = (props: Props) => {
     const files = event.target.files;
     if (files) {
       for (let i = 0; i < files.length; i++) {
-        readFileDataUrlAsync(files[i])
+        const fileType = files[i].type;
+        if (!fileType) {
+          enqueueSnackbar('Input not supported!', { variant: 'error' })
+        } else {
+          readFileDataUrlAsync(files[i])
           .then((base64Image: string) => {
-            setImages(prevState => [...prevState, base64Image]);
-          })
-          .catch((error: any) => {
-            // catch the error
-            enqueueSnackbar(error, { variant: 'error' });
-          });
+              setImages(prevState => [...prevState, base64Image]);
+            })
+            .catch((error: any) => {
+              // catch the error
+              enqueueSnackbar(error, { variant: 'error' });
+            });
+        }
       }
     } else {
       // handle null file upload
@@ -384,7 +389,7 @@ export const RecipeForm = (props: Props) => {
         <Grid item container direction='row' spacing={1} justifyContent='flex-start'>
           <Grid item>
             <input
-              accept='image/*'
+              accept='.jpg,.jpeg,.png'
               className={classes.input}
               id='recipe-images'
               multiple
