@@ -20,7 +20,7 @@ export const ViewRecipePage = (props: Props) => {
   const { socket } = props;
   // States
   const [ currentRecipe, setCurrentRecipe ] = useState<IRecipe | undefined>(undefined);
-  const { recipeName } = useParams();
+  const { recipeId } = useParams();
   // Selectors
   const recipeSelector = useSelector(selectRecipes);
   // Dispatch
@@ -29,15 +29,15 @@ export const ViewRecipePage = (props: Props) => {
   const navigate = useNavigate();
   // Effects
   useEffect(() => {
-    const recipeToPass = recipeSelector.find(r => r.name === recipeName);
+    const recipeToPass = recipeSelector.find(r => r.recipeId === recipeId);
     if (recipeToPass) setCurrentRecipe(recipeToPass);
     return () => {
       setCurrentRecipe(undefined);
     }
-  }, [ recipeName, recipeSelector]);
+  }, [ recipeId, recipeSelector]);
   // Handlers
   const handleEditRecipe = (recipe: IRecipe) => {
-    navigate(editRecipePageNavigator(recipe.name));
+    navigate(editRecipePageNavigator(recipe.recipeId));
   };
   const handleDeleteRecipe = (recipe: IRecipe) => {
     dispatch({ type: DELETE_RECIPE_REQUEST });

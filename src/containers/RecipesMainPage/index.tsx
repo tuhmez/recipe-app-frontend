@@ -23,7 +23,7 @@ export const RecipesMain = () => {
     navigate(createRecipePage);
   };
   const onCardClick = (recipe: IRecipe) => {
-    navigate(viewRecipePageNavigator(recipe.name));
+    navigate(viewRecipePageNavigator(recipe.recipeId));
   };
   // Styles
   const classes = useStyles();

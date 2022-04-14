@@ -18,7 +18,7 @@ export const EditRecipePage = (props: Props) => {
   const { socket } = props;
   // States
   const [ currentRecipe, setCurrentRecipe ] = useState<IRecipe | undefined>(undefined);
-  const { recipeName } = useParams();
+  const { recipeId } = useParams();
   // Selectors
   const recipeSelector = useSelector(selectRecipes);
   // Dispatch
@@ -27,12 +27,12 @@ export const EditRecipePage = (props: Props) => {
   const navigate = useNavigate();
   // Effects
   useEffect(() => {
-    const recipeToPass = recipeSelector.find(r => r.name === recipeName);
+    const recipeToPass = recipeSelector.find(r => r.recipeId === recipeId);
     if (recipeToPass) setCurrentRecipe(recipeToPass);
     return () => {
       setCurrentRecipe(undefined);
     };
-  }, [ recipeName, recipeSelector ]);
+  }, [ recipeId, recipeSelector ]);
   // Handlers
   const onLeaveFormHandler = () => {
     navigate(-1);
