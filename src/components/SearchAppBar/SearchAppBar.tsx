@@ -124,7 +124,7 @@ const SearchAppBar = (props: SearchAppBarProps) => {
 
   const searchInput = () => {
     const strippedPathname = location.pathname.substring(1);
-    if (strippedPathname === 'issues') return undefined;
+    if (strippedPathname === 'issues' || strippedPathname === 'about') return undefined;
     return (
       <div className={classes.search}>
         <div className={classes.searchIcon}>
