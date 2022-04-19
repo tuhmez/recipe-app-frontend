@@ -20,7 +20,7 @@ import { possibleRoutes } from '../../routes/routeConstants';
 import SearchAppBar from '../SearchAppBar';
 import { useStyles } from './styles';
 import './App.css';
-import { ADD_ISSUE_FAILURE, ADD_ISSUE_SUCCESS, ADD_RECIPE_FAILURE, ADD_RECIPE_SUCCESS, DELETE_ISSUE_FAILURE, DELETE_ISSUE_SUCCESS, DELETE_RECIPE_FAILURE, DELETE_RECIPE_SUCCESS, GET_ISSUE_FAILURE, GET_ISSUE_SUCCESS, GET_RECIPES_FAILURE, GET_RECIPES_SUCCESS, GET_RECIPE_BY_SEARCH, UPDATE_RECIPE_FAILURE, UPDATE_RECIPE_SUCCESS } from '../../redux/reducer';
+import { ADD_ISSUE_FAILURE, ADD_ISSUE_SUCCESS, ADD_RECIPE_FAILURE, ADD_RECIPE_SUCCESS, DELETE_ISSUE_FAILURE, DELETE_ISSUE_SUCCESS, DELETE_RECIPE_FAILURE, DELETE_RECIPE_SUCCESS, GET_ISSUE_FAILURE, GET_ISSUE_SUCCESS, GET_RECIPES_FAILURE, GET_RECIPES_REQUEST, GET_RECIPES_SUCCESS, GET_RECIPE_BY_SEARCH, UPDATE_RECIPE_FAILURE, UPDATE_RECIPE_SUCCESS } from '../../redux/reducer';
 import { selectIsLoading } from '../../redux/selectors';
 
 export const App = () => {
@@ -125,9 +125,11 @@ export const App = () => {
   }, []);
   useEffect(() => {
     if (socket) {
-      socket.getRecipes();
+      dispatch({ type: GET_RECIPES_REQUEST });
       socket.getIssues();
+      socket.getRecipes();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
   // Navigation
   const navigation = useNavigate();

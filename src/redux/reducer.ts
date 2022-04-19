@@ -102,6 +102,7 @@ const handleGetRecipeSuccess = (state: RecipeState, action: any): RecipeState =>
     prevRecipeState[recipeIndex] = action.payload.recipes[0];
     return {
       ...state,
+      isLoading: false,
       recipes: prevRecipeState
     };
   } else {
@@ -174,14 +175,12 @@ const handleGetIssueSuccess = (state: RecipeState, action: any): RecipeState => 
     prevIssueState[recipeIndex] = action.payload.issues[0];
     return {
       ...state,
-      isLoading: false,
       issues: prevIssueState
     };
   } else {
     const newIssuesToAdd = (action.payload.issues as IIssue[]).filter(r => !prevIssueState.includes(r));
     return {
       ...state,
-      isLoading: false,
       issues: prevIssueState.concat(newIssuesToAdd)
     };
   }

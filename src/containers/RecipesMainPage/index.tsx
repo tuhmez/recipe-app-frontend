@@ -1,6 +1,6 @@
 import { Fab, useTheme } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { selectRecipes, selectSearchTerm } from '../../redux/selectors';
@@ -16,6 +16,8 @@ export const RecipesMain = () => {
   // Selectors
   const recipes = useSelector(selectRecipes);
   const searchTerm = useSelector(selectSearchTerm);
+  // Dispatch
+  const dispatch = useDispatch()
   // Navigation
   const navigate = useNavigate();
   // Handlers
@@ -32,6 +34,10 @@ export const RecipesMain = () => {
   const { createRecipePage } = possibleRoutes;
   useEffect(() => {
     setRecipeData(recipes);
+    return () => {
+      setRecipeData([]);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recipes]);
   // Effects
   useEffect(() => {
