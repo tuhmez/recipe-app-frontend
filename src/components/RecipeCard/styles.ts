@@ -25,8 +25,8 @@ export const useStyles = makeStyles((theme) => ({
     right: '-20px',
     width: 0,
     height: 0,
-    borderLeft: '30px solid black',
-    borderRight: '30px solid black',
+    borderLeft: '30px solid transparent',
+    borderRight: '30px solid transparent',
     
     borderBottom: `30px solid black`,
     transform: 'rotate(45deg)'
