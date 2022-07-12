@@ -141,11 +141,12 @@ export const RecipesMain = () => {
             />
           }
           label={f}
+          key={f}
         />
       )
     })
     return (
-      <Accordion square elevation={0} classes={{ expanded: classes.expandedAccordion }}>
+      <Accordion square elevation={0} classes={{ expanded: classes.expandedAccordion }} key={`${item}-accordion`}>
         <AccordionSummary
           expandIcon={<ExpandMore />}
           id={`${item}-filter-accordion`}
