@@ -27,3 +27,13 @@ export const selectIssues = createSelector(
   globalState,
   (state: RecipeState) => state.issues
 );
+
+export const selectFilters = createSelector(
+  globalState,
+  (state: RecipeState) => state.filters
+);
+
+export const selectSort = createSelector(
+  globalState,
+  (state: RecipeState) => state.sort
+);

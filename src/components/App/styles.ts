@@ -4,7 +4,8 @@ export const useStyles = makeStyles(theme => ({
   // 64 px is the app bar height
   container: {
     maxHeight: 'calc(100vh - 64px)',
-    paddingTop: `calc(64px + ${theme.spacing(2)}px)`
+    marginTop: `calc(64px + 36px + ${theme.spacing(1)}px)`,
+    overflow: 'auto'
   },
   fab: {
     position: 'fixed',

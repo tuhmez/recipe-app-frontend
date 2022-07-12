@@ -6,6 +6,8 @@ type RecipeState = {
   searchTerm: string;
   isLoading: boolean;
   error: string;
+  filters: { [key: string]: { [key: string]: boolean }};
+  sort: { [key: string]: boolean };
 };
 
 type AddRecipeAction = {

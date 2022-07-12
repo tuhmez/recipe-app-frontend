@@ -7,7 +7,27 @@ const initialState: RecipeState = {
   issues: [],
   searchTerm: '',
   error: '',
-  isLoading: false
+  isLoading: false,
+  filters: {
+    Favorites: {
+      Favorited: false,
+      'Not Favorited': false,
+    },
+    Difficulty: {
+      Easy: false,
+      Medium: false,
+      Hard: false
+    },
+    Type: {
+      Breakfast: false,
+      Lunch: false,
+      Dinner: false,
+      Appetizer: false,
+      Snack: false,
+      Drink: false
+    }
+  },
+  sort: {},
 };
 
 // Adding recipes
@@ -217,6 +237,56 @@ const handleDeleteIssueFailure = (state: RecipeState, action: any): RecipeState 
   }
 };
 
+export const UPDATE_SELECTED_FILTERS = createAction('UPDATE_SELECTED_FILTERS');
+const handleUpdateSelectedFilters = (state: RecipeState, action: any): RecipeState => {
+  return {
+    ...state,
+    filters: action.payload
+  };
+};
+
+export const RESET_SELECTED_FILTERS = createAction('RESET_SELECTED_FILTERS');
+const handleResetSelectedFilters = (state: RecipeState): RecipeState => {
+  return {
+    ...state,
+    filters: {
+      Favorites: {
+        Favorited: false,
+        'Not Favorited': false,
+      },
+      Difficulty: {
+        Easy: false,
+        Medium: false,
+        Hard: false
+      },
+      Type: {
+        Breakfast: false,
+        Lunch: false,
+        Dinner: false,
+        Appetizer: false,
+        Snack: false,
+        Drink: false
+      }
+    }
+  };
+};
+
+export const UPDATE_SELECTED_SORT = createAction('UPDATE_SELECTED_SORT');
+const handleUpdateSelectedSort = (state: RecipeState, action: any): RecipeState => {
+  return {
+    ...state,
+    sort: action.payload
+  }
+};
+
+export const RESET_SELECTED_SORT = createAction('RESET_SELECTED_SORT');
+const handleResetSelectedSort = (state: RecipeState): RecipeState => {
+  return {
+    ...state,
+    sort: initialState.sort
+  };
+}
+
 const appReducer = (
   state: RecipeState = initialState,
   action: any
@@ -268,6 +338,14 @@ const appReducer = (
       return handleDeleteIssueSuccess(state, action);
     case DELETE_ISSUE_FAILURE:
       return handleDeleteIssueFailure(state, action);
+    case UPDATE_SELECTED_FILTERS:
+      return handleUpdateSelectedFilters(state, action);
+    case UPDATE_SELECTED_SORT:
+      return handleUpdateSelectedSort(state, action);
+    case RESET_SELECTED_FILTERS:
+      return handleResetSelectedFilters(state);
+    case RESET_SELECTED_SORT:
+      return handleResetSelectedSort(state);
     default:
       return state;
   }
