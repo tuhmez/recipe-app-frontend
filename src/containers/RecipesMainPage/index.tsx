@@ -14,7 +14,7 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemIcon,
+  ListItemSecondaryAction ,
   ListItemText,
   Toolbar,
   Typography,
@@ -123,8 +123,8 @@ export const RecipesMain = () => {
       id={item}
       className={selectedSort[item] ? classes.listItem : undefined}
     >
-      {selectedSort[item.toLowerCase()] && <ListItemIcon className={classes.listIcon}><Check /></ListItemIcon>}
       <ListItemText primary={item}/>
+      {selectedSort[item.toLowerCase()] && <ListItemSecondaryAction><Check /></ListItemSecondaryAction>}
     </ListItem>
   ));
   const filterItems = Object.keys(filterTypes).map(item => {
