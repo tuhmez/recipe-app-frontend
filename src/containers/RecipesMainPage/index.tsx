@@ -164,8 +164,10 @@ export const RecipesMain = () => {
 
 
   return (
-    <div>
-      <Button onClick={handleToggleDialogOpen} size='small' variant='outlined' className={classes.topButtonGroup}>Options</Button>
+    <div className={classes.mainContainer}>
+      <div className={classes.additionalButtonsContainer} >
+        <Button onClick={handleToggleDialogOpen} size='small' variant='outlined' className={classes.optionsButton}>Options</Button>
+      </div>
       <RecipeCardGrid
         recipes={recipeData}
         theme={theme}

@@ -5,7 +5,7 @@ export const useStyles = makeStyles(theme => ({
   container: {
     maxHeight: 'calc(100vh - 64px)',
     marginTop: `calc(64px + 36px + ${theme.spacing(1)}px)`,
-    overflow: 'auto'
+    // overflow: 'auto'
   },
   fab: {
     position: 'fixed',

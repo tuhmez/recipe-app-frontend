@@ -1,14 +1,20 @@
 import { makeStyles } from '@material-ui/core';
 
 export const useStyles = makeStyles(theme => ({
-  topButtonGroup: {
+  mainContainer: {
+    position: 'relative',
+  },
+  additionalButtonsContainer: {
     position: 'fixed',
-    right: 20,
-    left: 'auto',
-    top: 60,
-    bottom: 'auto',
-    marginTop: theme.spacing(1),
-    zIndex: 100,
+    top: '50px',
+    width: '95vw',
+    height: '50px',
+    backgroundColor: theme.palette.background.default,
+    zIndex: 100
+  },
+  optionsButton: {
+    marginTop: theme.spacing(2),
+    float: 'right'
   },
   fab: {
     position: 'fixed',
