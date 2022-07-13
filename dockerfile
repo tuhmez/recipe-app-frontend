@@ -1,11 +1,11 @@
-FROM node:erbium AS builder
+FROM node:16.14 AS builder
 
 COPY . .
 
 RUN npm install
 RUN npm run build
 
-FROM node:erbium-alpine
+FROM node:16.14-alpine
 
 COPY --from=builder build/ build/
 RUN npm install -g serve
