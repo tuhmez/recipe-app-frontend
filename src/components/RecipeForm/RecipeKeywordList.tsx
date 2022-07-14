@@ -90,7 +90,7 @@ export const RecipeKeywordList = (props: Props) => {
           container
           direction='row'
           justifyContent='space-between'
-          alignItems='center'
+          alignItems='flex-start'
         >
           <Grid
             item
