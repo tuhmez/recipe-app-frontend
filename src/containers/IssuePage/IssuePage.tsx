@@ -194,6 +194,7 @@ export const IssuePage = (props: Props) => {
                 value={issueName}
                 onChange={onIssueNameChange}
                 fullWidth
+                multiline
                 InputProps={{
                   readOnly: isDialogReadOnly
                 }}
