@@ -7,7 +7,7 @@ export const useStyles = makeStyles(theme => ({
   additionalButtonsContainer: {
     position: 'fixed',
     top: '50px',
-    width: '95vw',
+    width: '90vw ',
     height: '50px',
     backgroundColor: theme.palette.background.default,
     zIndex: 100
