@@ -43,7 +43,7 @@ export const RecipeCard = (props: Props) => {
           )}
         </div>
         <CardContent>
-          <Typography variant='h6' component='h2'>
+          <Typography variant='h6' component='h2' style={{ fontSize: '1rem' }}>
             {recipe.name}
           </Typography>
         </CardContent>
