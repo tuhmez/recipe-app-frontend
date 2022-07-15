@@ -30,6 +30,7 @@ export const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     marginTop: '56px',
+    marginBottom: "50px"
   },
   divider: {
     marginBottom: theme.spacing(0.5)
@@ -47,8 +48,21 @@ export const useStyles = makeStyles(theme => ({
   chip: {
     margin: theme.spacing(0.5)
   },
+  resetButtonContainer: {
+    width: "75%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "50px",
+    position: "fixed",
+    bottom: "0",
+    right: "13%",
+    backgroundColor: theme.palette.background.default,
+    zIndex: 100
+  },
   resetButton: {
-    marginTop: 'auto'
+    width: "100%"
   },
   expandedAccordion: {
     '&:not(:first-child)': {

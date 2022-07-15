@@ -208,12 +208,16 @@ export const RecipesMain = () => {
           <div className={classes.chipList}>
             {filterItems}
           </div>
-          <Button
-            color='secondary'
-            variant='outlined'
-            onClick={onResetClick}
-            className={classes.resetButton}
-          >Reset</Button>
+          <div className={classes.resetButtonContainer}>
+            <Button
+              color='secondary'
+              variant='outlined'
+              onClick={onResetClick}
+              className={classes.resetButton}
+            >
+              Reset
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     </div>
