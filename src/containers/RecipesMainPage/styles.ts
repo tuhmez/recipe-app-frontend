@@ -10,11 +10,13 @@ export const useStyles = makeStyles(theme => ({
     width: '90vw ',
     height: '50px',
     backgroundColor: theme.palette.background.default,
-    zIndex: 100
+    zIndex: 100,
   },
   optionsButton: {
     marginTop: theme.spacing(2),
-    float: 'right'
+    float: 'right',
+    position: 'fixed',
+    right: '25px',
   },
   fab: {
     position: 'fixed',
