@@ -6,6 +6,7 @@ import {
   Button,
   Checkbox,
   Dialog,
+  DialogActions,
   DialogContent,
   Divider,
   Fab,
@@ -146,6 +147,7 @@ export const RecipesMain = () => {
       )
     })
     return (
+      // @ts-ignore
       <Accordion square elevation={0} classes={{ expanded: classes.expandedAccordion }} key={`${item}-accordion`}>
         <AccordionSummary
           expandIcon={<ExpandMore />}
@@ -208,7 +210,8 @@ export const RecipesMain = () => {
           <div className={classes.chipList}>
             {filterItems}
           </div>
-          <div className={classes.resetButtonContainer}>
+        </DialogContent>
+        <DialogActions>
             <Button
               color='secondary'
               variant='outlined'
@@ -217,8 +220,7 @@ export const RecipesMain = () => {
             >
               Reset
             </Button>
-          </div>
-        </DialogContent>
+        </DialogActions>
       </Dialog>
     </div>
   )
