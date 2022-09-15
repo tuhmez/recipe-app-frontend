@@ -5,7 +5,7 @@ COPY . .
 RUN npm install
 RUN npm run build
 
-FROM node:16.14-alpine
+FROM node:16.14-slim
 
 COPY --from=builder build/ build/
 RUN npm install -g serve
