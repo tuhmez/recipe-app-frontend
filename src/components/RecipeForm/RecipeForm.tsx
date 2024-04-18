@@ -156,7 +156,7 @@ export const RecipeForm = (props: Props) => {
       });
       resolve(true);
     });
-  }
+  };
 
   const onRemoveStep = (event: React.MouseEvent<HTMLLIElement>) => {
     let areStepsEmpty = false;
@@ -270,7 +270,7 @@ export const RecipeForm = (props: Props) => {
       // handle null file upload
       enqueueSnackbar('Failed to upload image!', { variant: 'error' });
     }
-  }
+  };
   const handleRemoveImage = (index: number) => {
     setImages(prevState => {
       const newState = [...prevState];
@@ -285,7 +285,7 @@ export const RecipeForm = (props: Props) => {
       newState.unshift(prevState[index]);
       return newState;
     });
-  }
+  };
 
   return (
     <div>
