@@ -112,7 +112,6 @@ export const RecipeStepTable = (props: Props) => {
       {errorComponent}
       <Dialog
         open={isStepDialogOpen}
-        onClose={onStepDialogToggle}
       >
         <DialogTitle>{isNewStep ? 'Add' : 'Edit'} Step</DialogTitle>
         <DialogContent className={classes.stepDialog}>

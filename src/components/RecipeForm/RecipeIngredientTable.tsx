@@ -121,7 +121,6 @@ export const RecipeIngredientTable = (props: Props) => {
       {errorComponent}
       <Dialog
         open={isIngredientDialogOpen}
-        onClose={onIngredientDialogToggle}
       >
         <DialogTitle>{isNewIngredient ? 'Add' : 'Edit'} Ingredient</DialogTitle>
         <DialogContent className={classes.ingredientDialog}>
