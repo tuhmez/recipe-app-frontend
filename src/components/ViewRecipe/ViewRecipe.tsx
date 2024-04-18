@@ -16,8 +16,9 @@ import {
   MenuItem,
   MobileStepper,
   Typography,
-  useTheme
+  useTheme,
 } from '@material-ui/core';
+import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 import { Favorite, FavoriteBorder, KeyboardArrowLeft, KeyboardArrowRight, MoreVert } from '@material-ui/icons';
 import { IngredientUnit, IRecipe, RecipeDifficulty } from '../../common/types';
 import { emptyImage } from '../../common/imagesBase64';
@@ -46,6 +47,7 @@ export const ViewRecipe = (props: Props) => {
     recipe.ingredients.forEach(ingredient => checkboxObject[ingredient.name] = false)
     return checkboxObject;
   });
+  const [ingredientMultiplier, setIngredientMultiplier] = useState('1');
   // Handlers
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
     setMenuAnchorEl(event.currentTarget);
@@ -83,6 +85,9 @@ export const ViewRecipe = (props: Props) => {
         [event.target.name]: event.target.checked
       };
     });
+  };
+  const handleIngredientMultiplier = (event: any, newValue: string ) => {
+    setIngredientMultiplier(newValue);
   };
   // Styles
   const classes = useStyles();
@@ -128,11 +133,12 @@ export const ViewRecipe = (props: Props) => {
   const ingredientsList = () => {
     const ingredientLabels = recipe.ingredients.map((ingredient, index) => {
       let ingredientText = '';
+      const ingredientMeasurementWithMultiplier = ingredient.measurement * parseInt(ingredientMultiplier);
       if (ingredient.units === IngredientUnit.NONE) {
         ingredientText = `${ingredient.name}`;
-        if (ingredient.measurement !== 0) ingredientText = `${ingredientText} (${ingredient.measurement})`;
+        if (ingredient.measurement !== 0) ingredientText = `${ingredientText} (${ingredientMeasurementWithMultiplier})`;
       } else {
-        ingredientText = `${ingredient.name} (${ingredient.measurement} ${ingredient.units})`;
+        ingredientText = `${ingredient.name} (${ingredientMeasurementWithMultiplier} ${ingredient.units})`;
       }
       return (
         <FormControlLabel
@@ -254,8 +260,21 @@ export const ViewRecipe = (props: Props) => {
           justifyContent='center'
           key='variable-section'
         >
-          <Grid item key='ingredient-list'>
-            <Typography variant='h5' key='ingredient-header'>Ingredients</Typography>
+          <Grid item container direction='row' key='ingredient-header' justifyContent='space-between'>
+            <Grid item key='ingredient-list'>
+              <Typography variant='h5' key='title'>Ingredients</Typography>
+            </Grid>
+            <Grid item key='recipe-scale'>
+              <ToggleButtonGroup
+                value={ingredientMultiplier}
+                exclusive
+                onChange={handleIngredientMultiplier}
+              >
+                <ToggleButton value='1'>1x</ToggleButton>
+                <ToggleButton value='2'>2x</ToggleButton>
+                <ToggleButton value='3'>3x</ToggleButton>
+              </ToggleButtonGroup>
+            </Grid>
           </Grid>
           <div style={{ paddingLeft: '10px'}} key='ingredient-list-container'>
             {ingredientsList()}
