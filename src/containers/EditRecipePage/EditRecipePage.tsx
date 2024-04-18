@@ -8,6 +8,7 @@ import { selectRecipes } from '../../redux/selectors';
 import { SocketClient } from '../../socket';
 import { useStyles } from '../../components/App/styles';
 import { UPDATE_RECIPE_REQUEST } from '../../redux/reducer';
+import { useSnackbar } from 'notistack';
 
 export interface Props {
   socket: SocketClient;
@@ -41,6 +42,8 @@ export const EditRecipePage = (props: Props) => {
     dispatch({ type: UPDATE_RECIPE_REQUEST });
     socket.editRecipe(recipe);
   }
+  // Snackbar
+  const enqueueSnackbar = useSnackbar();
   // Styles
   const classes = useStyles();
 
@@ -52,7 +55,7 @@ export const EditRecipePage = (props: Props) => {
       data={currentRecipe}
       onCancelFormAction={onLeaveFormHandler}
       onSubmitFormAction={onSubmitFormHandler}
-  
+      enqueueSnackbar={enqueueSnackbar}
     />
   );
 };
