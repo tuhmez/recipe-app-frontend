@@ -23,15 +23,6 @@ export const useStyles = makeStyles(theme => ({
   input: {
     display: 'none'
   },
-  ingredientMeasurement: {
-    maxWidth: 65,
-  },
-  ingredientUnit: {
-    minWidth: 132.8,
-  },
-  stepTime: {
-    maxWidth: 65,
-  },
   chipPaper: {
     padding: theme.spacing(1),
     borderRadius: 25
@@ -54,13 +45,13 @@ export const useStyles = makeStyles(theme => ({
   stepDialog: {
     minWidth: '280px',
     width: '300px',
-    height: '175px',
-    maxHeight: '175px'
+    height: '225px',
+    maxHeight: '225px'
   },
   ingredientDialog: {
     minWidth: '280px',
     width: '300px',
-    height: '175px',
-    maxHeight: '175px'
+    height: '200px',
+    maxHeight: '200px'
   }
 }));

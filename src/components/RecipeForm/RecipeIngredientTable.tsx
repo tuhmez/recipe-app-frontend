@@ -135,16 +135,9 @@ export const RecipeIngredientTable = (props: Props) => {
                 value={dialogIngredientData.name}
                 onChange={onDialogIngredientNameChange}
                 fullWidth
+                autoFocus
               />
             </Grid>
-            <Grid
-              item
-              container
-              direction='row'
-              justifyContent='flex-start'
-              alignItems='center'
-              spacing={1}
-            >
               <Grid item>
                 <TextField
                   label='Amount'
@@ -154,11 +147,11 @@ export const RecipeIngredientTable = (props: Props) => {
                   value={dialogIngredientData.measurement}
                   onChange={onDialogIngredientMeasurementChange}
                   type='number'
-                  className={classes.ingredientMeasurement}
+                  fullWidth
                 />
               </Grid>
               <Grid item>
-                <FormControl variant='filled' className={classes.ingredientUnit}>
+                <FormControl variant='filled' fullWidth>
                   <InputLabel id='ingredient-units-label'>Unit</InputLabel>
                   <Select
                     native
@@ -170,7 +163,6 @@ export const RecipeIngredientTable = (props: Props) => {
                   </Select>
                 </FormControl>
               </Grid>
-            </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
