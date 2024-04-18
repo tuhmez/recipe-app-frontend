@@ -8,12 +8,13 @@ import {
   DialogContentText,
   DialogTitle,
   Divider,
+  Fab,
   Grid,
   IconButton,
   TextField,
   Typography
 } from '@material-ui/core';
-import { Add, Visibility } from '@material-ui/icons';
+import { BugReport, Visibility } from '@material-ui/icons';
 import { SocketClient } from '../../socket';
 import { IIssue } from '../../common/types';
 import { ADD_ISSUE_REQUEST, DELETE_ISSUE_REQUEST } from '../../redux/reducer';
@@ -97,7 +98,7 @@ export const IssuePage = (props: Props) => {
               <Grid item xs className={classes.issueName}><Typography variant='h6' key={`issue-${issue.issueId}-name`} noWrap>{issue.name}</Typography></Grid>
               <Grid item xs={1}><IconButton onClick={onOpenIssue}><Visibility/></IconButton></Grid>
             </Grid>
-            {index === issues.length - 1 ? undefined : <Grid item><Divider variant='middle'/></Grid>}
+            {index === issues.length - 1 ? undefined : <Grid item><Divider variant='fullWidth'/></Grid>}
           </Grid>
         )
       });
@@ -135,36 +136,6 @@ export const IssuePage = (props: Props) => {
 
   return (
     <div>
-      <Grid
-        container
-        direction='column'
-        spacing={2}
-        alignItems='flex-start'
-        justifyContent='center'
-        key='issue-page-grid-container'
-      >
-        <Grid
-          item
-          container
-          direction='row'
-          justifyContent='space-between'
-          key='issue-page-header-container'
-        >
-          <Grid item key='issue-page-header'>
-            <Typography variant='h4'>Issues</Typography>
-          </Grid>
-          <Grid item key='issue-page-create-issue'>
-            <Button
-              variant='outlined'
-              color='primary'
-              startIcon={<Add/>}
-              onClick={onToggleIssueDialogOpen}
-            >
-              Create Issue
-            </Button>
-          </Grid>
-        </Grid>
-        <Grid item style={{ width: '100%' }} key='issue-page-header-divider'><Divider /></Grid>
         <Grid
           item
           container
@@ -173,11 +144,18 @@ export const IssuePage = (props: Props) => {
           alignItems='flex-start'
           justifyContent='center'
           key='issue-elements'
-          className={classes.itemContainer}
         >
           {issueElements}
         </Grid>
-      </Grid>
+        <Fab
+          color='secondary'
+          aria-label='add-issue'
+          size='large'
+          className={classes.fab}
+          onClick={onToggleIssueDialogOpen}
+        >
+          <BugReport />
+        </Fab>
       <Dialog open={isIssueDialogOpen} onClose={onToggleIssueDialogOpen}>
         <DialogTitle className={classes.dialogTitle}>{isDialogReadOnly ? 'Existing Issue' : 'Create a new Issue'}</DialogTitle>
         <DialogContent>

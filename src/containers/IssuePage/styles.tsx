@@ -6,9 +6,6 @@ export const useStyles = makeStyles((theme) => ({
     width: '350px',
     maxWidth: '85vw'
   },
-  itemContainer: {
-    width: '95%'
-  },
   issueName: {
     maxWidth: '90%'
   },
@@ -22,5 +19,14 @@ export const useStyles = makeStyles((theme) => ({
   },
   noIssuesText: {
     fontStyle: 'italic'
-  }
+  },
+  fab: {
+    position: 'fixed',
+    top: 'auto',
+    bottom: 20,
+    right: 20,
+    left: 'auto',
+    margin: 0,
+    boxShadow: 'none'
+  },
 }));
