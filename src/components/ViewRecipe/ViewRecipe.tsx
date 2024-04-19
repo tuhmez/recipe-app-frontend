@@ -87,6 +87,8 @@ export const ViewRecipe = (props: Props) => {
     });
   };
   const handleIngredientMultiplier = (event: any, newValue: string ) => {
+    if (newValue === null) return;
+
     setIngredientMultiplier(newValue);
   };
   // Styles
