@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { Divider, Grid, IconButton, Menu, MenuItem, Typography } from '@material-ui/core';
 import { MoreVert } from '@material-ui/icons';
 import React from 'react';
-import { IIngredient } from '../../common/types';
+import { IIngredient, IngredientUnit } from '../../common/types';
 import { useStyles } from './styles';
+import { formatMeasurement } from '../../utilities/myMaths';
 
 export interface Props {
   ingredient: IIngredient;
@@ -53,9 +54,11 @@ export const RecipeIngredient = (props: Props) => {
     handleRemoveIngredient(event, index);
     handleCloseIngredientAdditionalActionMenu();
   };
+
   // Constants
   const ingredientText = `${index + 1}. ${ingredient.name}`;
-  const ingredientSupportText = `• ${ingredient.measurement} ${ingredient.units}`;
+  
+  const ingredientSupportText = `• ${formatMeasurement(ingredient.measurement)} ${ingredient.units === IngredientUnit.NONE ? '' : ingredient.units}`;
   return (
     <Grid item container direction='column' alignItems='center' spacing={2} key={`ingredient-${index} + 1`}>
       <Grid
@@ -73,9 +76,12 @@ export const RecipeIngredient = (props: Props) => {
               <Typography variant='body1'>{ingredientText}</Typography>
             </div>
           </Grid>
-          <Grid item style={{ paddingLeft: '30px' }} key={`ingredient-support-text-${index}`}>
-            <Typography variant='body1'>{ingredientSupportText}</Typography>
-          </Grid>
+          {ingredientSupportText !== "• 0 " ? (
+            <Grid item style={{ paddingLeft: '30px' }} key={`ingredient-support-text-${index}`}>
+              <Typography variant='body1'>{ingredientSupportText}</Typography>
+            </Grid>
+            ) : null
+          }
         </Grid>
         <Grid item xs={1} key='edit-ingredient-item'>
           <IconButton

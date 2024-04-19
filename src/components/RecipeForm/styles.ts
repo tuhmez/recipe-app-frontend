@@ -15,7 +15,7 @@ export const useStyles = makeStyles(theme => ({
     borderRadius: '20px',
     maxWidth: '95%',
     marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(1),
   },
   formControl: {
     minWidth: '150px'
