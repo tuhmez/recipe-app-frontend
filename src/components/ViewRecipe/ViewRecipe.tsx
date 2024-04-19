@@ -23,6 +23,7 @@ import { Favorite, FavoriteBorder, KeyboardArrowLeft, KeyboardArrowRight, MoreVe
 import { IngredientUnit, IRecipe, RecipeDifficulty } from '../../common/types';
 import { emptyImage } from '../../common/imagesBase64';
 import { useStyles } from './styles';
+import { formatMeasurement } from '../../utilities/myMaths';
 
 export interface Props {
   recipe: IRecipe;
@@ -135,7 +136,7 @@ export const ViewRecipe = (props: Props) => {
   const ingredientsList = () => {
     const ingredientLabels = recipe.ingredients.map((ingredient, index) => {
       let ingredientText = '';
-      const ingredientMeasurementWithMultiplier = ingredient.measurement * parseInt(ingredientMultiplier);
+      const ingredientMeasurementWithMultiplier = formatMeasurement(ingredient.measurement * parseInt(ingredientMultiplier));
       if (ingredient.units === IngredientUnit.NONE) {
         ingredientText = `${ingredient.name}`;
         if (ingredient.measurement !== 0) ingredientText = `${ingredientText} (${ingredientMeasurementWithMultiplier})`;
