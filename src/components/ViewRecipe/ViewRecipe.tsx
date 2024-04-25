@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Checkbox,
@@ -17,6 +17,7 @@ import {
   MobileStepper,
   Typography,
   useTheme,
+  Switch,
 } from '@material-ui/core';
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 import { Favorite, FavoriteBorder, KeyboardArrowLeft, KeyboardArrowRight, MoreVert } from '@material-ui/icons';
@@ -49,6 +50,7 @@ export const ViewRecipe = (props: Props) => {
     return checkboxObject;
   });
   const [ingredientMultiplier, setIngredientMultiplier] = useState('1');
+  const [wakeLock, setWakeLock] = useState<WakeLockSentinel | null>(null);
   // Handlers
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
     setMenuAnchorEl(event.currentTarget);
@@ -92,6 +94,51 @@ export const ViewRecipe = (props: Props) => {
 
     setIngredientMultiplier(newValue);
   };
+
+  // Screen Lock
+  const lock = async (requestLock: boolean) => {
+    if (requestLock === false) {
+      if (wakeLock) {
+        return wakeLock.release().then(() => {
+          setWakeLock(null);
+        });
+      }
+    }
+    try {
+      const lock = await navigator.wakeLock.request("screen");
+      setWakeLock(lock);
+    } catch (err: any) {
+      // There are various reason why lock might not be acquired such as tab is not active, low battery on a device, permissions
+      console.warn(`WakeLock request error: ${err.message}`);
+    }
+};
+  const handleScreenLockChange = () => {
+    const isWakeLockSet = wakeLock !== null;
+    console.log(!isWakeLockSet);
+    lock(!isWakeLockSet);
+  };
+  useEffect(() => {
+    const requestLock = async () => {
+        try {
+          const lock = await navigator.wakeLock.request("screen");
+          setWakeLock(lock);
+        } catch (err: any) {
+          // There are various reason why lock might not be acquired such as tab is not active, low battery on a device, permissions
+          console.warn(`WakeLock request error: ${err.message}`);
+        }
+    };
+
+    requestLock();
+  }, []);
+  useEffect(() => {
+    return () => {
+      if (wakeLock) {
+        wakeLock.release().then(() => {
+          return;
+        });
+      }
+    }
+  }, [wakeLock]);
   // Styles
   const classes = useStyles();
   const theme = useTheme();
@@ -263,6 +310,9 @@ export const ViewRecipe = (props: Props) => {
           justifyContent='center'
           key='variable-section'
         >
+          <Grid item key='screen-wake-lock-section'>
+            <FormControlLabel control={<Switch checked={wakeLock !== null} onChange={handleScreenLockChange} color='primary'/>} label='Keep Screen Open' />
+          </Grid>
           <Grid item container direction='row' key='ingredient-header' justifyContent='space-between'>
             <Grid item key='ingredient-list'>
               <Typography variant='h5' key='title'>Ingredients</Typography>
