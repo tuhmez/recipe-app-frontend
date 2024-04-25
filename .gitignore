@@ -24,3 +24,6 @@ yarn-error.log*
 
 **/*_pb.js
 **/*_pb.d.ts
+
+*.crt
+*.pem
