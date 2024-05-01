@@ -22,7 +22,6 @@ import { RecipeIngredientTable } from './RecipeIngredientTable';
 import { RecipeStepTable } from './RecipeStepTable';
 import { RecipeKeywordList } from './RecipeKeywordList';
 import { RecipeImages } from '../RecipeImages';
-import { useSnackbar } from 'notistack';
 
 const recipeTypeItems = () => {
   const returnItems: JSX.Element[] = [];
@@ -46,6 +45,7 @@ const recipeDifficultyItems = () => {
 
 export interface Props {
   data: IRecipe;
+  enqueueSnackbar: any;
   isEdit?: boolean;
   onCancelFormAction: () => void;
   onSubmitFormAction: (recipe: IRecipe) => void;
@@ -57,7 +57,7 @@ interface IErrorObject {
 
 export const RecipeForm = (props: Props) => {
   // Props Destructuring
-  const { data, isEdit, onCancelFormAction, onSubmitFormAction } = props;
+  const { data, isEdit, onCancelFormAction, onSubmitFormAction, enqueueSnackbar } = props;
   // Styles
   const classes = useStyles();
   // States
@@ -72,8 +72,6 @@ export const RecipeForm = (props: Props) => {
   const [ images, setImages ] = useState(data.images);
   const [ formErrors, setFormErrors ] = useState<IErrorObject>({});
   const [ isCancelDialogOpen, setIsCancelDialogOpen ] = useState(false);
-  // Other Hooks
-  const { enqueueSnackbar } = useSnackbar();
   // Change Events
   const onChangeName = (event: React.ChangeEvent<HTMLInputElement>) => setName(event.target.value);
   const onChangeType = (event: React.ChangeEvent<{ value: unknown }>) => setType(event.target.value as RecipeType);
@@ -158,7 +156,7 @@ export const RecipeForm = (props: Props) => {
       });
       resolve(true);
     });
-  }
+  };
 
   const onRemoveStep = (event: React.MouseEvent<HTMLLIElement>) => {
     let areStepsEmpty = false;
@@ -216,6 +214,11 @@ export const RecipeForm = (props: Props) => {
     };
   };
   const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    if (event.relatedTarget?.innerHTML === "CANCEL") {
+      onToggleCancelDialog();
+      return;
+    }
+
     validate(compileRecipe(), true);
   };
   const validate = (recipe: IRecipe, isOnBlur: boolean): boolean => {
@@ -267,7 +270,7 @@ export const RecipeForm = (props: Props) => {
       // handle null file upload
       enqueueSnackbar('Failed to upload image!', { variant: 'error' });
     }
-  }
+  };
   const handleRemoveImage = (index: number) => {
     setImages(prevState => {
       const newState = [...prevState];
@@ -282,7 +285,7 @@ export const RecipeForm = (props: Props) => {
       newState.unshift(prevState[index]);
       return newState;
     });
-  }
+  };
 
   return (
     <div>
@@ -301,7 +304,6 @@ export const RecipeForm = (props: Props) => {
           <Grid item>
             <IconButton
               onClick={onToggleFavorited}
-              // disableRipple
             >
               {favorited ? <Favorite className={classes.favoriteIcon}/> : <FavoriteBorder />}
             </IconButton>
@@ -319,6 +321,7 @@ export const RecipeForm = (props: Props) => {
             onBlur={handleBlur}
             error={!!formErrors['name'] || false}
             helperText={formErrors['name'] || undefined}
+            autoFocus
           />
         </Grid>
         <Grid item>
@@ -451,7 +454,7 @@ export const RecipeForm = (props: Props) => {
           </Button>
           <Button
             variant='contained'
-            color='secondary'
+            color='primary'
             size='large'
             disableElevation
             onClick={onCancelFormAction}

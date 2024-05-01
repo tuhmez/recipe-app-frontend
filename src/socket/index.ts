@@ -60,7 +60,7 @@ export class SocketClient {
       deleteIssueResponseFn,
       getIssuesResponseFn,
     } = callbacks;
-    const sock = io(url);
+    const sock = io(url, { secure: true, rejectUnauthorized: false });
 
     sock
       .on(ADD_RECIPE_RESPONSE, (res: IAddRecipeResponse) => {

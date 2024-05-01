@@ -1,12 +1,12 @@
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
-import { makeStyles, ThemeProvider } from '@material-ui/core'
+import { makeStyles, Theme, ThemeProvider } from '@material-ui/core'
 
 interface Props {
   children: any;
   store: any;
-  theme: any;
+  theme: Theme;
 }
 
 export const AppWrapper = (props: Props) => {

@@ -112,7 +112,6 @@ export const RecipeStepTable = (props: Props) => {
       {errorComponent}
       <Dialog
         open={isStepDialogOpen}
-        onClose={onStepDialogToggle}
       >
         <DialogTitle>{isNewStep ? 'Add' : 'Edit'} Step</DialogTitle>
         <DialogContent className={classes.stepDialog}>
@@ -129,9 +128,9 @@ export const RecipeStepTable = (props: Props) => {
                 fullWidth
                 minRows={3}
                 maxRows={3}
+                autoFocus
               />
             </Grid>
-            <Grid item container spacing={1}>
               <Grid item>
                 <TextField
                   label='Time'
@@ -141,11 +140,11 @@ export const RecipeStepTable = (props: Props) => {
                   value={dialogStepData.time}
                   type='number'
                   onChange={onDialogStepDataTimeChange}
-                  className={classes.stepTime}
+                  fullWidth
                 />
               </Grid>
               <Grid item>
-                <FormControl variant='filled'>
+                <FormControl variant='filled' fullWidth>
                   <InputLabel id='recipe-step-time-unit-label'>Time Unit</InputLabel>
                   <Select
                     native
@@ -158,7 +157,6 @@ export const RecipeStepTable = (props: Props) => {
                   </Select>
                 </FormControl>
               </Grid>
-            </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>

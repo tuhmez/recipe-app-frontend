@@ -5,7 +5,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Grid,
   Paper,
@@ -115,11 +114,6 @@ export const RecipeKeywordList = (props: Props) => {
       <Dialog open={isKeywordPanelOpen} onClose={onClosePanel}>
         <DialogTitle id='edit-keyword-list-title'>{isEdit ? `Edit Keyword` : `Add Keyword`}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            {isEdit
-            ? 'Edit the keyword below!'
-            : 'Enter a new keyword below!'}
-          </DialogContentText>
           <TextField
             value={currentKeyword.word}
             onChange={onCurrentKeywordChange}
