@@ -10,4 +10,4 @@ FROM node:16.14-slim
 COPY --from=builder build/ build/
 RUN npm install -g serve
 
-ENTRYPOINT ["serve", "-s", "build", "-l", "80"]
+ENTRYPOINT ["serve", "-s", "build", "--ssl-cert", "./build/file.crt", "--ssl-key", "./build/file.pem", "-l", "443"]
