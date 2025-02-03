@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { CircularProgress, Container, CssBaseline } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
@@ -34,6 +34,8 @@ export const App = () => {
   const dispatch = useDispatch();
   // Selectors
   const isLoading = useSelector(selectIsLoading);
+  // Refs
+  const timing = useRef(0);
   // Effects
   useEffect(() => {
     const createdSocket = new SocketClient(serverAddress, serverPort, {
@@ -72,6 +74,7 @@ export const App = () => {
           enqueueSnackbar(res.error, { variant: 'error' });
           dispatch({ type: GET_RECIPES_FAILURE, payload: res.error });
         } else {
+          console.log(`got recipe response! [${Math.round(performance.now() - timing.current) / 1000} s]`);
           if (res.recipeId) {
             enqueueSnackbar(`${res.recipes![0].name} retrieved!`, { variant: 'success' });
           } else {
@@ -126,6 +129,7 @@ export const App = () => {
   useEffect(() => {
     if (socket) {
       dispatch({ type: GET_RECIPES_REQUEST });
+      timing.current = performance.now();
       socket.getIssues();
       socket.getRecipes();
     }
